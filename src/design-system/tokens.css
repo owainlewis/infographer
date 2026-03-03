@@ -46,20 +46,27 @@
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
+  /* Light theme uses Libre Franklin (sans) + Crimson Text (serif accent) */
+  --font-sans: 'Libre Franklin', -apple-system, sans-serif;
+  --font-serif: 'Crimson Text', Georgia, serif;
+
   /* ── Typography — Sizes ──
-     Display/headings use serif for presence.
-     Card/section titles must feel BOLD on the page.
-     Body stays small for density contrast.
+     Proven at LinkedIn feed scale (1080px canvas, viewed on mobile).
+     Body text must be readable at ~50% zoom on a 27" monitor.
+     Bold keywords create scan points for fast-scrolling readers.
      ──────────────────────────────────────────── */
-  --text-display: 64px;
-  --text-h1: 40px;
-  --text-h2: 32px;
-  --text-h3: 20px;
-  --text-label: 11px;
-  --text-body: 16px;
-  --text-body-sm: 14px;
-  --text-pill: 12px;
-  --text-index: 14px;
+  --text-display: 74px;       /* Main title — Libre Franklin 800              */
+  --text-h1: 40px;            /* Large section heading                        */
+  --text-h2: 28px;            /* Card title — 800, -0.02em tracking           */
+  --text-h3: 20px;            /* Sub-heading within a card                    */
+  --text-body: 18px;          /* Primary body text — 400, 28px line-height    */
+  --text-body-sm: 17px;       /* Secondary body / item descriptions — 24px lh */
+  --text-label: 14px;         /* Section labels — 800, uppercase, 0.08em      */
+  --text-pill: 13px;          /* Pill/tag text — 700                          */
+  --text-badge: 14px;         /* Badge text — 700                             */
+  --text-footer: 15px;        /* Footer bar text — 600–700                    */
+  --text-index: 16px;         /* Card index numbers                           */
+  --text-stars: 15px;         /* Download counts, metrics — 700               */
 
   /* ── Typography — Line Heights (multiples of 4px) ── */
   --leading-display: 1.15;
@@ -120,4 +127,33 @@
   /* ── Divider ── */
   --divider-color: var(--color-border-subtle);
   --divider-accent: var(--color-border-accent);
+
+  /* ── Card Tint Palette (light theme) ──
+     5 tinted backgrounds for visual variety. No two adjacent
+     cards should share the same tint. All are visible on mobile
+     but still professional/warm.
+     ──────────────────────────────────────────── */
+  --tint-terracotta-bg: #f5e0d4;
+  --tint-terracotta-border: #d4b8a6;
+  --tint-sage-bg: #dce8de;
+  --tint-sage-border: #b5ccb8;
+  --tint-sky-bg: #d8e4ee;
+  --tint-sky-border: #afc5d6;
+  --tint-sand-bg: #f0e6ce;
+  --tint-sand-border: #d4c8a6;
+  --tint-lavender-bg: #e2dced;
+  --tint-lavender-border: #c4b8d4;
+
+  /* ── Number Badges ──
+     Two shapes: circles for sequential flows, squares for lists/ranks.
+     Always accent background with white text.
+     ──────────────────────────────────────────── */
+  --badge-radius-circle: 50%;
+  --badge-radius-square: 6px;
+  --badge-size-lg: 36px;   /* Phase steps (flow)          */
+  --badge-size-md: 32px;   /* Skill ranks, category items */
+  --badge-size-sm: 28px;   /* Build steps, install paths  */
+  --badge-font-lg: 18px;
+  --badge-font-md: 16px;
+  --badge-font-sm: 14px;
 }

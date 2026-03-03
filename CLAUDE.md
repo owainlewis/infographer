@@ -56,19 +56,23 @@ HORIZONTAL:
 
 ### Typography Hierarchy
 
-| Role | Font | Size | Line Height | Weight |
-|---|---|---|---|---|
-| Display title | Libre Franklin | 56px | 60px | 800 |
-| Title accent | Crimson Text | 56px | 60px | 400 italic |
-| Subtitle | Libre Franklin | 18px | 24px | 600 |
-| Card title | Libre Franklin | 22px | 28px | 800 |
-| Section label | Libre Franklin | 12px | 16px | 700 uppercase |
-| Body text | Libre Franklin | 13px | 20px | 400 |
-| Body bold | Libre Franklin | 13px | 20px | 700 |
-| Pill/tag | Libre Franklin | 10px | 16px | 600 |
-| Footer text | Libre Franklin | 11px | 16px | 600–700 |
+Sizes proven at LinkedIn feed scale — readable at 50% zoom on a 27" monitor.
 
-Fonts: **Crimson Text** (serif, display accents) + **Libre Franklin** (sans-serif, everything else).
+| Role | Font | Size | Line Height | Weight | Tracking |
+|---|---|---|---|---|---|
+| Display title | Libre Franklin | 74px | 80px | 800 | -0.03em |
+| Card title | Libre Franklin | 28px | 32px | 800 | -0.02em |
+| Phase title | Libre Franklin | 17px | 24px | 800 | — |
+| Section label | Libre Franklin | 14px | 16px | 800 uppercase | 0.08em |
+| Body text | Libre Franklin | 18px | 28px | 400 | — |
+| Body secondary | Libre Franklin | 17px | 24px | 400 | — |
+| Item label | Libre Franklin | 17px | 24px | 800 | — |
+| Pill/tag | Libre Franklin | 13px | 16px | 700 | — |
+| Badge | Libre Franklin | 14px | 16px | 700 | — |
+| Footer text | Libre Franklin | 15px | 20px | 600–700 | 0.08em |
+| Download count | Libre Franklin | 15px | — | 700 | — |
+
+Fonts: **Crimson Text** (serif, display accents only) + **Libre Franklin** (sans-serif, everything else).
 
 ## Themes
 
@@ -112,18 +116,19 @@ Accent:      #c15f3c (terracotta)
 Shadow:      none
 ```
 
-## Card Variants — 4 Background Levels
+## Card Tint Palette — 5 Colored Backgrounds
 
-Use these classes on `.card` for visual variety across the grid:
+Use `.card-tint--{name}` classes for visual variety. No two adjacent cards should share the same tint. All tints are visible on mobile but still professional.
 
-| Class | Light BG | Purpose |
-|---|---|---|
-| *(default)* | `#ffffff` white | Standard cards |
-| `.card--raised` | `#f5f5f0` stone | Elevated cards (intro, lists) |
-| `.card--warm` | `#f7efe8` cream | Warm accent tint (key info cards) |
-| `.card--accent` | terracotta glow | Strongest emphasis (features, warnings) |
+| Class | Background | Border | Best for |
+|---|---|---|---|
+| `.card-tint--terracotta` | `#f5e0d4` | `#d4b8a6` | Intro cards, categories |
+| `.card-tint--sage` | `#dce8de` | `#b5ccb8` | Popular items, build steps |
+| `.card-tint--sky` | `#d8e4ee` | `#afc5d6` | Loading phases, partners |
+| `.card-tint--sand` | `#f0e6ce` | `#d4c8a6` | Anatomy, file structures |
+| `.card-tint--lavender` | `#e2dced` | `#c4b8d4` | Install paths, how-to |
 
-Aim for 2–3 variants per infographic. Don't make every card the same background.
+Aim for 3–4 tints per infographic. Distribute colors so the grid feels varied at a glance.
 
 ## Layout Templates
 
@@ -179,38 +184,49 @@ Magazine-style with hero section, sidebar tips, and workflow steps.
 ## Component Classes
 
 ### Header
-- `.hd` — Header container (centered, 112px)
-- `.hd h1` — Display title (Libre Franklin, 56px, 800)
-- `.hd h1 i` — Serif accent word (Crimson Text italic)
+- `.hd` — Header container (centered)
+- `.hd h1` — Display title (Libre Franklin, 74px, 800, -0.03em)
 - `.hd h1 .accent` — Accent-colored word
-- `.hd .sub` — Subtitle (18px, 600)
 
 ### Cards
 - `.card` — Base card (16px padding, 8px radius, border, shadow)
-- `.card--raised` / `.card--warm` / `.card--accent` — Background variants
+- `.card-tint--{name}` — Colored backgrounds (terracotta, sage, sky, sand, lavender)
 - `.card-a` through `.card-i` — Grid area assignments (bento layout)
 
 ### Typography
-- `.card-title` — Card heading (22px, 800)
-- `.card-body` — Paragraph text (13px, 400). Use `<strong>` for bold contrast.
-- `.section-label` — Uppercase muted label (12px, 700)
+- `.card-title` — Card heading (28px, 800, -0.02em)
+- `.card-body` — Primary body text (18px/28px, 400). Use `<strong>` for bold scan points.
+- `.section-label` — Uppercase label (14px, 800, 0.08em tracking)
 - `.section-label--accent` — Terracotta-colored label
-- `.card-index` — Muted number like "01"
 
-### Pills
+### Number Badges
+Two shapes for numbered items. Always accent background + white text.
+
+- **Circles** (`.num-circle`) — Use for sequential flows (1→2→3 phases). 36px diameter.
+- **Squares** (`.num-square`) — Use for ranked lists and steps. Rounded rectangle, 6px radius.
+  - `.num-square--md` — 32px (skill ranks, category items)
+  - `.num-square--sm` — 28px (build steps)
+- **Square icons** (`.anatomy-icon`) — Letter-based icons (Y/M/F) for file type indicators. 32px.
+
+Rule: pick ONE shape per card. Don't mix circles and squares in the same card.
+
+### Pills & Badges
 - `.pills` — Flex-wrap container (margin-top: auto pushes to card bottom)
-- `.pill` — Tag pill with border
+- `.pill` — Tag pill (13px, 700, 8px/14px padding)
 - `.pill--accent` — Terracotta-bordered pill with accent glow
+- `.badge` — Larger badge for partner grids (14px, 700, 8px/14px padding)
+- `.badge--primary` — Bold primary badge
 
 ### Footer
 - `.footer-bar` — Dark bottom bar (48px, full width)
-- `.footer-brand` — Left: uppercase brand name
-- `.footer-cta` — Center: call to action. Use `<strong>` for accent keyword
-- `.footer-url` — Right: URL
+- `.footer-brand` — Left: uppercase brand name (15px, 700)
+- `.footer-cta` — Center: call to action (15px). Use `<strong>` for accent keyword
+- `.footer-url` — Right: URL (15px)
 
 ### Animations
-- Add `.delay-1` through `.delay-9` to cards for sequential highlight
+- Add `.delay-1` through `.delay-8` to cards for sequential highlight
 - PNG export: static. GIF export: `.animated` class added automatically.
+- Use `filter: brightness()` for card-highlight so colored tints animate naturally
 
 ## Content Tips for LinkedIn
 

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>8 AI Prompt Frameworks</title>
+  <link rel="stylesheet" href="/src/design-system/base.css">
+  <link rel="stylesheet" href="/templates/theme-light.css">
+  <style>
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       LOCKED GEOMETRY — DO NOT MODIFY
+       Canvas: 1080 × 1350  |  Padding: 48  |  8px grid
+       ══════════════════════════════════════════════════════════ */
+    .infographic {
+      width: 1080px;
+      height: 1350px;
+      padding: 48px 48px 0 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Libre Franklin', sans-serif;
+    }
+
+    /* Header — 2-line title, no subtitle */
+    .hd { margin-bottom: 16px; text-align: center; }
+    .hd h1 {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 52px;
+      line-height: 56px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .hd h1 i {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .hd h1 .accent { color: var(--accent); }
+
+    /* Grid — 2×4 cheat sheet */
+    .grid {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    /* Card base */
+    .card {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .card--raised {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    /* ── Framework card internals ────────────────────────── */
+
+    /* Header row: number badge + acronym */
+    .fw-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .fw-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .fw-acr {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
+
+    /* Two-column body: definitions | example */
+    .fw-cols {
+      display: grid;
+      grid-template-columns: 42fr 58fr;
+      gap: 0;
+      flex: 1;
+    }
+
+    /* Left column: letter definitions */
+    .fw-defs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 10px;
+    }
+    .fw-def-row {
+      display: flex;
+      gap: 8px;
+      align-items: start;
+    }
+    .fw-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .fw-def-text {
+      font-size: 15px;
+      line-height: 22px;
+      color: var(--text-secondary);
+    }
+    .fw-def-text strong {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Right column: example */
+    .fw-ex {
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .fw-ex-head {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .fw-ex-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .fw-ex-row {
+      display: flex;
+      gap: 4px;
+      align-items: start;
+    }
+    .fw-ex-key {
+      font-size: 15px;
+      line-height: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .fw-ex-arrow {
+      font-size: 15px;
+      line-height: 22px;
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+    .fw-ex-val {
+      font-size: 15px;
+      line-height: 22px;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .footer-bar {
+      height: 48px;
+      margin: 16px -48px 0 -48px;
+      padding: 0 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-footer);
+      border-top: 2px solid var(--accent);
+    }
+    .footer-brand {
+      font-size: 13px; line-height: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--footer-text);
+    }
+    .footer-cta {
+      font-size: 13px; line-height: 16px; font-weight: 600;
+      color: var(--footer-text-hi);
+    }
+    .footer-cta strong { color: var(--accent); }
+    .footer-url {
+      font-size: 13px; line-height: 16px; font-weight: 600;
+      color: var(--footer-text);
+    }
+
+    /* Animations */
+    @keyframes card-highlight {
+      0%, 100% { border-color: var(--border); background: var(--bg-card); }
+      50% { border-color: var(--border-accent); background: var(--bg-raised); }
+    }
+    .animated .card {
+      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
+      animation-fill-mode: both;
+    }
+    .animated .delay-1  { animation-delay: 0s; }
+    .animated .delay-2  { animation-delay: 0.8s; }
+    .animated .delay-3  { animation-delay: 1.6s; }
+    .animated .delay-4  { animation-delay: 2.4s; }
+    .animated .delay-5  { animation-delay: 3.2s; }
+    .animated .delay-6  { animation-delay: 4.0s; }
+    .animated .delay-7  { animation-delay: 4.8s; }
+    .animated .delay-8  { animation-delay: 5.6s; }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>8 ChatGPT Prompt <i class="accent">Frameworks</i><br>To Help You Master AI</h1>
+    </div>
+
+    <!-- Grid — 2×4, 8 cards -->
+    <div class="grid">
+
+      <!-- 1. R-T-F -->
+      <div class="card delay-1">
+        <div class="fw-head">
+          <span class="fw-num">1</span>
+          <span class="fw-acr">R-T-F</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">R</span>
+              <span class="fw-def-text"><strong>Role:</strong> Specify the persona or expert you want the AI to assume.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">T</span>
+              <span class="fw-def-text"><strong>Task:</strong> Define what the AI should produce — be specific about scope.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">F</span>
+              <span class="fw-def-text"><strong>Format:</strong> Set the output structure — bullets, table, essay, code, etc.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Role</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Act as a brand strategist.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Task</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Write a messaging hierarchy for a B2B SaaS founder targeting finance teams.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Format</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Bullet points with core message, value props, proof, and CTAs.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. S-O-L-V-E -->
+      <div class="card card--raised delay-2">
+        <div class="fw-head">
+          <span class="fw-num">2</span>
+          <span class="fw-acr">S-O-L-V-E</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">S</span>
+              <span class="fw-def-text"><strong>Situation:</strong> The context.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">O</span>
+              <span class="fw-def-text"><strong>Objective:</strong> The goals.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">L</span>
+              <span class="fw-def-text"><strong>Limitations:</strong> Constraints.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">V</span>
+              <span class="fw-def-text"><strong>Vision:</strong> End state.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">E</span>
+              <span class="fw-def-text"><strong>Execution:</strong> The steps.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Situation</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Content team, new B2B startup.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Objective</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Inbound leads via LinkedIn.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Limitations</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">No ads, small team, 3x/wk.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Vision</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">SaaS ops thought leader.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Execution</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Biweekly review, optimize.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. T-A-G -->
+      <div class="card card--raised delay-3">
+        <div class="fw-head">
+          <span class="fw-num">3</span>
+          <span class="fw-acr">T-A-G</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">T</span>
+              <span class="fw-def-text"><strong>Task:</strong> Define the specific task or challenge — include enough context.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">A</span>
+              <span class="fw-def-text"><strong>Action:</strong> State the concrete action or approach to address the task.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">G</span>
+              <span class="fw-def-text"><strong>Goal:</strong> Clarify the measurable target outcome and success criteria.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Task</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Reduce customer churn in a SaaS subscription business.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Action</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Analyse churn data and launch a targeted retention programme.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Goal</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Improve customer retention rate by 15% over the next 6 months.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. R-A-C-E -->
+      <div class="card delay-4">
+        <div class="fw-head">
+          <span class="fw-num">4</span>
+          <span class="fw-acr">R-A-C-E</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">R</span>
+              <span class="fw-def-text"><strong>Role:</strong> Character you want AI to play.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">A</span>
+              <span class="fw-def-text"><strong>Action:</strong> The instruction or job needed.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">C</span>
+              <span class="fw-def-text"><strong>Context:</strong> Provide the background info.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">E</span>
+              <span class="fw-def-text"><strong>Expectation:</strong> Describe the outcome.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Role</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">B2B go-to-market consultant.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Action</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Build cold outreach framework.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Context</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Workflow automation for logistics.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Expectation</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">3 email templates per buyer role.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. D-R-E-A-M -->
+      <div class="card delay-5">
+        <div class="fw-head">
+          <span class="fw-num">5</span>
+          <span class="fw-acr">D-R-E-A-M</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">D</span>
+              <span class="fw-def-text"><strong>Define:</strong> The problem.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">R</span>
+              <span class="fw-def-text"><strong>Research:</strong> The data.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">E</span>
+              <span class="fw-def-text"><strong>Execute:</strong> The plan.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">A</span>
+              <span class="fw-def-text"><strong>Analyse:</strong> The results.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">M</span>
+              <span class="fw-def-text"><strong>Measure:</strong> The outcomes.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Define</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Declining B2B SaaS retention.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Research</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">User interviews + CRM data.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Execute</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">3-month retention programme.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Analyse</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Control vs. test cohorts.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Measure</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Churn rate, usage, NPS.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. P-A-C-T -->
+      <div class="card card--raised delay-6">
+        <div class="fw-head">
+          <span class="fw-num">6</span>
+          <span class="fw-acr">P-A-C-T</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">P</span>
+              <span class="fw-def-text"><strong>Problem:</strong> Define the problem.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">A</span>
+              <span class="fw-def-text"><strong>Approach:</strong> Describe the approach.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">C</span>
+              <span class="fw-def-text"><strong>Compromise:</strong> Potential trade-offs.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">T</span>
+              <span class="fw-def-text"><strong>Test:</strong> The test or measurement.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Problem</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Low trial-to-paid conversion.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Approach</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Redesign onboarding for value.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Compromise</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Delay features for UX work.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Test</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">6-week A/B on conversion.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. C-A-R-E -->
+      <div class="card card--raised delay-7">
+        <div class="fw-head">
+          <span class="fw-num">7</span>
+          <span class="fw-acr">C-A-R-E</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">C</span>
+              <span class="fw-def-text"><strong>Context:</strong> Give the context.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">A</span>
+              <span class="fw-def-text"><strong>Action:</strong> Describe the action needed.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">R</span>
+              <span class="fw-def-text"><strong>Result:</strong> Clarify the expected result.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">E</span>
+              <span class="fw-def-text"><strong>Example:</strong> Provide an example for clarity.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Context</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Low onboarding engagement.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Action</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Redesign for quick wins.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Result</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Higher adoption in 7 days.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Example</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Day-7 activation: 25% → 42%.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. R-I-S-E -->
+      <div class="card delay-8">
+        <div class="fw-head">
+          <span class="fw-num">8</span>
+          <span class="fw-acr">R-I-S-E</span>
+        </div>
+        <div class="fw-cols">
+          <div class="fw-defs">
+            <div class="fw-def-row">
+              <span class="fw-letter">R</span>
+              <span class="fw-def-text"><strong>Role:</strong> Specify the role.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">I</span>
+              <span class="fw-def-text"><strong>Input:</strong> Describe the input needed.</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">S</span>
+              <span class="fw-def-text"><strong>Steps:</strong> Could you ask for steps to follow?</span>
+            </div>
+            <div class="fw-def-row">
+              <span class="fw-letter">E</span>
+              <span class="fw-def-text"><strong>Expectation:</strong> Describe the expectation.</span>
+            </div>
+          </div>
+          <div class="fw-ex">
+            <div class="fw-ex-head">Example:</div>
+            <div class="fw-ex-rows">
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Role</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Commercial director.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Input</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Q1 sales data and pipeline forecasts.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Steps</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Prioritise high-conversion leads.</span>
+              </div>
+              <div class="fw-ex-row">
+                <span class="fw-ex-key">Expectation</span>
+                <span class="fw-ex-arrow">→</span>
+                <span class="fw-ex-val">Plan to exceed Q2 revenue targets.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Subscribe</strong> for more engineering visuals</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

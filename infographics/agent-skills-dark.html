@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How To Master Agent Skills</title>
+  <link rel="stylesheet" href="/src/design-system/base.css">
+  <link rel="stylesheet" href="/templates/theme-dark.css">
+  <style>
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       LOCKED GEOMETRY — DO NOT MODIFY
+       Canvas: 1080 × 1350  |  Padding: 48  |  8px grid
+       Header: 112px  |  Footer: 64px  |  Grid: 1126px
+       ══════════════════════════════════════════════════════════ */
+    .infographic {
+      width: 1080px;
+      height: 1350px;
+      padding: 48px 48px 0 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Libre Franklin', sans-serif;
+    }
+
+    /* Header — 112px total */
+    .hd { margin-bottom: 24px; text-align: center; }
+    .hd h1 {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 56px;
+      line-height: 60px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .hd h1 i {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .hd h1 .accent { color: var(--accent); }
+    .hd .sub {
+      font-size: 18px;
+      line-height: 24px;
+      margin-top: 8px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Grid — fills remaining 1126px */
+    .grid {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    /* Card — 16px pad, 8px radius */
+    .card {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .card--accent {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
+    }
+    .card--raised {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+    .card--warm {
+      background: var(--bg-warm);
+      border-color: var(--border-accent);
+    }
+
+    /* Animations */
+    @keyframes card-highlight {
+      0%, 100% { border-color: var(--border); background: var(--bg-card); }
+      50% { border-color: var(--border-accent); background: var(--bg-raised); }
+    }
+    .animated .card {
+      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
+      animation-fill-mode: both;
+    }
+    .animated .delay-1  { animation-delay: 0s; }
+    .animated .delay-2  { animation-delay: 0.8s; }
+    .animated .delay-3  { animation-delay: 1.6s; }
+    .animated .delay-4  { animation-delay: 2.4s; }
+    .animated .delay-5  { animation-delay: 3.2s; }
+    .animated .delay-6  { animation-delay: 4.0s; }
+    .animated .delay-7  { animation-delay: 4.8s; }
+    .animated .delay-8  { animation-delay: 5.6s; }
+    .animated .delay-9  { animation-delay: 6.4s; }
+
+    /* Footer */
+    .footer-bar {
+      height: 48px;
+      margin: 16px -48px 0 -48px;
+      padding: 0 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-footer);
+      border-top: 2px solid var(--accent);
+    }
+    .footer-brand {
+      font-size: 11px; line-height: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--footer-text);
+    }
+    .footer-cta {
+      font-size: 11px; line-height: 16px; font-weight: 600;
+      color: var(--footer-text-hi);
+    }
+    .footer-cta strong { color: var(--accent); }
+    .footer-url {
+      font-size: 11px; line-height: 16px; font-weight: 600;
+      color: var(--footer-text);
+    }
+
+    /* ── Typography ────────────────────────────────────────── */
+    .card-index {
+      font-size: 11px; line-height: 16px; font-weight: 700;
+      color: var(--text-muted); margin-bottom: 4px;
+    }
+    .card-title {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 22px; line-height: 28px; font-weight: 800;
+      color: var(--text-primary); margin-bottom: 8px;
+    }
+    .section-label {
+      font-size: 12px; line-height: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-muted); margin-bottom: 8px;
+    }
+    .section-label--accent { color: var(--accent); }
+    .card-body {
+      font-size: 13px; line-height: 20px; font-weight: 400;
+      color: var(--text-secondary);
+    }
+    .card-body strong {
+      font-weight: 700; color: var(--text-primary);
+    }
+    .pills {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      margin-top: auto; padding-top: 8px;
+    }
+    .pill {
+      font-size: 10px; line-height: 16px; font-weight: 600;
+      padding: 4px 8px; border-radius: 4px;
+      border: 1px solid var(--border); color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .pill--accent {
+      border-color: var(--border-accent); color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* ── Phase steps (Card B) ─────────────────────────────── */
+    .phase-list {
+      display: flex; flex-direction: column; gap: 0;
+      flex: 1;
+    }
+    .phase-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .phase-item:last-child { border-bottom: none; }
+    .phase-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent); color: #ffffff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .phase-title {
+      font-size: 12px; line-height: 16px; font-weight: 700;
+      color: var(--text-primary);
+    }
+    .phase-detail {
+      font-size: 11px; line-height: 16px;
+      color: var(--text-muted); margin-top: 2px;
+    }
+    .phase-detail strong {
+      font-weight: 700; color: var(--text-secondary);
+    }
+
+    /* ── Anatomy list (Card C) ─────────────────────────────── */
+    .anatomy-list {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      flex: 1; gap: 8px;
+    }
+    .anatomy-item-label {
+      font-size: 12px; line-height: 16px; font-weight: 700;
+      color: var(--text-primary); margin-bottom: 2px;
+    }
+    .anatomy-item-body {
+      font-size: 12px; line-height: 18px;
+      color: var(--text-secondary);
+    }
+    .anatomy-item-body strong {
+      font-weight: 700; color: var(--text-primary);
+    }
+    /* ── Skill list (Card D) ─────────────────────────────── */
+    .skill-list {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .skill-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .skill-item:last-child { border-bottom: none; }
+    .skill-rank {
+      font-size: 12px; line-height: 18px; font-weight: 700;
+      color: var(--accent);
+    }
+    .skill-name {
+      font-size: 12px; line-height: 18px; font-weight: 700;
+      color: var(--text-primary);
+    }
+    .skill-stars {
+      font-weight: 400; color: var(--text-muted); font-size: 10px;
+    }
+    .skill-desc {
+      font-size: 11px; line-height: 16px;
+      color: var(--text-muted);
+    }
+
+    /* ── Install paths (Card E) ──────────────────────────── */
+    .install-paths {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+    .install-path {}
+    .install-path-label {
+      font-size: 11px; line-height: 16px; font-weight: 700;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .install-path-body {
+      font-size: 12px; line-height: 18px;
+      color: var(--text-secondary); margin-top: 2px;
+    }
+
+    /* ── Category rows (Card F) ──────────────────────────── */
+    .cat-rows {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+    .cat-row {}
+    .cat-row-label {
+      font-size: 12px; line-height: 16px; font-weight: 700;
+      color: var(--text-primary);
+    }
+    .cat-row-body {
+      font-size: 11px; line-height: 16px;
+      color: var(--text-muted); margin-top: 2px;
+    }
+
+    /* ── Badge grid ──────────────────────────────────────── */
+    .badge-grid {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      margin-bottom: 8px;
+    }
+    .badge {
+      font-size: 10px; line-height: 16px; font-weight: 600;
+      padding: 4px 8px; border-radius: 4px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .badge--primary {
+      border-color: var(--border-medium);
+      color: var(--text-primary); font-weight: 700;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       BENTO — 9 cards, asymmetric 3×4 grid
+       ══════════════════════════════════════════════════════════ */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "a a b"
+        "c c d"
+        "e f d"
+        "g h i";
+    }
+    .card-a { grid-area: a; }
+    .card-b { grid-area: b; }
+    .card-c { grid-area: c; }
+    .card-d { grid-area: d; }
+    .card-e { grid-area: e; }
+    .card-f { grid-area: f; }
+    .card-g { grid-area: g; }
+    .card-h { grid-area: h; }
+    .card-i { grid-area: i; }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header — 112px -->
+    <div class="hd">
+      <h1>How To Master <i class="accent">Agent Skills</i></h1>
+      <p class="sub">The open standard for teaching AI how you work.</p>
+    </div>
+
+    <!-- Grid — 1126px, 9 cards -->
+    <div class="grid">
+
+      <!-- A: What are agent skills + how they work -->
+      <div class="card card-a card--raised delay-1">
+        <div class="section-label section-label--accent">What Are Agent Skills?</div>
+        <p class="card-body" style="margin-bottom: 8px;"><strong>Standard operating procedures for AI.</strong> When you find yourself repeating a task — writing reports, reviewing code, following checklists — that's a perfect candidate for a skill. Write it once as a Markdown file, and your AI follows it automatically.</p>
+        <p class="card-body">Skills work everywhere: <strong>Claude Desktop</strong>, <strong>Claude Code</strong>, <strong>Cowork</strong>, and coding agents like Cursor, OpenCode, and Codex. An open standard across <strong>26+ platforms</strong>. Share with your team via git, or publish to skills.sh.</p>
+        <div class="pills">
+          <span class="pill--accent pill">Open Standard</span>
+          <span class="pill">Portable</span>
+          <span class="pill">Progressive Loading</span>
+          <span class="pill">Version-Controlled</span>
+        </div>
+      </div>
+
+      <!-- B: How skills load — progressive phases -->
+      <div class="card card-b card--warm delay-2">
+        <div class="section-label section-label--accent">How Skills Load</div>
+        <div class="phase-list">
+          <div class="phase-item">
+            <span class="phase-num">1</span>
+            <div>
+              <div class="phase-title">Discovery</div>
+              <div class="phase-detail">Agent reads <strong>name + description</strong> only. ~100 tokens per skill. Dozens coexist with zero overhead.</div>
+            </div>
+          </div>
+          <div class="phase-item">
+            <span class="phase-num">2</span>
+            <div>
+              <div class="phase-title">Activation</div>
+              <div class="phase-detail">Task matches a skill trigger. Full <strong>SKILL.md</strong> loads into context. Median cost: 1,414 tokens.</div>
+            </div>
+          </div>
+          <div class="phase-item">
+            <span class="phase-num">3</span>
+            <div>
+              <div class="phase-title">Execution</div>
+              <div class="phase-detail">Scripts, references, and assets load <strong>on demand</strong>. Only what's needed, when it's needed.</div>
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill">~100 tokens</span>
+          <span class="pill">1,414 median</span>
+          <span class="pill">26+ platforms</span>
+        </div>
+      </div>
+
+      <!-- C: Inside a SKILL.md -->
+      <div class="card card-c card--accent delay-3">
+        <div class="card-title">Inside a SKILL.md</div>
+        <div class="anatomy-list">
+          <div>
+            <div class="anatomy-item-label">YAML Header</div>
+            <div class="anatomy-item-body">Every skill starts with a <strong>name</strong> (kebab-case, max 64 chars) and a <strong>description</strong> that tells the agent what the skill does and when to activate it. This is all the agent reads at startup — just ~100 tokens.</div>
+          </div>
+          <div>
+            <div class="anatomy-item-label">Markdown Body</div>
+            <div class="anatomy-item-body">The core instructions. Write step-by-step workflows, include <strong>input/output examples</strong>, cover edge cases, and add troubleshooting guidance. Loaded only when the skill activates.</div>
+          </div>
+          <div>
+            <div class="anatomy-item-label">Supporting Files</div>
+            <div class="anatomy-item-body">Optional scripts (Python, Bash), reference docs, templates, and schemas. These load <strong>on demand</strong> during execution — never at startup.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- D: Most popular skills — tall card -->
+      <div class="card card-d card--raised delay-4">
+        <div class="section-label section-label--accent">Most Popular Skills</div>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="skill-rank">1</span>
+            <div>
+              <div class="skill-name">React Best Practices <span class="skill-stars">186K</span></div>
+              <div class="skill-desc">Idiomatic React/Next.js patterns by Vercel</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">2</span>
+            <div>
+              <div class="skill-name">Frontend Design <span class="skill-stars">117K</span></div>
+              <div class="skill-desc">Pro-quality UI with proper spacing and color</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">3</span>
+            <div>
+              <div class="skill-name">Web App Testing <span class="skill-stars">117K</span></div>
+              <div class="skill-desc">Playwright-powered interactive browser testing</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">4</span>
+            <div>
+              <div class="skill-name">PR Code Review <span class="skill-stars">114K</span></div>
+              <div class="skill-desc">Automated review with structured comments</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">5</span>
+            <div>
+              <div class="skill-name">Commit Messages <span class="skill-stars">82K</span></div>
+              <div class="skill-desc">Conventional commits from staged diffs</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">6</span>
+            <div>
+              <div class="skill-name">Cloud Deploy <span class="skill-stars">114K</span></div>
+              <div class="skill-desc">Build, configure, push to Netlify/CF/Azure</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">7</span>
+            <div>
+              <div class="skill-name">MCP Server Builder <span class="skill-stars">42K</span></div>
+              <div class="skill-desc">Connect agents to external APIs via MCP</div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-rank">8</span>
+            <div>
+              <div class="skill-name">Security Review <span class="skill-stars">38K</span></div>
+              <div class="skill-desc">Security-focused diff review by Trail of Bits</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- E: How to install -->
+      <div class="card card-e delay-5">
+        <div class="section-label">How To Install</div>
+        <div class="install-paths">
+          <div class="install-path">
+            <div class="install-path-label">Personal</div>
+            <div class="install-path-body">Place in your agent's skills directory. Available in every session across all projects.</div>
+          </div>
+          <div class="install-path">
+            <div class="install-path-label">Project</div>
+            <div class="install-path-body">Add to your repo's skills folder. Teammates receive it automatically on pull.</div>
+          </div>
+          <div class="install-path">
+            <div class="install-path-label">Package Manager</div>
+            <div class="install-path-body">One command via <strong>skills.sh</strong> — installs to multiple agents at once.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- F: Three categories -->
+      <div class="card card-f delay-6">
+        <div class="section-label">Three Skill Categories</div>
+        <div class="cat-rows">
+          <div class="cat-row">
+            <div class="cat-row-label">01 — Documents & Assets</div>
+            <div class="cat-row-body">Consistent outputs via embedded style guides, templates, and quality checklists.</div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-row-label">02 — Workflow Automation</div>
+            <div class="cat-row-body">Multi-step processes with validation gates, progress tracking, and refinement loops.</div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-row-label">03 — MCP Enhancement</div>
+            <div class="cat-row-body">Workflow guidance on top of MCP tools with domain expertise and error handling.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- G: Official partners -->
+      <div class="card card-g delay-7">
+        <div class="section-label">Official Partner Skills</div>
+        <div class="badge-grid">
+          <span class="badge badge--primary">Stripe</span>
+          <span class="badge badge--primary">Figma</span>
+          <span class="badge badge--primary">Sentry</span>
+          <span class="badge badge--primary">HashiCorp</span>
+          <span class="badge">Vercel</span>
+          <span class="badge">Supabase</span>
+          <span class="badge">Notion</span>
+          <span class="badge">Snyk</span>
+          <span class="badge">Canva</span>
+          <span class="badge">Cloudflare</span>
+          <span class="badge">Microsoft</span>
+          <span class="badge">Hugging Face</span>
+        </div>
+      </div>
+
+      <!-- H: Security -->
+      <div class="card card-h card--accent delay-8">
+        <div class="section-label section-label--accent">Security Warning</div>
+        <p class="card-body">Snyk found prompt injection in <strong>36% of tested skills</strong> and identified <strong>1,467 malicious payloads</strong>. Skills are plain text — always review <strong>SKILL.md</strong> and any bundled scripts before installing. Check the source and review tool permissions.</p>
+        <div class="pills">
+          <span class="pill--accent pill">Review First</span>
+          <span class="pill">Plain Text</span>
+        </div>
+      </div>
+
+      <!-- I: Build your first -->
+      <div class="card card-i delay-9">
+        <div class="section-label">Build Your First</div>
+        <div class="cat-rows">
+          <div class="cat-row">
+            <div class="cat-row-label">1. Identify</div>
+            <div class="cat-row-body">Pick a repeatable workflow you give as manual instructions.</div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-row-label">2. Write</div>
+            <div class="cat-row-body">Create SKILL.md with trigger description + step-by-step instructions.</div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-row-label">3. Test</div>
+            <div class="cat-row-body">Verify activation with direct, paraphrased, and unrelated queries.</div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-row-label">4. Share</div>
+            <div class="cat-row-body">Commit to repo or publish to skills.sh registry.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Subscribe</strong> for more engineering visuals</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

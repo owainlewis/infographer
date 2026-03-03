@@ -228,6 +228,19 @@ Rule: pick ONE shape per card. Don't mix circles and squares in the same card.
 - PNG export: static. GIF export: `.animated` class added automatically.
 - Use `filter: brightness()` for card-highlight so colored tints animate naturally
 
+## Style Guide
+
+See `src/design-system/STYLE-GUIDE.md` for detailed authoring rules:
+- **Content budgets** — exact line counts per card size (prevents overflow/empty space)
+- **Card content recipes** — 6 proven patterns (prose, ranked list, phase/flow, label-body, split panel, anatomy)
+- **Flex distribution rules** — when to use `space-between` vs fixed `gap`
+- **Number badge rules** — circles for flows, squares for lists, nothing for labels
+- **Card tint distribution** — adjacency rules for the 5-color palette
+- **Pre-export checklist** — catches footer clips, overflow, spacing violations
+- **Common pitfalls** — solutions to the 6 most frequent issues
+
+**Read the style guide before creating any new infographic.**
+
 ## Content Tips for LinkedIn
 
 - **Bold text creates scan points** — readers scrolling fast will catch `<strong>` keywords

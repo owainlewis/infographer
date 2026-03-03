@@ -1,0 +1,86 @@
+/* ═══════════════════════════════════════════════════════════
+   Theme: Brutalist — Developer / Terminal
+
+   Pure black, monospace everything, electric lime accent.
+   JetBrains Mono for display + body. Raw. Stark. Technical.
+   Like a terminal that became a magazine.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Backgrounds — true black ── */
+  --color-bg-deep: #050505;
+  --color-bg-base: #0a0a0a;
+  --color-bg-raised: #141414;
+  --color-bg-card: #0a0a0a;
+  --color-bg-card-hover: #141414;
+
+  /* ── Borders — zinc, barely there ── */
+  --color-border-subtle: #1c1c1c;
+  --color-border-medium: #2e2e2e;
+  --color-border-accent: #2d3a1a;
+
+  /* ── Text — zinc palette, high contrast ── */
+  --color-text-primary: #fafafa;
+  --color-text-body: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-text-faint: #3f3f46;
+
+  /* ── Accent — electric lime ── */
+  --color-accent: #84cc16;
+  --color-accent-dim: #65a30d;
+  --color-accent-glow: rgba(132, 204, 22, 0.10);
+
+  /* ── Typography — Monospace everything ──
+     JetBrains Mono for display. Unusual. Distinctive.
+     Mono at large sizes feels raw and technical.
+     ──────────────────────────────────────────────── */
+  --font-display: 'JetBrains Mono', 'Fira Code', monospace;
+  --tracking-display: -0.04em;
+
+  /* ── Sizes — mono needs slightly smaller display ── */
+  --text-display: 56px;
+  --text-h2: 28px;
+
+  /* ── Card ── */
+  --card-border: 1px solid var(--color-border-subtle);
+  --card-radius: 0px;
+  --radius-md: 0px;
+  --radius-pill: 0px;
+
+  /* ── Divider ── */
+  --divider-color: var(--color-border-subtle);
+  --divider-accent: var(--color-border-accent);
+}
+
+/* Mono display needs medium weight — mono fonts feel heavier */
+.ig-title {
+  font-weight: 500;
+}
+
+.ig-card-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.ig-column-title {
+  font-weight: 500;
+}
+
+/* Square corners everywhere — no softness */
+.ig-pill {
+  border-radius: 0;
+  border-color: var(--color-border-medium);
+  font-family: var(--font-mono);
+}
+
+/* Card titles use mono too */
+.ig-card-index {
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+}
+
+/* Footer gets mono treatment */
+.ig-footer-brand,
+.ig-footer-url {
+  font-family: var(--font-mono);
+}

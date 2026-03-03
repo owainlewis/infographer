@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>ChatGPT vs Gemini vs Claude — Light</title>
+  <link rel="stylesheet" href="/src/design-system/index.css">
+  <style>
+    /* ── 3-Column Comparison — light variant ──
+       Self-contained light palette. Terracotta accent.
+       White column cards on warm gray background.
+    */
+
+    :root {
+      --bg: #f4f4f2;
+      --card: #ffffff;
+      --border: #e0ddd6;
+      --text-1: #111111;
+      --text-2: #222222;
+      --text-3: #555555;
+      --text-4: #888888;
+      --accent: #c05621;
+      --accent-bg: rgba(192, 86, 33, 0.08);
+      --accent-border: rgba(192, 86, 33, 0.15);
+      --divider: #e8e5de;
+    }
+
+    .infographic {
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      background: var(--bg);
+      padding: 44px 48px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .ch {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .ch h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 52px;
+      font-weight: 400;
+      color: var(--text-1);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+    .ch h1 .hl { color: var(--accent); }
+    .ch .sub {
+      font-size: 16px;
+      color: var(--text-3);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── Column grid ── */
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* ── Individual column card ── */
+    .col {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    /* ── Column brand bar ── */
+    .col-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid var(--divider);
+    }
+    .col-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .col-icon--gpt { background: #10a37f; color: #fff; }
+    .col-icon--gem { background: #4285f4; color: #fff; }
+    .col-icon--cla { background: #d4a574; color: #1a1a1a; }
+    .col-name {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 24px;
+      color: var(--text-1);
+      line-height: 1.2;
+    }
+
+    /* ── Section within column ── */
+    .cs {
+      margin-bottom: 14px;
+    }
+    .cs:last-child {
+      margin-bottom: 0;
+    }
+    .cs-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .cs-text {
+      font-size: 12.5px;
+      color: var(--text-3);
+      line-height: 1.5;
+    }
+    .cs-text strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+
+    /* ── Bullet list in section ── */
+    .cs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cs-list li {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.45;
+      padding-left: 14px;
+      position: relative;
+    }
+    .cs-list li::before {
+      content: '◆';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 5px;
+      top: 5px;
+    }
+    .cs-list li strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+
+    /* ── Pro/Con lists ── */
+    .cs-pro li::before { content: '+'; color: #16a34a; font-size: 12px; font-weight: 700; top: 0; }
+    .cs-con li::before { content: '−'; color: #dc2626; font-size: 12px; font-weight: 700; top: 0; }
+
+    /* ── Verdict box ── */
+    .verdict {
+      margin-top: auto;
+      padding: 12px 14px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-border);
+      border-radius: 8px;
+    }
+    .verdict-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+      display: block;
+    }
+    .verdict-text {
+      font-size: 12.5px;
+      color: var(--text-1);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
+    .ft {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--divider);
+    }
+    .ft-brand, .ft-url {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-4);
+    }
+    .ft-cta {
+      font-size: 13px;
+      color: var(--text-3);
+    }
+    .ft-cta strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header -->
+    <div class="ch">
+      <h1>ChatGPT vs Gemini vs <span class="hl">Claude</span></h1>
+      <p class="sub">Three leading LLMs compared — strengths, trade-offs, and when to use each.</p>
+    </div>
+
+    <!-- 3-Column Grid -->
+    <div class="cols">
+
+      <!-- Column 1: ChatGPT -->
+      <div class="col delay-1">
+        <div class="col-brand">
+          <div class="col-icon col-icon--gpt">G</div>
+          <span class="col-name">ChatGPT</span>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">What It Is</span>
+          <p class="cs-text">OpenAI's flagship model. <strong>GPT-4o</strong> powers chat, vision, and voice. The most widely adopted LLM with the largest plugin ecosystem.</p>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Best For</span>
+          <ul class="cs-list">
+            <li><strong>General knowledge</strong> and Q&A</li>
+            <li>Creative writing and brainstorming</li>
+            <li><strong>Plugin ecosystem</strong> (1000+ integrations)</li>
+            <li>Image generation with DALL-E</li>
+          </ul>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">When To Use</span>
+          <p class="cs-text">When you need a <strong>Swiss army knife</strong> — broad capability, image gen, voice mode, and third-party plugins in one interface.</p>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Pros</span>
+          <ul class="cs-list cs-pro">
+            <li>Largest ecosystem and community</li>
+            <li>Strong multimodal (text + image + voice)</li>
+            <li>Custom GPTs for reusable workflows</li>
+          </ul>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Cons</span>
+          <ul class="cs-list cs-con">
+            <li>Can be verbose and over-eager</li>
+            <li>Inconsistent with complex reasoning</li>
+            <li>Data privacy concerns for enterprise</li>
+          </ul>
+        </div>
+
+        <div class="verdict">
+          <span class="verdict-label">Power Move</span>
+          <span class="verdict-text">Use Custom GPTs to build single-purpose tools for your team's recurring tasks.</span>
+        </div>
+      </div>
+
+      <!-- Column 2: Gemini -->
+      <div class="col delay-2">
+        <div class="col-brand">
+          <div class="col-icon col-icon--gem">G</div>
+          <span class="col-name">Gemini</span>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">What It Is</span>
+          <p class="cs-text">Google's multimodal model. <strong>Gemini 2.5 Pro</strong> leads benchmarks for code and reasoning. Deeply integrated with Google Workspace.</p>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Best For</span>
+          <ul class="cs-list">
+            <li><strong>Code generation</strong> and debugging</li>
+            <li>Google Workspace integration</li>
+            <li><strong>Long context</strong> (1M+ token window)</li>
+            <li>Research and data analysis</li>
+          </ul>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">When To Use</span>
+          <p class="cs-text">When your workflow is <strong>Google-centric</strong> — Gmail, Docs, Sheets, Drive — or you need massive context windows for large codebases.</p>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Pros</span>
+          <ul class="cs-list cs-pro">
+            <li>Best-in-class context length</li>
+            <li>Native Google ecosystem integration</li>
+            <li>Strong at code and scientific reasoning</li>
+          </ul>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Cons</span>
+          <ul class="cs-list cs-con">
+            <li>Smaller third-party ecosystem</li>
+            <li>Can hallucinate on niche topics</li>
+            <li>Advanced features need paid plans</li>
+          </ul>
+        </div>
+
+        <div class="verdict">
+          <span class="verdict-label">Power Move</span>
+          <span class="verdict-text">Feed entire repos into the 1M context window for codebase-wide refactoring and analysis.</span>
+        </div>
+      </div>
+
+      <!-- Column 3: Claude -->
+      <div class="col delay-3">
+        <div class="col-brand">
+          <div class="col-icon col-icon--cla">C</div>
+          <span class="col-name">Claude</span>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">What It Is</span>
+          <p class="cs-text">Anthropic's model family. <strong>Claude Opus 4</strong> excels at nuanced reasoning, coding, and long-form analysis. Built with safety-first design.</p>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Best For</span>
+          <ul class="cs-list">
+            <li><strong>Complex reasoning</strong> and analysis</li>
+            <li>Long-form writing and editing</li>
+            <li><strong>Coding</strong> (Claude Code, agentic tools)</li>
+            <li>Enterprise with strict compliance needs</li>
+          </ul>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">When To Use</span>
+          <p class="cs-text">When accuracy matters more than speed — <strong>legal analysis</strong>, code review, nuanced writing, and tasks requiring careful reasoning.</p>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Pros</span>
+          <ul class="cs-list cs-pro">
+            <li>Most reliable for nuanced instructions</li>
+            <li>Best coding assistant (Claude Code)</li>
+            <li>Strong enterprise trust and safety</li>
+          </ul>
+        </div>
+
+        <div class="cs">
+          <span class="cs-label">Cons</span>
+          <ul class="cs-list cs-con">
+            <li>No native image generation</li>
+            <li>Fewer third-party integrations</li>
+            <li>Can be overly cautious sometimes</li>
+          </ul>
+        </div>
+
+        <div class="verdict">
+          <span class="verdict-label">Power Move</span>
+          <span class="verdict-text">Use Claude Code for autonomous software development — it writes, tests, and commits code end-to-end.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="ft">
+      <span class="ft-brand">YOUR BRAND</span>
+      <span class="ft-cta"><strong>Follow</strong> for more engineering visuals</span>
+      <span class="ft-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

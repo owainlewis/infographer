@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>What Is Agentic AI? — Light</title>
+  <link rel="stylesheet" href="/src/design-system/index.css">
+  <style>
+    /* ── Numbered Stack layout — light variant ──
+       Self-contained light palette. Terracotta accent.
+       White cards on warm gray background.
+    */
+
+    :root {
+      --bg: #f4f4f2;
+      --card: #ffffff;
+      --border: #e0ddd6;
+      --text-1: #111111;
+      --text-2: #222222;
+      --text-3: #555555;
+      --text-4: #888888;
+      --accent: #c05621;
+      --accent-bg: rgba(192, 86, 33, 0.08);
+      --accent-border: rgba(192, 86, 33, 0.2);
+      --divider: #e8e5de;
+    }
+
+    .infographic {
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      background: var(--bg);
+      padding: 48px 56px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .sh {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .sh h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 56px;
+      font-weight: 400;
+      color: var(--text-1);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+    .sh h1 .hl { color: var(--accent); }
+    .sh .sub {
+      font-size: 17px;
+      color: var(--text-3);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── Band container ── */
+    .bands {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    /* ── Individual band ── */
+    .band {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* ── Band header ── */
+    .band-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .band-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .band-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text-1);
+      line-height: 1.2;
+    }
+    .band-sub {
+      font-size: 13px;
+      color: var(--text-4);
+      font-style: italic;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* ── 3-column bullet grid ── */
+    .band-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px 20px;
+    }
+    .band-grid li {
+      font-size: 12.5px;
+      color: var(--text-3);
+      line-height: 1.45;
+      padding-left: 16px;
+      position: relative;
+    }
+    .band-grid li::before {
+      content: '◆';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 6px;
+      top: 5px;
+    }
+    .band-grid li strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .ft {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid var(--divider);
+    }
+    .ft-brand, .ft-url {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-4);
+    }
+    .ft-cta {
+      font-size: 13px;
+      color: var(--text-3);
+    }
+    .ft-cta strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header -->
+    <div class="sh">
+      <h1>What Is <span class="hl">Agentic AI</span>?</h1>
+      <p class="sub">The 5 layers that turn a chatbot into an autonomous agent.</p>
+    </div>
+
+    <!-- Bands -->
+    <div class="bands">
+
+      <!-- Band 1: Foundation Models -->
+      <div class="band delay-1">
+        <div class="band-head">
+          <span class="band-num">01</span>
+          <span class="band-title">Foundation Models</span>
+          <span class="band-sub">The brain</span>
+        </div>
+        <ul class="band-grid">
+          <li><strong>LLMs</strong> like GPT-4, Claude, Gemini</li>
+          <li>Trained on vast datasets of text and code</li>
+          <li><strong>Reasoning</strong> and language understanding</li>
+          <li>Generate plans, not just completions</li>
+          <li>Can process images, audio, and video</li>
+          <li><strong>Context windows</strong> up to 1M+ tokens</li>
+        </ul>
+      </div>
+
+      <!-- Band 2: Tool Use -->
+      <div class="band delay-2">
+        <div class="band-head">
+          <span class="band-num">02</span>
+          <span class="band-title">Tool Use</span>
+          <span class="band-sub">The hands</span>
+        </div>
+        <ul class="band-grid">
+          <li><strong>Function calling</strong> to external APIs</li>
+          <li>Web browsing and data retrieval</li>
+          <li><strong>Code execution</strong> in sandboxes</li>
+          <li>Database queries and writes</li>
+          <li>File system read and write access</li>
+          <li><strong>MCP</strong> for standardised tool access</li>
+        </ul>
+      </div>
+
+      <!-- Band 3: Planning & Reasoning -->
+      <div class="band delay-3">
+        <div class="band-head">
+          <span class="band-num">03</span>
+          <span class="band-title">Planning &amp; Reasoning</span>
+          <span class="band-sub">The strategy</span>
+        </div>
+        <ul class="band-grid">
+          <li><strong>Chain-of-thought</strong> decomposition</li>
+          <li>Multi-step task planning</li>
+          <li><strong>Self-reflection</strong> and error correction</li>
+          <li>Dynamic re-planning when blocked</li>
+          <li>Goal decomposition into subtasks</li>
+          <li><strong>ReAct</strong> pattern: reason → act → observe</li>
+        </ul>
+      </div>
+
+      <!-- Band 4: Memory & State -->
+      <div class="band delay-4">
+        <div class="band-head">
+          <span class="band-num">04</span>
+          <span class="band-title">Memory &amp; State</span>
+          <span class="band-sub">The context</span>
+        </div>
+        <ul class="band-grid">
+          <li><strong>Short-term</strong> conversation memory</li>
+          <li>Long-term <strong>vector store</strong> retrieval</li>
+          <li><strong>RAG</strong> for grounded responses</li>
+          <li>Session state across interactions</li>
+          <li>User preference learning</li>
+          <li><strong>Knowledge graphs</strong> for relationships</li>
+        </ul>
+      </div>
+
+      <!-- Band 5: Multi-Agent Orchestration -->
+      <div class="band delay-5">
+        <div class="band-head">
+          <span class="band-num">05</span>
+          <span class="band-title">Multi-Agent Orchestration</span>
+          <span class="band-sub">The team</span>
+        </div>
+        <ul class="band-grid">
+          <li><strong>Specialised</strong> agents per task</li>
+          <li>Parallel execution of subtasks</li>
+          <li><strong>Supervisor</strong> agent coordination</li>
+          <li>Shared context between agents</li>
+          <li>Human-in-the-loop approval gates</li>
+          <li><strong>Autonomous</strong> end-to-end workflows</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="ft">
+      <span class="ft-brand">YOUR BRAND</span>
+      <span class="ft-cta"><strong>Follow</strong> for more engineering visuals</span>
+      <span class="ft-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Control Plane vs Data Plane</title>
+  <link rel="stylesheet" href="/src/design-system/index.css">
+  <style>
+    /* Page-specific overrides */
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0 var(--space-lg);
+      align-items: start;
+    }
+    .diagram-side {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .diagram-card {
+      background: var(--color-bg-raised);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md) var(--space-lg);
+    }
+    .diagram-card.accent {
+      border-color: var(--color-border-accent);
+    }
+    .diagram-card-title {
+      font-size: var(--text-body);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+    }
+    .diagram-card-desc {
+      font-size: var(--text-body-sm);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+    .diagram-vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      font-size: var(--text-body-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--color-accent);
+    }
+    .comparison-body {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0 var(--gap-grid);
+      flex: 1;
+    }
+    .comparison-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-lg);
+    }
+    .col-divider {
+      background: var(--color-border-subtle);
+    }
+    .section-block {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header -->
+    <div class="ig-header" style="margin-bottom: var(--space-3xl);">
+      <div class="ig-header-row">
+        <div>
+          <h1 class="ig-title">Control Plane <span class="accent">vs</span> Data Plane</h1>
+          <p class="ig-subtitle">The two layers that define every modern infrastructure system</p>
+        </div>
+        <div class="ig-legend">
+          <div class="ig-legend-item">
+            <span class="ig-legend-swatch ig-legend-swatch--primary"></span>
+            CONTROL PLANE
+          </div>
+          <div class="ig-legend-item">
+            <span class="ig-legend-swatch ig-legend-swatch--accent"></span>
+            DATA PLANE
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Architecture Diagram -->
+    <div class="diagram-grid" style="margin-bottom: var(--space-3xl);">
+      <div class="diagram-side">
+        <div class="diagram-card">
+          <div class="diagram-card-title">API Server</div>
+          <div class="diagram-card-desc">Receives and validates requests</div>
+        </div>
+        <div class="diagram-card">
+          <div class="diagram-card-title">Scheduler</div>
+          <div class="diagram-card-desc">Assigns workloads to nodes</div>
+        </div>
+        <div class="diagram-card">
+          <div class="diagram-card-title">Controller Manager</div>
+          <div class="diagram-card-desc">Reconciles desired vs actual state</div>
+        </div>
+      </div>
+      <div class="diagram-vs">⬥</div>
+      <div class="diagram-side">
+        <div class="diagram-card accent">
+          <div class="diagram-card-title">Kubelet</div>
+          <div class="diagram-card-desc">Runs pods on each node</div>
+        </div>
+        <div class="diagram-card accent">
+          <div class="diagram-card-title">Kube-proxy</div>
+          <div class="diagram-card-desc">Handles network routing rules</div>
+        </div>
+        <div class="diagram-card accent">
+          <div class="diagram-card-title">Container Runtime</div>
+          <div class="diagram-card-desc">Manages container lifecycle</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-Column Comparison Body -->
+    <div class="comparison-body">
+
+      <!-- Left Column: Control Plane -->
+      <div class="comparison-col">
+        <div>
+          <h2 class="ig-column-title">Control Plane</h2>
+          <span class="ig-column-subtitle">THE BRAIN</span>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">What it does</div>
+          <p class="ig-card-body">Makes decisions about the system. Determines where workloads run, what the desired state is, and how to get there.</p>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Responsibilities</div>
+          <ul class="ig-list">
+            <li>Configuration and policy management</li>
+            <li>Service discovery and routing rules</li>
+            <li>Scheduling and orchestration</li>
+            <li>Health monitoring and self-healing</li>
+            <li>State reconciliation loops</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Key Characteristics</div>
+          <ul class="ig-list">
+            <li>Low throughput, high importance</li>
+            <li>Centralized or leader-elected</li>
+            <li>Eventual consistency is acceptable</li>
+            <li>Failure stops changes, not traffic</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Examples Across Systems</div>
+          <div class="ig-pills">
+            <span class="ig-pill">K8s API Server</span>
+            <span class="ig-pill">etcd</span>
+            <span class="ig-pill">Istio Pilot</span>
+            <span class="ig-pill">AWS Route 53</span>
+            <span class="ig-pill">Consul Server</span>
+            <span class="ig-pill">BGP Route Reflector</span>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Best Practices</div>
+          <ul class="ig-list">
+            <li>Designing for high availability</li>
+            <li>Planning failure domains and blast radius</li>
+            <li>Scaling infrastructure independently</li>
+            <li>Debugging production incidents</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="col-divider"></div>
+
+      <!-- Right Column: Data Plane -->
+      <div class="comparison-col">
+        <div>
+          <h2 class="ig-column-title">Data Plane</h2>
+          <span class="ig-column-subtitle">THE MUSCLE</span>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">What it does</div>
+          <p class="ig-card-body">Executes the decisions. Moves packets, runs containers, serves requests — the work users actually depend on.</p>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Responsibilities</div>
+          <ul class="ig-list">
+            <li>Forwarding traffic between services</li>
+            <li>Running application workloads</li>
+            <li>Enforcing policies at runtime</li>
+            <li>Load balancing actual requests</li>
+            <li>Collecting telemetry and metrics</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Key Characteristics</div>
+          <ul class="ig-list">
+            <li>High throughput, latency-sensitive</li>
+            <li>Distributed across every node</li>
+            <li>Must work if control plane is down</li>
+            <li>Failure causes user-facing outage</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Examples Across Systems</div>
+          <div class="ig-pills">
+            <span class="ig-pill--accent ig-pill">kubelet</span>
+            <span class="ig-pill--accent ig-pill">Envoy proxy</span>
+            <span class="ig-pill--accent ig-pill">kube-proxy</span>
+            <span class="ig-pill--accent ig-pill">iptables / eBPF</span>
+            <span class="ig-pill--accent ig-pill">containerd</span>
+            <span class="ig-pill--accent ig-pill">NGINX worker</span>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="ig-section-label">Best Practices</div>
+          <ul class="ig-list">
+            <li>Optimizing latency and throughput</li>
+            <li>Ensuring graceful degradation</li>
+            <li>Capacity planning for peak traffic</li>
+            <li>Implementing zero-downtime deploys</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="ig-footer">
+      <span class="ig-footer-brand">YOUR BRAND</span>
+      <span class="ig-footer-insight"><strong>Key insight</strong> — The control plane going down stops new changes, but the data plane keeps serving traffic. Always design for this separation.</span>
+      <span class="ig-footer-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

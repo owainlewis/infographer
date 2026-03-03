@@ -1,0 +1,18 @@
+{
+  "name": "infographer",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run src/export/server.ts",
+    "export": "bun run src/export/cli.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.9",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "gif-encoder-2": "^1.0.5",
+    "puppeteer": "^24.37.5"
+  }
+}

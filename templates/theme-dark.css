@@ -1,0 +1,35 @@
+/* ══════════════════════════════════════════════════════════
+   THEME: DARK
+   Deep charcoal canvas, warm amber accent.
+   ══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Backgrounds — 4 depth levels */
+  --bg-canvas:      #0a0a0a;
+  --bg-card:        #111111;
+  --bg-raised:      #1a1a1a;   /* elevated/highlighted cards       */
+  --bg-footer:      #111111;
+  --accent-glow:    rgba(193, 95, 60, 0.10);   /* terracotta tint bg */
+
+  /* Borders — 3 intensity levels */
+  --border:         #1e1e1e;
+  --border-medium:  #2a2a2a;   /* more visible borders             */
+  --border-accent:  #3d2520;   /* warm terracotta accent borders   */
+
+  /* Text — 4 hierarchy levels */
+  --text-primary:   #e8e8e8;
+  --text-secondary: #a0a0a0;
+  --text-muted:     #666666;
+  --text-dim:       #444444;
+
+  /* Accent — terracotta brand color */
+  --accent:         #c15f3c;
+
+  /* Footer — text inherits content colors on dark */
+  --footer-text:    #666666;   /* same as --text-muted               */
+  --footer-text-hi: #a0a0a0;   /* same as --text-secondary           */
+  --footer-border:  #1e1e1e;   /* same as --border                   */
+
+  /* Depth — shadows */
+  --card-shadow:    none;      /* dark cards don't need shadows     */
+}

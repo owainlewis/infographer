@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Editorial Template</title>
+  <link rel="stylesheet" href="/src/design-system/base.css">
+  <link rel="stylesheet" href="/templates/theme-light.css">
+  <style>
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+    table { border-collapse: collapse; }
+
+    /* ══════════════════════════════════════════════════════════
+       LOCKED GEOMETRY — DO NOT MODIFY
+       Canvas: 1080 × 1350  |  Padding: 48  |  8px grid
+       Header: 112px  |  Footer: 64px  |  Content: 1126px
+       ══════════════════════════════════════════════════════════ */
+    .infographic {
+      width: 1080px;
+      height: 1350px;
+      padding: 48px 48px 0 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Libre Franklin', sans-serif;
+    }
+
+    /* Header — 112px total */
+    .hd { margin-bottom: 24px; text-align: center; }
+    .hd h1 {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 52px;
+      line-height: 56px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .hd h1 i {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .hd h1 .accent { color: var(--accent); }
+    .hd .sub {
+      font-size: 15px;
+      line-height: 24px;
+      margin-top: 8px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Content — fills remaining 1126px */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    /* Footer — 64px total (16px margin + 48px bar) */
+    .footer-bar {
+      height: 48px;
+      margin: 16px -48px 0 -48px;
+      padding: 0 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-footer);
+      border-top: 2px solid var(--accent);
+    }
+    .footer-brand {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--footer-text);
+    }
+    .footer-cta {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 600;
+      color: var(--footer-text-hi);
+    }
+    .footer-cta strong { color: var(--accent); }
+    .footer-url {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 600;
+      color: var(--footer-text);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TEMPLATE: EDITORIAL — Magazine-style mixed sections
+       5 zones: top-row, feature-table, mid-row, bottom-row
+       ══════════════════════════════════════════════════════════ */
+
+    /* ── Zone box (shared card style) ─────────────────────── */
+    .zbox {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
+    }
+    .zbox--accent {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
+    }
+    .zbox--raised {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    /* ── Zone label (section header) ──────────────────────── */
+    .zlabel {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ── Row layouts ──────────────────────────────────────── */
+    .row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* ── Body text ────────────────────────────────────────── */
+    .zone-body {
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .zone-body strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ── Arrow list (→ bullets) ───────────────────────────── */
+    .arrow-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .arrow-list li {
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--text-secondary);
+      padding-left: 20px;
+      position: relative;
+    }
+    .arrow-list li::before {
+      content: '\2192';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ── Comparison (side-by-side columns) ────────────────── */
+    .cmp {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .cmp-col-title {
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 2px solid var(--text-primary);
+    }
+    .cmp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cmp-list li {
+      font-size: 12px;
+      line-height: 20px;
+      color: var(--text-secondary);
+      padding-left: 16px;
+      position: relative;
+    }
+    .cmp-list li::before {
+      content: '\2014';
+      position: absolute;
+      left: 0;
+      color: var(--text-dim);
+      font-size: 11px;
+    }
+
+    /* ── Feature table ───────────────────────────────────── */
+    .feat-table {
+      width: 100%;
+    }
+    .feat-table th {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--text-dim);
+    }
+    .feat-table td {
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--text-secondary);
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .feat-table tr:last-child td { border-bottom: none; }
+    .feat-table td:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      width: 152px;
+    }
+
+    /* ── Numbered prompt list ─────────────────────────────── */
+    .pr-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pr-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .pr-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      background: var(--text-primary);
+      color: var(--bg-canvas);
+      font-size: 12px;
+      line-height: 24px;
+      font-weight: 700;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .pr-title {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .pr-desc {
+      font-size: 11px;
+      line-height: 16px;
+      color: var(--text-muted);
+    }
+
+    /* ── Workflow steps ───────────────────────────────────── */
+    .wf-intro {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    .wf-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .wf-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .wf-badge {
+      font-size: 10px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: var(--accent);
+      border-radius: 4px;
+      padding: 4px 0;
+      text-align: center;
+    }
+    .wf-title {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .wf-desc {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ── Getting started list ────────────────────────────── */
+    .gs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .gs-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .gs-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 24px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .gs-item span:last-child {
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--text-secondary);
+    }
+
+    /* ── Tip box (accent-tinted card) ────────────────────── */
+    .tip-box {
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .tip-box .zlabel { margin-bottom: 4px; }
+    .tip-box p {
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--text-secondary);
+    }
+
+    /* ── Mid-row gets flex:1 to absorb remaining space ──── */
+    .mid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      flex: 1;
+    }
+    .mid-row .zbox {
+      display: flex;
+      flex-direction: column;
+    }
+    .mid-row .pr-grid,
+    .mid-row .wf-steps {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header — 112px -->
+    <div class="hd">
+      <!-- REPLACE: Title — use <i> for serif accent, .accent for gold -->
+      <h1>How To Master <span class="accent"><i>Your Topic</i></span></h1>
+      <!-- REPLACE: Subtitle -->
+      <p class="sub">Everything you need to understand as a beginner in 30 seconds.</p>
+    </div>
+
+    <!-- Content — 1126px -->
+    <div class="content">
+
+      <!-- Row 1: Two intro cards -->
+      <div class="row-2col">
+        <!-- REPLACE: Left card — overview / definition -->
+        <div class="zbox">
+          <span class="zlabel">What Is It?</span>
+          <p class="zone-body">A short definition or overview of the topic. Keep it to 2-3 sentences that give the reader immediate context and understanding.</p>
+          <ul class="arrow-list">
+            <li>Key capability or feature one</li>
+            <li>Key capability or feature two</li>
+            <li>Key capability or feature three</li>
+          </ul>
+        </div>
+        <!-- REPLACE: Right card — comparison or context -->
+        <div class="zbox">
+          <span class="zlabel">Option A vs Option B</span>
+          <div class="cmp">
+            <div>
+              <div class="cmp-col-title">Option A</div>
+              <ul class="cmp-list">
+                <li>Characteristic one</li>
+                <li>Characteristic two</li>
+                <li>Characteristic three</li>
+                <li>Characteristic four</li>
+              </ul>
+            </div>
+            <div>
+              <div class="cmp-col-title">Option B</div>
+              <ul class="cmp-list">
+                <li>Characteristic one</li>
+                <li>Characteristic two</li>
+                <li>Characteristic three</li>
+                <li>Characteristic four</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Feature table (full width) -->
+      <div class="zbox zbox--raised">
+        <!-- REPLACE: Table section label -->
+        <span class="zlabel">Core Features</span>
+        <!-- REPLACE: Table rows -->
+        <table class="feat-table">
+          <thead>
+            <tr><th>Feature</th><th>What It Does</th><th>Why It Matters</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Feature One</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Two</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Three</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Four</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Five</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Six</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Row 3: Prompts + Workflow (flex:1, fills remaining space) -->
+      <div class="mid-row">
+        <!-- REPLACE: Left card — numbered examples / prompts -->
+        <div class="zbox">
+          <span class="zlabel">Examples You Can Try</span>
+          <div class="pr-grid">
+            <div class="pr-item"><span class="pr-num">1</span><div><span class="pr-title">Example title one</span><br><span class="pr-desc">"Specific prompt or instruction to try."</span></div></div>
+            <div class="pr-item"><span class="pr-num">2</span><div><span class="pr-title">Example title two</span><br><span class="pr-desc">"Specific prompt or instruction to try."</span></div></div>
+            <div class="pr-item"><span class="pr-num">3</span><div><span class="pr-title">Example title three</span><br><span class="pr-desc">"Specific prompt or instruction to try."</span></div></div>
+            <div class="pr-item"><span class="pr-num">4</span><div><span class="pr-title">Example title four</span><br><span class="pr-desc">"Specific prompt or instruction to try."</span></div></div>
+            <div class="pr-item"><span class="pr-num">5</span><div><span class="pr-title">Example title five</span><br><span class="pr-desc">"Specific prompt or instruction to try."</span></div></div>
+            <div class="pr-item"><span class="pr-num">6</span><div><span class="pr-title">Example title six</span><br><span class="pr-desc">"Specific prompt or instruction to try."</span></div></div>
+          </div>
+        </div>
+
+        <!-- REPLACE: Right card — step-by-step workflow -->
+        <div class="zbox">
+          <span class="zlabel">Workflow In Practice</span>
+          <p class="wf-intro">Example: describe the scenario in one line.</p>
+          <div class="wf-steps">
+            <div class="wf-step">
+              <span class="wf-badge">Step 1</span>
+              <div>
+                <div class="wf-title">First action to take</div>
+                <p class="wf-desc">Brief description of what happens at this step and what the outcome is.</p>
+              </div>
+            </div>
+            <div class="wf-step">
+              <span class="wf-badge">Step 2</span>
+              <div>
+                <div class="wf-title">Second action to take</div>
+                <p class="wf-desc">Brief description of what happens at this step and what the outcome is.</p>
+              </div>
+            </div>
+            <div class="wf-step">
+              <span class="wf-badge">Step 3</span>
+              <div>
+                <div class="wf-title">Third action to take</div>
+                <p class="wf-desc">Brief description of what happens at this step and what the outcome is.</p>
+              </div>
+            </div>
+            <div class="wf-step">
+              <span class="wf-badge">Step 4</span>
+              <div>
+                <div class="wf-title">Final action and result</div>
+                <p class="wf-desc">Brief description of what happens at this step and what the outcome is.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Getting started + Pro tip -->
+      <div class="row-2col">
+        <!-- REPLACE: Left card — quick start checklist -->
+        <div class="zbox">
+          <span class="zlabel">Getting Started</span>
+          <div class="gs-list">
+            <div class="gs-item"><span class="gs-num">1</span><span>First step to get started</span></div>
+            <div class="gs-item"><span class="gs-num">2</span><span>Second step to get started</span></div>
+            <div class="gs-item"><span class="gs-num">3</span><span>Third step to get started</span></div>
+          </div>
+        </div>
+        <!-- REPLACE: Right card — pro tip or key insight -->
+        <div class="tip-box">
+          <span class="zlabel">Pro Tip</span>
+          <p>Share a key insight or best practice that helps beginners avoid common mistakes. Keep it actionable and specific.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer — 64px -->
+    <div class="footer-bar">
+      <!-- REPLACE: Brand name -->
+      <span class="footer-brand">YOUR BRAND</span>
+      <span class="footer-cta"><strong>Follow</strong> for more engineering visuals</span>
+      <!-- REPLACE: URL -->
+      <span class="footer-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

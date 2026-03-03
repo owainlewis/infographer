@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>CI/CD Pipeline</title>
+  <link rel="stylesheet" href="/src/design-system/index.css">
+  <style>
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0;
+      flex: 1;
+      position: relative;
+      padding-left: 72px;
+    }
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      left: 28px;
+      top: 20px;
+      bottom: 20px;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        var(--color-border-accent),
+        var(--color-border-medium) 30%,
+        var(--color-border-medium) 70%,
+        var(--color-border-accent)
+      );
+    }
+    .timeline-step {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      padding: 20px 0;
+      position: relative;
+    }
+    .timeline-step + .timeline-step {
+      border-top: 1px solid var(--color-border-subtle);
+    }
+    .timeline-marker {
+      position: absolute;
+      left: -56px;
+      top: 20px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border-accent);
+      background: var(--color-bg-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: var(--weight-bold);
+      color: var(--color-accent);
+    }
+    .timeline-step-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-lg);
+    }
+    .timeline-step-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--color-text-primary);
+      line-height: var(--leading-heading);
+    }
+    .timeline-step-label {
+      font-size: 12px;
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+    .timeline-step-body {
+      font-size: 15px;
+      color: var(--color-text-body);
+      line-height: var(--leading-body);
+      max-width: 680px;
+    }
+    .timeline-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: var(--space-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header -->
+    <div class="ig-header" style="margin-bottom: var(--space-3xl);">
+      <h1 class="ig-title">The CI/CD <i>Pipeline</i></h1>
+      <p class="ig-subtitle">From commit to production — every stage of modern software delivery.</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-container">
+
+      <!-- Step 1: Source -->
+      <div class="timeline-step delay-1">
+        <div class="timeline-marker">1</div>
+        <div class="timeline-step-header">
+          <h3 class="timeline-step-title">Source</h3>
+          <span class="timeline-step-label">TRIGGER</span>
+        </div>
+        <p class="timeline-step-body">Developer pushes code to the repository. A webhook triggers the pipeline. Branch protection rules gate what reaches main.</p>
+        <div class="timeline-tools">
+          <span class="ig-pill">GitHub</span>
+          <span class="ig-pill">GitLab</span>
+          <span class="ig-pill">Bitbucket</span>
+        </div>
+      </div>
+
+      <!-- Step 2: Build -->
+      <div class="timeline-step delay-2">
+        <div class="timeline-marker">2</div>
+        <div class="timeline-step-header">
+          <h3 class="timeline-step-title">Build</h3>
+          <span class="timeline-step-label">COMPILE</span>
+        </div>
+        <p class="timeline-step-body">Source code is compiled, dependencies are resolved, and artifacts are produced. Container images are built and tagged.</p>
+        <div class="timeline-tools">
+          <span class="ig-pill">Docker</span>
+          <span class="ig-pill">Gradle</span>
+          <span class="ig-pill">Webpack</span>
+          <span class="ig-pill">Turborepo</span>
+        </div>
+      </div>
+
+      <!-- Step 3: Test -->
+      <div class="timeline-step delay-3">
+        <div class="timeline-marker">3</div>
+        <div class="timeline-step-header">
+          <h3 class="timeline-step-title">Test</h3>
+          <span class="timeline-step-label">VALIDATE</span>
+        </div>
+        <p class="timeline-step-body">Automated test suites run: unit tests, integration tests, and end-to-end tests. Code coverage and quality gates must pass.</p>
+        <div class="timeline-tools">
+          <span class="ig-pill">Jest</span>
+          <span class="ig-pill">Pytest</span>
+          <span class="ig-pill">Cypress</span>
+          <span class="ig-pill">SonarQube</span>
+        </div>
+      </div>
+
+      <!-- Step 4: Stage -->
+      <div class="timeline-step delay-4">
+        <div class="timeline-marker">4</div>
+        <div class="timeline-step-header">
+          <h3 class="timeline-step-title">Stage</h3>
+          <span class="timeline-step-label">PRE-PRODUCTION</span>
+        </div>
+        <p class="timeline-step-body">Deploy to a staging environment that mirrors production. Run smoke tests, performance benchmarks, and security scans.</p>
+        <div class="timeline-tools">
+          <span class="ig-pill">Terraform</span>
+          <span class="ig-pill">Helm</span>
+          <span class="ig-pill">k6</span>
+        </div>
+      </div>
+
+      <!-- Step 5: Deploy -->
+      <div class="timeline-step delay-5">
+        <div class="timeline-marker">5</div>
+        <div class="timeline-step-header">
+          <h3 class="timeline-step-title">Deploy</h3>
+          <span class="timeline-step-label">PRODUCTION</span>
+        </div>
+        <p class="timeline-step-body">Release to production using blue-green, canary, or rolling deployments. Feature flags control gradual rollout. Automated rollback on failure.</p>
+        <div class="timeline-tools">
+          <span class="ig-pill">ArgoCD</span>
+          <span class="ig-pill">Kubernetes</span>
+          <span class="ig-pill">LaunchDarkly</span>
+        </div>
+      </div>
+
+      <!-- Step 6: Monitor -->
+      <div class="timeline-step delay-6">
+        <div class="timeline-marker">6</div>
+        <div class="timeline-step-header">
+          <h3 class="timeline-step-title">Monitor</h3>
+          <span class="timeline-step-label">OBSERVE</span>
+        </div>
+        <p class="timeline-step-body">Collect metrics, logs, and traces. Alert on anomalies. Feed insights back into the next iteration of development.</p>
+        <div class="timeline-tools">
+          <span class="ig-pill">Datadog</span>
+          <span class="ig-pill">Grafana</span>
+          <span class="ig-pill">PagerDuty</span>
+          <span class="ig-pill">Sentry</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="ig-footer">
+      <span class="ig-footer-brand">YOUR BRAND</span>
+      <span class="ig-footer-insight"><strong>Key insight</strong> — The fastest teams deploy hundreds of times per day. The secret isn't speed — it's confidence in every stage.</span>
+      <span class="ig-footer-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

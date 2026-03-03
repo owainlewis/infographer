@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Three-Column Template</title>
+  <link rel="stylesheet" href="/src/design-system/base.css">
+  <link rel="stylesheet" href="/templates/theme-light.css">
+  <style>
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       LOCKED GEOMETRY — DO NOT MODIFY
+       Canvas: 1080 × 1350  |  Padding: 48  |  8px grid
+       Header: 112px  |  Footer: 64px  |  Grid: 1126px
+       ══════════════════════════════════════════════════════════ */
+    .infographic {
+      width: 1080px;
+      height: 1350px;
+      padding: 48px 48px 0 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Libre Franklin', sans-serif;
+    }
+
+    /* Header — 112px total */
+    .hd { margin-bottom: 24px; text-align: center; }
+    .hd h1 {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 52px;
+      line-height: 56px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .hd h1 i {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .hd h1 .accent { color: var(--accent); }
+    .hd .sub {
+      font-size: 15px;
+      line-height: 24px;
+      margin-top: 8px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Grid — fills remaining 1126px */
+    .grid {
+      flex: 1;
+      display: grid;
+      gap: 8px;
+    }
+
+    /* Card — 16px pad, 8px radius */
+    .card {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Card variants — depth + accent */
+    .card--accent {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
+    }
+    .card--raised {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    /* Animations (GIF export adds .animated to root) */
+    @keyframes card-highlight {
+      0%, 100% {
+        border-color: var(--border);
+        background: var(--bg-card);
+      }
+      50% {
+        border-color: var(--border-accent);
+        background: var(--bg-raised);
+      }
+    }
+    .animated .card {
+      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
+      animation-fill-mode: both;
+    }
+    .animated .delay-1  { animation-delay: 0s; }
+    .animated .delay-2  { animation-delay: 0.8s; }
+    .animated .delay-3  { animation-delay: 1.6s; }
+    .animated .delay-4  { animation-delay: 2.4s; }
+    .animated .delay-5  { animation-delay: 3.2s; }
+    .animated .delay-6  { animation-delay: 4.0s; }
+    .animated .delay-7  { animation-delay: 4.8s; }
+    .animated .delay-8  { animation-delay: 5.6s; }
+    .animated .delay-9  { animation-delay: 6.4s; }
+
+    /* Footer — 64px total (16px margin + 48px bar) */
+    .footer-bar {
+      height: 48px;
+      margin: 16px -48px 0 -48px;
+      padding: 0 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-footer);
+      border-top: 2px solid var(--accent);
+    }
+    .footer-brand {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--footer-text);
+    }
+    .footer-cta {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 600;
+      color: var(--footer-text-hi);
+    }
+    .footer-cta strong { color: var(--accent); }
+    .footer-url {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 600;
+      color: var(--footer-text);
+    }
+
+    /* ── Typography ────────────────────────────────────────── */
+    .card-index {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .section-label {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .card-body {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+    .card-body strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+    .pill {
+      font-size: 10px;
+      line-height: 16px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .pill--accent {
+      border-color: var(--border-accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .dlist {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .dlist li {
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--text-secondary);
+    }
+    .dlist li::before {
+      content: '\25C6';
+      color: var(--accent);
+      font-size: 6px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ── Column internals ─────────────────────────────────── */
+    .col-header {
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .col-subtitle {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .col-title {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 28px;
+      line-height: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .col-section {
+      margin-bottom: 16px;
+    }
+    .col-section:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TEMPLATE: 3-COLUMN — 3 equal full-height columns
+       Grid area: 984 × 1126px  |  1 row × 3 cols
+       Per column: ~322px × 1126px
+       ══════════════════════════════════════════════════════════ */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header — 112px -->
+    <div class="hd">
+      <!-- REPLACE: Title — use <i> for serif accent word -->
+      <h1>Architecture <i class="accent">Compared</i></h1>
+      <!-- REPLACE: Subtitle -->
+      <p class="sub">Three approaches to building modern applications — and when each shines.</p>
+    </div>
+
+    <!-- Grid — 1126px, 3 full-height columns -->
+    <div class="grid">
+
+      <!-- Column A -->
+      <div class="card delay-1">
+        <!-- REPLACE: Column A content -->
+        <div class="col-header">
+          <div class="col-subtitle">Traditional</div>
+          <div class="col-title">Monolith</div>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">What It Is</div>
+          <p class="card-body">A single deployable unit containing all application logic. The entire codebase ships as one artifact — simple to develop, test, and deploy initially.</p>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Strengths</div>
+          <ul class="dlist">
+            <li>Simple local development</li>
+            <li>Easy to debug and trace</li>
+            <li>Single deployment pipeline</li>
+            <li>No network latency between modules</li>
+            <li>Strong consistency by default</li>
+          </ul>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Weaknesses</div>
+          <ul class="dlist">
+            <li>Hard to scale individual parts</li>
+            <li>Long build and deploy cycles</li>
+            <li>Technology lock-in</li>
+            <li>Risky deployments at scale</li>
+          </ul>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Best For</div>
+          <p class="card-body"><strong>Early-stage startups</strong> and small teams who need to move fast. Perfect when the domain is still evolving and boundaries aren't clear yet.</p>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Scaling Strategy</div>
+          <p class="card-body">Vertical scaling first — add CPU and RAM. When that hits limits, extract hot paths into separate services. The <strong>modular monolith</strong> is the modern middle ground.</p>
+        </div>
+
+        <div class="pills">
+          <span class="pill">Rails</span>
+          <span class="pill">Django</span>
+          <span class="pill">Spring</span>
+          <span class="pill">Laravel</span>
+        </div>
+      </div>
+
+      <!-- Column B -->
+      <div class="card card--accent delay-2">
+        <!-- REPLACE: Column B content -->
+        <div class="col-header">
+          <div class="col-subtitle">Distributed</div>
+          <div class="col-title">Microservices</div>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">What It Is</div>
+          <p class="card-body">Independent services owning their data and logic, communicating via APIs. Each service can be deployed, scaled, and maintained separately.</p>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Strengths</div>
+          <ul class="dlist">
+            <li>Independent scaling per service</li>
+            <li>Technology diversity</li>
+            <li>Fault isolation</li>
+            <li>Parallel team development</li>
+            <li>Granular deployments</li>
+          </ul>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Weaknesses</div>
+          <ul class="dlist">
+            <li>Distributed system complexity</li>
+            <li>Network latency overhead</li>
+            <li>Data consistency challenges</li>
+            <li>Operational overhead</li>
+          </ul>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Best For</div>
+          <p class="card-body"><strong>Large organizations</strong> with multiple teams needing to ship independently. Essential when different parts of the system have different scaling needs.</p>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Scaling Strategy</div>
+          <p class="card-body">Horizontal scaling per service. Each service scales based on its own traffic pattern. Requires <strong>service mesh</strong> and observability tooling to manage complexity.</p>
+        </div>
+
+        <div class="pills">
+          <span class="pill--accent pill">K8s</span>
+          <span class="pill--accent pill">gRPC</span>
+          <span class="pill">Docker</span>
+          <span class="pill">Consul</span>
+        </div>
+      </div>
+
+      <!-- Column C -->
+      <div class="card delay-3">
+        <!-- REPLACE: Column C content -->
+        <div class="col-header">
+          <div class="col-subtitle">Event-Driven</div>
+          <div class="col-title">Serverless</div>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">What It Is</div>
+          <p class="card-body">Functions triggered by events, with infrastructure fully managed by the cloud provider. Zero servers to manage — pay only for execution time.</p>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Strengths</div>
+          <ul class="dlist">
+            <li>Zero infrastructure management</li>
+            <li>Automatic scaling to zero</li>
+            <li>Pay-per-execution pricing</li>
+            <li>Rapid prototyping</li>
+            <li>Built-in high availability</li>
+          </ul>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Weaknesses</div>
+          <ul class="dlist">
+            <li>Cold start latency</li>
+            <li>Vendor lock-in</li>
+            <li>Limited execution duration</li>
+            <li>Complex local testing</li>
+          </ul>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Best For</div>
+          <p class="card-body"><strong>Event-driven workloads</strong> with unpredictable traffic. Ideal for APIs, webhooks, and background jobs that can tolerate cold starts.</p>
+        </div>
+
+        <div class="col-section">
+          <div class="section-label">Scaling Strategy</div>
+          <p class="card-body">Automatic — the cloud provider handles it. Focus on <strong>function composition</strong> and keeping execution times short. Watch for cascading invocations.</p>
+        </div>
+
+        <div class="pills">
+          <span class="pill--accent pill">Lambda</span>
+          <span class="pill--accent pill">Cloud Run</span>
+          <span class="pill">Vercel</span>
+          <span class="pill">Cloudflare</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer — 64px -->
+    <div class="footer-bar">
+      <!-- REPLACE: Brand name -->
+      <span class="footer-brand">YOUR BRAND</span>
+      <span class="footer-cta"><strong>Follow</strong> for more engineering visuals</span>
+      <!-- REPLACE: URL -->
+      <span class="footer-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

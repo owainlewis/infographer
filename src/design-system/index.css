@@ -1,0 +1,11 @@
+/* ═══════════════════════════════════════════════════════════
+   Barrel Import — Load the entire design system
+   ═══════════════════════════════════════════════════════════ */
+
+@import 'tokens.css';
+@import 'reset.css';
+@import 'base.css';
+@import 'components.css';
+@import 'layouts.css';
+@import 'utilities.css';
+@import 'animations.css';

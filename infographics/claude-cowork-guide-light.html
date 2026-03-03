@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How To Master Claude Cowork — Light</title>
+  <link rel="stylesheet" href="/src/design-system/index.css">
+  <style>
+    /* ── Minimal light dashboard ──
+       White on light gray. One accent color.
+       High contrast text. No rainbow zone tints.
+       Clean, modern, Apple-like restraint.
+    */
+
+    :root {
+      --bg: #f4f4f2;
+      --card: #ffffff;
+      --border: #e0ddd6;
+      --text-1: #111111;
+      --text-2: #222222;
+      --text-3: #555555;
+      --text-4: #888888;
+      --accent: #c05621;
+      --accent-bg: rgba(192, 86, 33, 0.08);
+      --divider: #e8e5de;
+    }
+
+    .infographic {
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      background: var(--bg);
+      padding: 44px 52px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Zone box ── */
+    .zbox {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    /* ── Section label — single color, clean ── */
+    .zlabel {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* ── Header ── */
+    .dh {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .dh h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 56px;
+      font-weight: 400;
+      color: var(--text-1);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+    .dh h1 .hl {
+      color: var(--accent);
+    }
+    .dh .sub {
+      font-size: 17px;
+      color: var(--text-3);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── Grid rows ── */
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    /* ── What Is ── */
+    .what-body {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .what-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .what-list li {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.45;
+      padding-left: 20px;
+      position: relative;
+    }
+    .what-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Comparison ── */
+    .cmp {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .cmp-col-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-1);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--text-1);
+    }
+    .cmp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .cmp-list li {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+    .cmp-list li::before {
+      content: '·';
+      position: absolute;
+      left: 2px;
+      color: var(--text-4);
+      font-size: 18px;
+      line-height: 1;
+      top: 1px;
+    }
+
+    /* ── Features table ── */
+    .feat-section {
+      margin-bottom: 12px;
+    }
+    .feat-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .feat-table th {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 14px;
+      color: var(--text-3);
+      border-bottom: 2px solid var(--divider);
+    }
+    .feat-table td {
+      font-size: 13px;
+      color: var(--text-2);
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--divider);
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .feat-table tr:last-child td { border-bottom: none; }
+    .feat-table td:first-child {
+      font-weight: 600;
+      color: var(--text-1);
+      white-space: nowrap;
+      width: 140px;
+    }
+
+    /* ── Prompts ── */
+    .pr-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .pr-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    .pr-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--text-1);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pr-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .pr-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-1);
+      line-height: 1.35;
+    }
+    .pr-desc {
+      font-size: 11.5px;
+      color: var(--text-3);
+      line-height: 1.4;
+    }
+
+    /* ── Workflow ── */
+    .wf-intro {
+      font-size: 13px;
+      color: var(--text-3);
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    .wf-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .wf-step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .wf-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: var(--accent);
+      border-radius: 6px;
+      padding: 5px 0;
+      text-align: center;
+    }
+    .wf-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-1);
+      line-height: 1.35;
+    }
+    .wf-desc {
+      font-size: 12.5px;
+      color: var(--text-2);
+      line-height: 1.5;
+      margin-top: 2px;
+    }
+
+    /* ── Getting started ── */
+    .gs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .gs-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+    .gs-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gs-item span {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.45;
+    }
+    .gs-tip {
+      background: var(--accent-bg);
+      border: 1px solid rgba(192, 86, 33, 0.15);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .gs-tip-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .gs-tip p {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    .ft {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--divider);
+    }
+    .ft-brand, .ft-url {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-4);
+    }
+    .ft-cta {
+      font-size: 13px;
+      color: var(--text-3);
+    }
+    .ft-cta strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic">
+
+    <!-- Header -->
+    <div class="dh">
+      <h1>How To Master <span class="hl">Claude Cowork</span></h1>
+      <p class="sub">Everything you need to understand as a beginner in 30 seconds.</p>
+    </div>
+
+    <!-- Row 1: What Is + Comparison -->
+    <div class="row-2">
+      <div class="zbox">
+        <span class="zlabel">What Is Claude Cowork?</span>
+        <p class="what-body">An AI assistant that lives on your computer and does things for you. You describe the task, it executes, you approve.</p>
+        <ul class="what-list">
+          <li>Reads your files and controls your browser</li>
+          <li>Opens Gmail, Google Sheets, Slack, Notion</li>
+          <li>Fills forms, sends emails, organises folders</li>
+        </ul>
+      </div>
+      <div class="zbox">
+        <span class="zlabel">Cowork vs Code</span>
+        <div class="cmp">
+          <div>
+            <div class="cmp-col-title">Cowork</div>
+            <ul class="cmp-list">
+              <li>For founders and non-technical people</li>
+              <li>Visual interface, no terminal needed</li>
+              <li>Point-and-click with approval steps</li>
+              <li>File management, browser tasks, workflows</li>
+            </ul>
+          </div>
+          <div>
+            <div class="cmp-col-title">Code</div>
+            <ul class="cmp-list">
+              <li>For engineers and developers</li>
+              <li>Lives in your terminal and codebase</li>
+              <li>Full customisation with hooks and CI</li>
+              <li>Building software, scripts, codebases</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Features Table -->
+    <div class="zbox feat-section">
+      <span class="zlabel">Core Features</span>
+      <table class="feat-table">
+        <thead>
+          <tr><th>Feature</th><th>What It Does</th><th>Why It Matters</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Local File Access</td><td>Reads, edits, and creates files in granted folders</td><td>Works directly on your computer. No uploading.</td></tr>
+          <tr><td>Browser Control</td><td>Opens Chrome, fills forms, extracts data from pages</td><td>Automate anything you do manually in a browser.</td></tr>
+          <tr><td>Sub-Agents</td><td>Runs multiple tasks at the same time in parallel</td><td>Work on 5 things at once, not one by one.</td></tr>
+          <tr><td>Pro Outputs</td><td>Creates Excel, PowerPoint, Word docs, and PDFs</td><td>Finished deliverables, not rough drafts.</td></tr>
+          <tr><td>Connectors</td><td>Links to Gmail, Slack, Notion, Google Sheets via MCP</td><td>Your full tool stack from one interface.</td></tr>
+          <tr><td>Skills</td><td>Reusable procedures you teach for recurring tasks</td><td>Do it once, then Cowork repeats it forever.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Row 3: Prompts + Workflow -->
+    <div class="row-2">
+      <div class="zbox">
+        <span class="zlabel">Prompts You Can Use</span>
+        <div class="pr-grid">
+          <div class="pr-item"><span class="pr-num">1</span><div class="pr-text"><span class="pr-title">Clean your desktop</span><span class="pr-desc">"Organise my Downloads by file type and date."</span></div></div>
+          <div class="pr-item"><span class="pr-num">2</span><div class="pr-text"><span class="pr-title">Prep for a meeting</span><span class="pr-desc">"Check Gmail and Slack for anything from [name]."</span></div></div>
+          <div class="pr-item"><span class="pr-num">3</span><div class="pr-text"><span class="pr-title">Build an expense report</span><span class="pr-desc">"Scan these receipts and create a Google Sheet."</span></div></div>
+          <div class="pr-item"><span class="pr-num">4</span><div class="pr-text"><span class="pr-title">Research a competitor</span><span class="pr-desc">"Pull their pricing and updates into a comparison."</span></div></div>
+          <div class="pr-item"><span class="pr-num">5</span><div class="pr-text"><span class="pr-title">Draft a quarterly review</span><span class="pr-desc">"Read my Q4 folder and draft a business review."</span></div></div>
+          <div class="pr-item"><span class="pr-num">6</span><div class="pr-text"><span class="pr-title">Create a pitch deck</span><span class="pr-desc">"Build a 12-slide pitch from these notes."</span></div></div>
+        </div>
+      </div>
+
+      <div class="zbox">
+        <span class="zlabel">Workflow In Practice</span>
+        <p class="wf-intro">Example: receipts to expense report in 3 minutes.</p>
+        <div class="wf-steps">
+          <div class="wf-step">
+            <span class="wf-badge">Step 1</span>
+            <div>
+              <div class="wf-title">Mount your receipts folder</div>
+              <p class="wf-desc">Grant Cowork access. It scans every PDF and image inside the folder.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <span class="wf-badge">Step 2</span>
+            <div>
+              <div class="wf-title">Renames and organises each file</div>
+              <p class="wf-desc">Extracts dates from receipts and renames files. Asks if anything's unclear.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <span class="wf-badge">Step 3</span>
+            <div>
+              <div class="wf-title">Builds a spreadsheet from the data</div>
+              <p class="wf-desc">Pulls merchant, date, amount, category. Creates a formatted report in Sheets.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <span class="wf-badge">Step 4</span>
+            <div>
+              <div class="wf-title">Drafts and sends the email</div>
+              <p class="wf-desc">Opens Gmail, attaches the sheet, writes the message. You review and send.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: Getting Started + Tip -->
+    <div class="row-2" style="margin-bottom: 0;">
+      <div class="zbox">
+        <span class="zlabel">Getting Started</span>
+        <div class="gs-list">
+          <div class="gs-item"><span class="gs-num">1</span><span>Download the Claude desktop app from claude.ai</span></div>
+          <div class="gs-item"><span class="gs-num">2</span><span>Install the Chrome extension for browser control</span></div>
+          <div class="gs-item"><span class="gs-num">3</span><span>Mount the folders you want Cowork to access</span></div>
+        </div>
+      </div>
+      <div class="gs-tip">
+        <div class="gs-tip-label">Pro Tip</div>
+        <p>Don't over-customise at the start. Get value from vanilla Cowork first, then add Skills and Plugins when you spot friction in specific tasks.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="ft">
+      <span class="ft-brand">YOUR BRAND</span>
+      <span class="ft-cta"><strong>Follow</strong> for more engineering visuals</span>
+      <span class="ft-url">yoursite.com</span>
+    </div>
+
+  </div>
+</body>
+</html>

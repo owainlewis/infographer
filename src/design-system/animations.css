@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════════════════
+   Animations — Ambient, subtle. Not performative.
+   Only active when .animated is on root element.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Sequential Card Highlight ──
+   Cards gently highlight one by one.
+   Border goes from subtle → accent → subtle.
+   Background lifts slightly.
+   ────────────────────────────────────────────── */
+
+@keyframes card-highlight {
+  0%, 100% {
+    border-color: var(--color-border-subtle);
+    background: var(--color-bg-card);
+  }
+  50% {
+    border-color: var(--color-border-accent);
+    background: var(--color-bg-card-hover);
+  }
+}
+
+.animated .ig-card {
+  animation: card-highlight var(--duration-slow) var(--ease-smooth) 1;
+}
+
+/* ── Stagger Delays ── */
+.animated .delay-1  { animation-delay: 0s; }
+.animated .delay-2  { animation-delay: 0.8s; }
+.animated .delay-3  { animation-delay: 1.6s; }
+.animated .delay-4  { animation-delay: 2.4s; }
+.animated .delay-5  { animation-delay: 3.2s; }
+.animated .delay-6  { animation-delay: 4.0s; }
+.animated .delay-7  { animation-delay: 4.8s; }
+.animated .delay-8  { animation-delay: 5.6s; }
+.animated .delay-9  { animation-delay: 6.4s; }
+.animated .delay-10 { animation-delay: 7.2s; }
+
+/* Keep initial state before animation starts */
+.animated .ig-card {
+  animation-fill-mode: both;
+}
+
+/* ── Glow — subtle border pulse ── */
+@keyframes glow {
+  0%, 100% {
+    border-color: var(--color-border-subtle);
+  }
+  50% {
+    border-color: var(--color-border-accent);
+  }
+}
+
+.animated .anim-glow {
+  animation: glow var(--duration-medium) var(--ease-smooth) infinite;
+}
+
+/* ── Reveal — very slow opacity lift ── */
+@keyframes reveal {
+  0% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animated .anim-reveal {
+  animation: reveal var(--duration-slow) var(--ease-smooth) forwards;
+}
+
+/* ── Title shimmer — accent word subtle brightness pulse ── */
+@keyframes title-shimmer {
+  0%, 100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animated .ig-title .accent {
+  animation: title-shimmer 3s var(--ease-smooth) infinite;
+}

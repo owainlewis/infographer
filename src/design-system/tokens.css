@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════
+   Design Tokens — CSS Custom Properties
+   All visual values live here. AI never guesses values.
+
+   Grid system: 8px base grid, 4px sub-grid for fine control.
+   All spacing, padding, margins, gaps → multiples of 4px.
+   All line heights → multiples of 4px.
+
+   Canvas rule: content must FILL the 1080×1350 canvas.
+   Use flex distribution, generous padding, and bigger type
+   to eliminate dead space. No cramping, no empty pools.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Canvas ── */
+  --canvas-width: 1080px;
+  --canvas-height: 1350px;
+  --canvas-padding-x: 64px;
+  --canvas-padding-y: 56px;
+
+  /* ── Backgrounds ── */
+  --color-bg-deep: #0a0a0a;
+  --color-bg-base: #111111;
+  --color-bg-raised: #1a1a1a;
+  --color-bg-card: #0f0f0f;
+  --color-bg-card-hover: #141414;
+
+  /* ── Borders ── */
+  --color-border-subtle: #1e1e1e;
+  --color-border-medium: #2a2a2a;
+  --color-border-accent: #3d3526;
+
+  /* ── Text ── */
+  --color-text-primary: #e8e8e8;
+  --color-text-body: #a0a0a0;
+  --color-text-muted: #666666;
+  --color-text-faint: #444444;
+
+  /* ── Accent ── */
+  --color-accent: #c8a55a;
+  --color-accent-dim: #a08642;
+  --color-accent-glow: rgba(200, 165, 90, 0.15);
+
+  /* ── Typography — Font Families ── */
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Typography — Sizes ──
+     Display/headings use serif for presence.
+     Card/section titles must feel BOLD on the page.
+     Body stays small for density contrast.
+     ──────────────────────────────────────────── */
+  --text-display: 64px;
+  --text-h1: 40px;
+  --text-h2: 32px;
+  --text-h3: 20px;
+  --text-label: 11px;
+  --text-body: 16px;
+  --text-body-sm: 14px;
+  --text-pill: 12px;
+  --text-index: 14px;
+
+  /* ── Typography — Line Heights (multiples of 4px) ── */
+  --leading-display: 1.15;
+  --leading-heading: 1.25;
+  --leading-body: 1.6;
+  --leading-tight: 1.4;
+
+  /* ── Typography — Weights ── */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ── Typography — Letter Spacing ──
+     Display serif looks thin with tight tracking.
+     Use normal or slightly positive for presence.
+     ──────────────────────────────────────────── */
+  --tracking-display: 0.01em;
+  --tracking-label: 0.14em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+
+  /* ── Spacing (4px sub-grid) ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+  --space-4xl: 40px;
+  --space-5xl: 48px;
+  --space-6xl: 64px;
+
+  /* ── Section Gaps (8px grid) ── */
+  --gap-section: 48px;
+  --gap-card: 24px;
+  --gap-grid: 16px;
+
+  /* ── Radii ── */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 100px;
+
+  /* ── Card ── */
+  --card-padding: 28px;
+  --card-border: 1px solid var(--color-border-subtle);
+  --card-radius: var(--radius-md);
+
+  /* ── Animation ── */
+  --duration-slow: 4s;
+  --duration-medium: 2s;
+  --duration-highlight: 0.8s;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Divider ── */
+  --divider-color: var(--color-border-subtle);
+  --divider-accent: var(--color-border-accent);
+}

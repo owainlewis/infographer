@@ -217,24 +217,6 @@
       font-size: 13px; line-height: 16px; font-weight: 600;
       color: var(--footer-text);
     }
-
-    /* Animations */
-    @keyframes card-highlight {
-      0%, 100% { border-color: var(--border); background: var(--bg-card); }
-      50% { border-color: var(--border-accent); background: var(--bg-raised); }
-    }
-    .animated .card {
-      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
-      animation-fill-mode: both;
-    }
-    .animated .delay-1  { animation-delay: 0s; }
-    .animated .delay-2  { animation-delay: 0.8s; }
-    .animated .delay-3  { animation-delay: 1.6s; }
-    .animated .delay-4  { animation-delay: 2.4s; }
-    .animated .delay-5  { animation-delay: 3.2s; }
-    .animated .delay-6  { animation-delay: 4.0s; }
-    .animated .delay-7  { animation-delay: 4.8s; }
-    .animated .delay-8  { animation-delay: 5.6s; }
   </style>
 </head>
 <body>

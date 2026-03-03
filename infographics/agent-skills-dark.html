@@ -29,29 +29,18 @@
       font-family: 'Libre Franklin', sans-serif;
     }
 
-    /* Header — 112px total */
-    .hd { margin-bottom: 24px; text-align: center; }
+    /* Header — big single-line title, no subtitle */
+    .hd { margin-bottom: 16px; text-align: center; }
     .hd h1 {
       font-family: 'Libre Franklin', sans-serif;
-      font-size: 56px;
-      line-height: 60px;
+      font-size: 74px;
+      line-height: 80px;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
       color: var(--text-primary);
-    }
-    .hd h1 i {
-      font-family: 'Crimson Text', serif;
-      font-style: italic;
-      font-weight: 400;
+      white-space: nowrap;
     }
     .hd h1 .accent { color: var(--accent); }
-    .hd .sub {
-      font-size: 18px;
-      line-height: 24px;
-      margin-top: 8px;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
 
     /* Grid — fills remaining 1126px */
     .grid {
@@ -85,25 +74,6 @@
       border-color: var(--border-accent);
     }
 
-    /* Animations */
-    @keyframes card-highlight {
-      0%, 100% { border-color: var(--border); background: var(--bg-card); }
-      50% { border-color: var(--border-accent); background: var(--bg-raised); }
-    }
-    .animated .card {
-      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
-      animation-fill-mode: both;
-    }
-    .animated .delay-1  { animation-delay: 0s; }
-    .animated .delay-2  { animation-delay: 0.8s; }
-    .animated .delay-3  { animation-delay: 1.6s; }
-    .animated .delay-4  { animation-delay: 2.4s; }
-    .animated .delay-5  { animation-delay: 3.2s; }
-    .animated .delay-6  { animation-delay: 4.0s; }
-    .animated .delay-7  { animation-delay: 4.8s; }
-    .animated .delay-8  { animation-delay: 5.6s; }
-    .animated .delay-9  { animation-delay: 6.4s; }
-
     /* Footer */
     .footer-bar {
       height: 48px;
@@ -117,17 +87,17 @@
       border-top: 2px solid var(--accent);
     }
     .footer-brand {
-      font-size: 11px; line-height: 16px; font-weight: 700;
+      font-size: 12px; line-height: 16px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.08em;
       color: var(--footer-text);
     }
     .footer-cta {
-      font-size: 11px; line-height: 16px; font-weight: 600;
+      font-size: 12px; line-height: 16px; font-weight: 600;
       color: var(--footer-text-hi);
     }
     .footer-cta strong { color: var(--accent); }
     .footer-url {
-      font-size: 11px; line-height: 16px; font-weight: 600;
+      font-size: 12px; line-height: 16px; font-weight: 600;
       color: var(--footer-text);
     }
 
@@ -138,17 +108,17 @@
     }
     .card-title {
       font-family: 'Libre Franklin', sans-serif;
-      font-size: 22px; line-height: 28px; font-weight: 800;
+      font-size: 24px; line-height: 28px; font-weight: 800;
       color: var(--text-primary); margin-bottom: 8px;
     }
     .section-label {
-      font-size: 12px; line-height: 16px; font-weight: 700;
+      font-size: 13px; line-height: 16px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.06em;
       color: var(--text-muted); margin-bottom: 8px;
     }
     .section-label--accent { color: var(--accent); }
     .card-body {
-      font-size: 13px; line-height: 20px; font-weight: 400;
+      font-size: 14px; line-height: 20px; font-weight: 400;
       color: var(--text-secondary);
     }
     .card-body strong {
@@ -159,7 +129,7 @@
       margin-top: auto; padding-top: 8px;
     }
     .pill {
-      font-size: 10px; line-height: 16px; font-weight: 600;
+      font-size: 11px; line-height: 16px; font-weight: 600;
       padding: 4px 8px; border-radius: 4px;
       border: 1px solid var(--border); color: var(--text-secondary);
       white-space: nowrap;
@@ -190,11 +160,11 @@
       display: flex; align-items: center; justify-content: center;
     }
     .phase-title {
-      font-size: 12px; line-height: 16px; font-weight: 700;
+      font-size: 13px; line-height: 16px; font-weight: 700;
       color: var(--text-primary);
     }
     .phase-detail {
-      font-size: 11px; line-height: 16px;
+      font-size: 12px; line-height: 16px;
       color: var(--text-muted); margin-top: 2px;
     }
     .phase-detail strong {
@@ -208,11 +178,11 @@
       flex: 1; gap: 8px;
     }
     .anatomy-item-label {
-      font-size: 12px; line-height: 16px; font-weight: 700;
+      font-size: 13px; line-height: 16px; font-weight: 700;
       color: var(--text-primary); margin-bottom: 2px;
     }
     .anatomy-item-body {
-      font-size: 12px; line-height: 18px;
+      font-size: 13px; line-height: 18px;
       color: var(--text-secondary);
     }
     .anatomy-item-body strong {
@@ -232,18 +202,18 @@
     }
     .skill-item:last-child { border-bottom: none; }
     .skill-rank {
-      font-size: 12px; line-height: 18px; font-weight: 700;
+      font-size: 13px; line-height: 20px; font-weight: 700;
       color: var(--accent);
     }
     .skill-name {
-      font-size: 12px; line-height: 18px; font-weight: 700;
+      font-size: 13px; line-height: 20px; font-weight: 700;
       color: var(--text-primary);
     }
     .skill-stars {
-      font-weight: 400; color: var(--text-muted); font-size: 10px;
+      font-weight: 400; color: var(--text-muted); font-size: 11px;
     }
     .skill-desc {
-      font-size: 11px; line-height: 16px;
+      font-size: 12px; line-height: 16px;
       color: var(--text-muted);
     }
 
@@ -255,12 +225,12 @@
     }
     .install-path {}
     .install-path-label {
-      font-size: 11px; line-height: 16px; font-weight: 700;
+      font-size: 12px; line-height: 16px; font-weight: 700;
       color: var(--accent); text-transform: uppercase;
       letter-spacing: 0.06em;
     }
     .install-path-body {
-      font-size: 12px; line-height: 18px;
+      font-size: 13px; line-height: 18px;
       color: var(--text-secondary); margin-top: 2px;
     }
 
@@ -272,11 +242,11 @@
     }
     .cat-row {}
     .cat-row-label {
-      font-size: 12px; line-height: 16px; font-weight: 700;
+      font-size: 13px; line-height: 16px; font-weight: 700;
       color: var(--text-primary);
     }
     .cat-row-body {
-      font-size: 11px; line-height: 16px;
+      font-size: 12px; line-height: 16px;
       color: var(--text-muted); margin-top: 2px;
     }
 
@@ -286,7 +256,7 @@
       margin-bottom: 8px;
     }
     .badge {
-      font-size: 10px; line-height: 16px; font-weight: 600;
+      font-size: 11px; line-height: 16px; font-weight: 600;
       padding: 4px 8px; border-radius: 4px;
       background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text-secondary);
@@ -324,8 +294,7 @@
 
     <!-- Header — 112px -->
     <div class="hd">
-      <h1>How To Master <i class="accent">Agent Skills</i></h1>
-      <p class="sub">The open standard for teaching AI how you work.</p>
+      <h1>How To Master <span class="accent">Agent Skills</span></h1>
     </div>
 
     <!-- Grid — 1126px, 9 cards -->

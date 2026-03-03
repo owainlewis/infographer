@@ -8,9 +8,7 @@ HTML/CSS infographic system for LinkedIn. Produces 1080x1350 images via template
 
 ```bash
 bun run dev                                    # Dev server at localhost:3000
-bun run export infographics/foo.html --png     # Export 2x PNG (2160x2700)
-bun run export infographics/foo.html --gif     # Export animated GIF (1080x1350)
-bun run export infographics/foo.html --all     # Export both
+bun run export infographics/foo.html           # Export 2x PNG (2160x2700)
 ```
 
 ## Creating an Infographic
@@ -223,11 +221,6 @@ Rule: pick ONE shape per card. Don't mix circles and squares in the same card.
 - `.footer-cta` — Center: call to action (15px). Use `<strong>` for accent keyword
 - `.footer-url` — Right: URL (15px)
 
-### Animations
-- Add `.delay-1` through `.delay-8` to cards for sequential highlight
-- PNG export: static. GIF export: `.animated` class added automatically.
-- Use `filter: brightness()` for card-highlight so colored tints animate naturally
-
 ## Style Guide
 
 See `src/design-system/STYLE-GUIDE.md` for detailed authoring rules:
@@ -264,7 +257,7 @@ templates/             ← Layout templates + theme CSS files
   ├── theme-dark.css
   └── theme-light.css
 src/design-system/     ← Base CSS (font-face declarations)
-src/export/            ← Puppeteer PNG/GIF export + dev server
+src/export/            ← Puppeteer PNG export + dev server
 fonts/                 ← Self-hosted WOFF2 fonts (Crimson Text, Libre Franklin)
 output/                ← Generated exports (gitignored)
 ```

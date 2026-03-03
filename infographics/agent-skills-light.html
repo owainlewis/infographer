@@ -29,8 +29,16 @@
       font-family: 'Libre Franklin', sans-serif;
     }
 
-    /* Header */
-    .hd { margin-bottom: 16px; text-align: center; }
+    /* ── Header — 3 tiers ─────────────────────────────────
+       Tier 1: Single line (default) — 74px, margin-bottom matches canvas padding
+       Tier 2: Title + subtitle (.hd--with-sub) — 56px title + 20px sub
+       Tier 3: Two-line title (.hd--two-line) — 56px, wraps naturally
+       Grid absorbs remaining height via flex: 1.
+       ──────────────────────────────────────────────────── */
+    .hd {
+      margin-bottom: 40px;
+      text-align: center;
+    }
     .hd h1 {
       font-family: 'Libre Franklin', sans-serif;
       font-size: 74px;
@@ -38,9 +46,30 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--text-primary);
-      white-space: nowrap;
     }
     .hd h1 .accent { color: var(--accent); }
+
+    /* Tier 2: Title + subtitle */
+    .hd--with-sub h1 {
+      font-size: 56px;
+      line-height: 64px;
+      margin-bottom: 8px;
+    }
+    .hd .sub {
+      font-family: 'Crimson Text', serif;
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* Tier 3: Two-line title */
+    .hd--two-line h1 {
+      font-size: 56px;
+      line-height: 64px;
+    }
+    .hd--two-line { margin-bottom: 32px; }
 
     /* Grid */
     .grid {
@@ -49,13 +78,6 @@
       display: grid;
       gap: 8px;
     }
-
-    /* ── Tinted card backgrounds ─────────────────────────── */
-    .card-tint--terracotta { background: #f5e0d4; border-color: #d4b8a6; }
-    .card-tint--sage       { background: #dce8de; border-color: #b5ccb8; }
-    .card-tint--sky        { background: #d8e4ee; border-color: #afc5d6; }
-    .card-tint--sand       { background: #f0e6ce; border-color: #d4c8a6; }
-    .card-tint--lavender   { background: #e2dced; border-color: #c4b8d4; }
 
     /* Card */
     .card {
@@ -69,23 +91,13 @@
       overflow: hidden;
     }
 
-    /* Animations */
-    @keyframes card-highlight {
-      0%, 100% { border-color: inherit; filter: brightness(1); }
-      50% { border-color: var(--accent); filter: brightness(1.04); }
-    }
-    .animated .card {
-      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
-      animation-fill-mode: both;
-    }
-    .animated .delay-1  { animation-delay: 0s; }
-    .animated .delay-2  { animation-delay: 0.8s; }
-    .animated .delay-3  { animation-delay: 1.6s; }
-    .animated .delay-4  { animation-delay: 2.4s; }
-    .animated .delay-5  { animation-delay: 3.2s; }
-    .animated .delay-6  { animation-delay: 4.0s; }
-    .animated .delay-7  { animation-delay: 4.8s; }
-    .animated .delay-8  { animation-delay: 5.6s; }
+    /* ── Card background variants (MUST come after .card) ──
+       Most cards stay white. Use warm/raised for subtle lift.
+       Reserve color tints for 1-2 accent cards max.
+       ──────────────────────────────────────────────────── */
+    .card--raised  { background: #f5f4f1; border-color: #d6d3d1; }
+    .card--warm    { background: #f7f0e8; border-color: #e0d0c0; }
+    .card--accent  { background: #fae8de; border-color: #d4b8a6; }
 
     /* Footer */
     .footer-bar {
@@ -373,8 +385,8 @@
     <!-- Grid -->
     <div class="grid">
 
-      <!-- A: What are agent skills — Terracotta -->
-      <div class="card card-a card-tint--terracotta delay-1">
+      <!-- A: What are agent skills — warm accent (intro card) -->
+      <div class="card card-a card--warm delay-1">
         <div class="section-label section-label--accent">What Are Agent Skills?</div>
         <p class="card-body" style="margin-bottom: 12px;"><strong>Standard operating procedures for AI agents.</strong> Write once as Markdown — every agent follows it automatically.</p>
         <p class="card-body" style="margin-bottom: 4px;">&bull; Works across <strong>26+ platforms</strong> — Claude, Cursor, Codex, and more</p>
@@ -387,8 +399,8 @@
         </div>
       </div>
 
-      <!-- B: How skills load — Sky (circles for sequential flow) -->
-      <div class="card card-b card-tint--sky delay-2">
+      <!-- B: How skills load (circles for sequential flow) -->
+      <div class="card card-b delay-2">
         <div class="section-label section-label--accent">How Skills Load</div>
         <div class="phase-list">
           <div class="phase-item">
@@ -406,9 +418,9 @@
         </div>
       </div>
 
-      <!-- C: Inside a SKILL.md — Sand (square icons) -->
-      <div class="card card-c card-tint--sand delay-3">
-        <div class="card-title">Inside a SKILL.md</div>
+      <!-- C: Inside a SKILL.md (square icons) -->
+      <div class="card card-c card--raised delay-3">
+        <div class="section-label">Inside a SKILL.md</div>
         <div class="anatomy-list">
           <div class="anatomy-item">
             <span class="anatomy-icon">Y</span>
@@ -434,8 +446,8 @@
         </div>
       </div>
 
-      <!-- D: Most popular skills — Sage (square badges) -->
-      <div class="card card-d card-tint--sage delay-4">
+      <!-- D: Most popular skills (square badges) -->
+      <div class="card card-d delay-4">
         <div class="section-label section-label--accent">Most Popular Skills</div>
         <div class="skill-list">
           <div class="skill-item">
@@ -481,8 +493,8 @@
         </div>
       </div>
 
-      <!-- E: How to install — Lavender (clean labels, no numbers) -->
-      <div class="card card-e card-tint--lavender delay-5">
+      <!-- E: How to install (clean labels) -->
+      <div class="card card-e delay-5">
         <div class="section-label">How To Install</div>
         <div class="install-paths">
           <div>
@@ -500,8 +512,8 @@
         </div>
       </div>
 
-      <!-- F: Skill categories — Terracotta (clean labels, no numbers) -->
-      <div class="card card-f card-tint--terracotta delay-6">
+      <!-- F: Skill categories (clean labels) -->
+      <div class="card card-f delay-6">
         <div class="section-label">Skill Categories</div>
         <div class="cat-rows">
           <div>
@@ -519,8 +531,8 @@
         </div>
       </div>
 
-      <!-- G: Partners + Security (merged) — Sky -->
-      <div class="card card-g card-tint--sky delay-7">
+      <!-- G: Partners + Security (merged) — subtle raised -->
+      <div class="card card-g card--raised delay-7">
         <div class="split-panel">
           <div class="split-panel-half">
             <div class="section-label">Official Partners</div>
@@ -545,8 +557,8 @@
         </div>
       </div>
 
-      <!-- I: Build your first — Sage (square badges) -->
-      <div class="card card-i card-tint--sage delay-8">
+      <!-- I: Build your first (square badges) -->
+      <div class="card card-i card--accent delay-8">
         <div class="section-label">Build Your First</div>
         <div class="build-list">
           <div class="build-item">

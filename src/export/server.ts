@@ -682,12 +682,16 @@ function generatePreview(filename: string, dir: string = "infographics"): string
     .preview-area {
       flex: 1; display: flex; align-items: flex-start; justify-content: center;
       padding: 32px; overflow: auto;
+      user-select: none;
+      cursor: default;
     }
-    .iframe-wrap { transform-origin: top center; transition: transform 0.2s ease; }
+    .iframe-wrap { transform-origin: top center; transition: transform 0.2s ease; cursor: default; }
     .iframe-wrap iframe {
       width: 1080px; height: 1350px; border: none; display: block; border-radius: 6px;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.5);
       overflow: hidden;
+      pointer-events: none;
+      user-select: none;
     }
   </style>
 </head>

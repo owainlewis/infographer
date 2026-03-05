@@ -19,7 +19,7 @@ Heading    --text-h2          28px   32px    14.3px   Card title
 Heading    --text-sub         22px   28px    11.2px   Subtitle, intro accent
 Body       --text-body        18px   28px     9.2px   Primary body text
 Body       --text-body-sm     17px   24px     8.7px   Secondary body, items
-Meta       --text-meta        14px   20px     7.1px   Labels, pills, badges, footer
+Meta       --text-meta        14px   20px     7.1px   Labels, pills, badges
 ```
 
 ### Rules
@@ -49,7 +49,7 @@ Every card has a fixed pixel budget. Content that exceeds it clips silently (`ov
 ### The Math
 
 ```
-Grid height:    1126px (canvas 1350 - header 112 - footer 64 - header margin 16 - footer margin 16 - footer top padding 16)
+Grid height:    1222px (canvas 1350 - header 112 - header margin 16)
 4 equal rows:   1126px ÷ 4 = ~281px per row (minus 8px gaps = ~275px usable)
 Card padding:   32px total (16px top + 16px bottom)
 Section label:  ~26px (14px text + ~12px margin)
@@ -269,7 +269,6 @@ Run through this **every time** before `bun run export`:
 - [ ] No paragraphs longer than 3 lines — use bullets instead
 
 ### Layout
-- [ ] Footer bar is visible (check by scrolling to bottom in dev server)
 - [ ] No card content is clipped (check narrow 1-col cards especially)
 - [ ] All spacing values are multiples of 4px
 - [ ] `flex: 1` is set on every content container inside a card
@@ -283,16 +282,12 @@ Run through this **every time** before `bun run export`:
 
 ### Export
 - [ ] PNG exported at 2x (2160×2700)
-- [ ] Footer fully visible in exported image
 - [ ] Text readable at 50% zoom (simulates mobile LinkedIn feed)
 - [ ] Colored backgrounds distinguishable at 50% zoom
 
 ---
 
 ## 7. Common Pitfalls
-
-### "The footer disappeared"
-Content exceeded the grid height. The `.infographic` has `overflow: hidden` so it clips silently. Fix: reduce content in the tallest cards, or move content to emptier cards.
 
 ### "Huge empty space in a card"
 Either: (a) `space-between` on too few items, or (b) content is too short for the card height. Fix: add more content, increase text size, use fixed `gap` instead of `space-between`, or redistribute content across cards.

@@ -21,6 +21,7 @@ bun run new "Title" --layout bento --theme dark  # Scaffold new infographic
 
 - Canvas is **1080×1350px with `overflow: hidden`** — no scroll. If content overflows, reduce it.
 - **14px minimum font size** — nothing smaller renders well on LinkedIn mobile.
+- **No footers** — never add a footer bar to infographics. The full canvas is for content.
 
 ## Templates
 

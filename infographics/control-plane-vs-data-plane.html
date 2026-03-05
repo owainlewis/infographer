@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Control Plane vs Data Plane</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+      gap: 0;
+    }
+
+    /* ── Top row: two column headers ──────────── */
+    .headers-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+
+    .col-header {
+      padding: 16px 18px;
+      border-radius: var(--card-radius);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .col-header--control {
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+    }
+    .col-header--data {
+      background: var(--accent-2-glow);
+      border: 1px solid var(--border-accent-2);
+    }
+    .col-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .col-icon--control { background: var(--accent); }
+    .col-icon--data { background: var(--accent-2); }
+    .col-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .col-header-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+    }
+    .col-header--control .col-header-label { color: var(--accent); }
+    .col-header--data .col-header-label { color: var(--accent-2); }
+    .col-header-title {
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-card-title);
+      color: var(--text-primary);
+    }
+    .col-header-desc {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .col-header-desc strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+
+    /* ── SVG Diagram ──────────────────────────── */
+    .diagram-section {
+      flex-shrink: 0;
+      margin-bottom: 16px;
+    }
+
+    /* ── Two-column example cards ────────────── */
+    .examples {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ── Example cards ──────────────────────────── */
+    .ex-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .ex-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ex-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+    }
+    .ex-tag {
+      font-size: var(--text-meta);
+      line-height: 1;
+      font-weight: var(--weight-medium);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .ex-tag--accent {
+      border-color: var(--border-accent);
+      color: var(--accent);
+    }
+    .ex-tag--accent2 {
+      border-color: var(--border-accent-2);
+      color: var(--accent-2);
+    }
+    .ex-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-muted);
+    }
+    .ex-body strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-secondary);
+    }
+
+    /* ── Characteristics row ───────────────────── */
+    .chars-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+      flex-shrink: 0;
+    }
+    .char-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .char-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .char-label--cyan {
+      color: var(--accent-2);
+    }
+    .char-stats {
+      display: flex;
+      gap: 16px;
+    }
+    .char-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+    .char-stat-value {
+      font-size: 36px; /* Decorative — outside scale */
+      line-height: 40px;
+      font-weight: var(--weight-extrabold);
+      letter-spacing: var(--tracking-card-title);
+    }
+    .char-stat-value--accent { color: var(--accent); }
+    .char-stat-value--accent2 { color: var(--accent-2); }
+    .char-stat-desc {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-muted);
+    }
+
+    /* ── Bottom insight strip ───────────────────── */
+    .insight-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .insight-card {
+      background: var(--bg-raised);
+      border: 1px solid var(--border-medium);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .insight-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .insight-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+    .insight-body strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Control Plane vs Data Plane</h1>
+    </div>
+
+    <!-- Two column headers -->
+    <div class="headers-row">
+      <div class="col-header col-header--control">
+        <div class="col-icon col-icon--control">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="col-header-text">
+          <div class="col-header-label">The Manager</div>
+          <div class="col-header-title">Control Plane</div>
+          <p class="col-header-desc">Decides <strong>how</strong> work gets done. Rules, routing, config, and health.</p>
+        </div>
+      </div>
+      <div class="col-header col-header--data">
+        <div class="col-icon col-icon--data">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="col-header-text">
+          <div class="col-header-label">The Worker</div>
+          <div class="col-header-title">Data Plane</div>
+          <p class="col-header-desc">Where the <strong>actual work</strong> happens. Moves and processes data in real time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SVG Architecture Diagram ── -->
+    <div class="diagram-section">
+      <svg viewBox="0 0 984 300" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; display: block;">
+
+        <!-- Control Plane region -->
+        <rect x="0" y="0" width="984" height="130" rx="14" fill="var(--svg-bg)" stroke="var(--svg-border)" stroke-width="1.5"/>
+        <text x="24" y="28" font-family="Libre Franklin, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="var(--accent)">CONTROL PLANE</text>
+
+        <!-- Control plane boxes -->
+        <rect x="24" y="42" width="160" height="72" rx="10" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+        <text x="104" y="70" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">API Server</text>
+        <text x="104" y="92" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Rules &amp; Config</text>
+
+        <rect x="208" y="42" width="160" height="72" rx="10" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+        <text x="288" y="70" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Scheduler</text>
+        <text x="288" y="92" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Orchestration</text>
+
+        <rect x="392" y="42" width="160" height="72" rx="10" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+        <text x="472" y="70" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Auth / IAM</text>
+        <text x="472" y="92" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Access Policies</text>
+
+        <rect x="576" y="42" width="160" height="72" rx="10" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+        <text x="656" y="70" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Config Store</text>
+        <text x="656" y="92" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Feature Flags</text>
+
+        <rect x="760" y="42" width="200" height="72" rx="10" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+        <text x="860" y="70" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Monitoring</text>
+        <text x="860" y="92" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Health &amp; Alerts</text>
+
+        <!-- Arrows down from control to data -->
+        <line x1="104" y1="130" x2="164" y2="170" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="288" y1="130" x2="328" y2="170" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="472" y1="130" x2="492" y2="170" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="656" y1="130" x2="656" y2="170" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="860" y1="130" x2="820" y2="170" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+
+        <!-- Directional label -->
+        <rect x="440" y="138" width="104" height="24" rx="12" fill="var(--bg-canvas)" stroke="var(--border)" stroke-width="1"/>
+        <text x="492" y="154" font-family="Libre Franklin, sans-serif" font-size="11" font-weight="600" fill="var(--text-muted)" text-anchor="middle" letter-spacing="0.06em">CONFIGURES</text>
+
+        <!-- Data Plane region -->
+        <rect x="0" y="170" width="984" height="130" rx="14" fill="var(--svg-bg)" stroke="var(--svg-border)" stroke-width="1.5"/>
+        <text x="24" y="198" font-family="Libre Franklin, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="var(--accent-2)">DATA PLANE</text>
+
+        <!-- Data plane boxes -->
+        <rect x="24" y="210" width="140" height="72" rx="10" fill="var(--svg-accent-bg)" stroke="var(--svg-accent-border)" stroke-width="1"/>
+        <text x="94" y="238" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Node 1</text>
+        <text x="94" y="260" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Containers</text>
+
+        <rect x="180" y="210" width="140" height="72" rx="10" fill="var(--svg-accent-bg)" stroke="var(--svg-accent-border)" stroke-width="1"/>
+        <text x="250" y="238" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Node 2</text>
+        <text x="250" y="260" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Containers</text>
+
+        <rect x="336" y="210" width="140" height="72" rx="10" fill="var(--svg-accent-bg)" stroke="var(--svg-accent-border)" stroke-width="1"/>
+        <text x="406" y="238" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Proxy</text>
+        <text x="406" y="260" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Load Balancer</text>
+
+        <rect x="492" y="210" width="140" height="72" rx="10" fill="var(--svg-accent-bg)" stroke="var(--svg-accent-border)" stroke-width="1"/>
+        <text x="562" y="238" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Storage</text>
+        <text x="562" y="260" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">S3 / Disk</text>
+
+        <rect x="648" y="210" width="140" height="72" rx="10" fill="var(--svg-accent-bg)" stroke="var(--svg-accent-border)" stroke-width="1"/>
+        <text x="718" y="238" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Database</text>
+        <text x="718" y="260" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Queries</text>
+
+        <rect x="804" y="210" width="156" height="72" rx="10" fill="var(--svg-accent-bg)" stroke="var(--svg-accent-border)" stroke-width="1"/>
+        <text x="882" y="238" font-family="Libre Franklin, sans-serif" font-size="15" font-weight="700" fill="var(--text-primary)" text-anchor="middle">API Endpoint</text>
+        <text x="882" y="260" font-family="Libre Franklin, sans-serif" font-size="14" fill="var(--text-muted)" text-anchor="middle">Request Traffic</text>
+
+        <!-- Horizontal flow arrows in data plane -->
+        <line x1="164" y1="246" x2="176" y2="246" stroke="var(--accent-2)" stroke-width="1.5" opacity="0.4"/>
+        <line x1="320" y1="246" x2="332" y2="246" stroke="var(--accent-2)" stroke-width="1.5" opacity="0.4"/>
+        <line x1="476" y1="246" x2="488" y2="246" stroke="var(--accent-2)" stroke-width="1.5" opacity="0.4"/>
+        <line x1="632" y1="246" x2="644" y2="246" stroke="var(--accent-2)" stroke-width="1.5" opacity="0.4"/>
+        <line x1="788" y1="246" x2="800" y2="246" stroke="var(--accent-2)" stroke-width="1.5" opacity="0.4"/>
+
+      </svg>
+    </div>
+
+    <!-- Two-column example cards -->
+    <div class="examples">
+
+      <!-- LEFT: Control Plane examples -->
+      <div class="col">
+        <div class="ex-card">
+          <div class="ex-top">
+            <div class="ex-label">Kubernetes</div>
+            <span class="ex-tag ex-tag--accent">Low Volume</span>
+          </div>
+          <p class="ex-body">The <strong>API server, scheduler, and controller manager</strong> orchestrating the entire cluster state</p>
+        </div>
+        <div class="ex-card">
+          <div class="ex-top">
+            <div class="ex-label">Service Mesh</div>
+            <span class="ex-tag ex-tag--accent">Config Push</span>
+          </div>
+          <p class="ex-body"><strong>Istiod</strong> pushing routing rules, mTLS certs, and retry policies to every sidecar proxy</p>
+        </div>
+        <div class="ex-card">
+          <div class="ex-top">
+            <div class="ex-label">AWS</div>
+            <span class="ex-tag ex-tag--accent">Management</span>
+          </div>
+          <p class="ex-body"><strong>IAM, CloudFormation</strong>, and the console — defining who can access what and how it's provisioned</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Data Plane examples -->
+      <div class="col">
+        <div class="ex-card">
+          <div class="ex-top">
+            <div class="ex-label">Kubernetes</div>
+            <span class="ex-tag ex-tag--accent2">High Volume</span>
+          </div>
+          <p class="ex-body">The <strong>kubelet and kube-proxy</strong> on each node, pulling images, running containers, and routing packets</p>
+        </div>
+        <div class="ex-card">
+          <div class="ex-top">
+            <div class="ex-label">Service Mesh</div>
+            <span class="ex-tag ex-tag--accent2">Hot Path</span>
+          </div>
+          <p class="ex-body"><strong>Envoy sidecars</strong> intercepting every request, applying retries, circuit breaking, and load balancing</p>
+        </div>
+        <div class="ex-card">
+          <div class="ex-top">
+            <div class="ex-label">AWS</div>
+            <span class="ex-tag ex-tag--accent2">Execution</span>
+          </div>
+          <p class="ex-body"><strong>EC2 instances</strong> running code, <strong>S3</strong> serving files, <strong>RDS</strong> processing millions of queries per second</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Characteristics comparison -->
+    <div class="chars-row">
+      <div class="char-card">
+        <div class="char-label">Control Plane Traits</div>
+        <div class="char-stats">
+          <div class="char-stat">
+            <div class="char-stat-value char-stat-value--accent">Low</div>
+            <div class="char-stat-desc">Request volume</div>
+          </div>
+          <div class="char-stat">
+            <div class="char-stat-value char-stat-value--accent">High</div>
+            <div class="char-stat-desc">Impact per failure</div>
+          </div>
+          <div class="char-stat">
+            <div class="char-stat-value char-stat-value--accent">Rare</div>
+            <div class="char-stat-desc">Changes deployed</div>
+          </div>
+        </div>
+      </div>
+      <div class="char-card">
+        <div class="char-label char-label--cyan">Data Plane Traits</div>
+        <div class="char-stats">
+          <div class="char-stat">
+            <div class="char-stat-value char-stat-value--accent2">High</div>
+            <div class="char-stat-desc">Request volume</div>
+          </div>
+          <div class="char-stat">
+            <div class="char-stat-value char-stat-value--accent2">Low</div>
+            <div class="char-stat-desc">Impact per failure</div>
+          </div>
+          <div class="char-stat">
+            <div class="char-stat-value char-stat-value--accent2">p99</div>
+            <div class="char-stat-desc">Latency matters</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom insights -->
+    <div class="insight-row">
+      <div class="insight-card">
+        <div class="insight-label">Why Separate Them</div>
+        <p class="insight-body"><strong>Update rules without touching live traffic.</strong> Scale each plane independently. Audit and secure them differently. Failures stay isolated.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">What Most People Miss</div>
+        <p class="insight-body">The control plane is a <strong>single point of failure</strong> — design it for high availability. Security boundaries should always follow the plane split.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

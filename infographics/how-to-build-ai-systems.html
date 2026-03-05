@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How to Build AI Systems</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, 1fr);
+    }
+
+    .card {
+      padding: 18px 28px;
+      justify-content: center;
+    }
+
+    .band-inner {
+      align-items: start;
+      gap: 20px;
+    }
+
+    .band-number {
+      font-size: 32px;
+      line-height: 36px;
+      width: 40px;
+      opacity: 0.35;
+    }
+
+    .card-title {
+      margin-bottom: 2px;
+    }
+
+    .band-what {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .band-what strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+
+    .band-why {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .band-why strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-secondary);
+      font-style: normal;
+    }
+
+    .pills {
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 20px;">
+      <h1>How to Build AI Systems</h1>
+    </div>
+
+    <!-- Grid — 5 horizontal bands -->
+    <div class="grid">
+
+      <!-- 01 Evals -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">01</div>
+          <div class="band-content">
+            <div class="card-title">Evals</div>
+            <p class="band-what">A test suite that measures whether your AI produces good outputs. <strong>Without evals every change is a guess</strong> — you can't know if a new model or prompt made things better or worse.</p>
+            <p class="band-why">Start with <strong>20-50 hand-written test cases</strong>. Use LLM-as-Judge to score at scale. Expand based on real production failures.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Braintrust</span>
+              <span class="pill pill--accent">RAGAS</span>
+              <span class="pill">LLM-as-Judge</span>
+              <span class="pill">Golden Datasets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 RAG & Retrieval -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">02</div>
+          <div class="band-content">
+            <div class="card-title">RAG & Retrieval</div>
+            <p class="band-what">Retrieve relevant context from your data and inject it before generation. <strong>90% of RAG failures are retrieval failures</strong>, not generation failures.</p>
+            <p class="band-why">Chunk, embed into vectors, retrieve by <strong>hybrid search</strong> (semantic + keyword), rerank top results, then generate. Fix retrieval before tuning anything else.</p>
+            <div class="pills">
+              <span class="pill pill--accent">pgvector</span>
+              <span class="pill pill--accent">PydanticAI</span>
+              <span class="pill">Hybrid Search</span>
+              <span class="pill">Reranking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Models & Routing -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">03</div>
+          <div class="band-content">
+            <div class="card-title">Models & Routing</div>
+            <p class="band-what">Dynamically select which model handles each request. <strong>A simple task routed to a cheap model costs 100x less</strong> than the same task on a frontier model.</p>
+            <p class="band-why">Classify by complexity. Route simple tasks to <strong>fast cheap models</strong>, complex reasoning to frontier models. Implement fallback chains for resilience.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Bedrock</span>
+              <span class="pill pill--accent">Vertex AI</span>
+              <span class="pill">LiteLLM</span>
+              <span class="pill">Fallback Chains</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Observability & Tracing -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">04</div>
+          <div class="band-content">
+            <div class="card-title">Observability & Tracing</div>
+            <p class="band-what">Full visibility into every LLM call, tool invocation, and decision point. <strong>A 200 OK can still be a hallucinated answer</strong> — without tracing you're debugging by guessing.</p>
+            <p class="band-why">Instrument every call with <strong>Langfuse</strong>. Track token costs per feature, latency at p95, and quality drift. Add this on day one — retrofitting is 5x harder.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Langfuse</span>
+              <span class="pill pill--accent">Agent Traces</span>
+              <span class="pill">Token Costs</span>
+              <span class="pill">TTFT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 Guardrails & Security -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">05</div>
+          <div class="band-content">
+            <div class="card-title">Guardrails & Security</div>
+            <p class="band-what">Validation layers that check inputs and outputs against safety and business rules. <strong>Prompt injection is OWASP's #1 LLM vulnerability</strong> and only 34% of teams defend against it.</p>
+            <p class="band-why">Validate inputs for injection, outputs for <strong>PII leakage and harmful content</strong>. Apply least-privilege to agents with tools. Design for blast radius reduction.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Llama Guard</span>
+              <span class="pill pill--accent">Presidio</span>
+              <span class="pill">PII Detection</span>
+              <span class="pill">Schema Validation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Spotlight Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── SPOTLIGHT — 6 cards, hero 2×3 + satellites ─────────── */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "a a b"
+        "a a c"
+        "a a d"
+        "e f d";
+    }
+
+    /* Hero diagram fills available space */
+    .hero-diagram {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+    }
+    .hero-diagram svg { width: 100%; max-height: 100%; }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>Inside Kubernetes</h1>
+    </div>
+
+    <div class="grid">
+
+      <!-- A: Hero (2col × 3row) — architecture diagram -->
+      <div class="card card-a card--raised">
+        <div class="section-label section-label--accent">Cluster Architecture</div>
+        <div class="hero-diagram">
+          <svg viewBox="0 0 560 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Control Plane -->
+            <rect x="20" y="20" width="520" height="140" rx="12" fill="var(--bg-raised)" stroke="var(--border-medium)" stroke-width="1.5"/>
+            <text x="40" y="52" font-family="Libre Franklin, sans-serif" font-size="14" font-weight="700" fill="var(--accent)" letter-spacing="0.08em">CONTROL PLANE</text>
+            <rect x="40" y="70" width="110" height="72" rx="8" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+            <text x="95" y="100" font-family="Libre Franklin, sans-serif" font-size="14" font-weight="700" fill="var(--text-primary)" text-anchor="middle">API Server</text>
+            <text x="95" y="120" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)" text-anchor="middle">kube-apiserver</text>
+            <rect x="170" y="70" width="110" height="72" rx="8" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <text x="225" y="100" font-family="Libre Franklin, sans-serif" font-size="14" font-weight="700" fill="var(--text-primary)" text-anchor="middle">etcd</text>
+            <text x="225" y="120" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)" text-anchor="middle">Key-value store</text>
+            <rect x="300" y="70" width="110" height="72" rx="8" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <text x="355" y="100" font-family="Libre Franklin, sans-serif" font-size="14" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Scheduler</text>
+            <text x="355" y="120" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)" text-anchor="middle">Pod placement</text>
+            <rect x="430" y="70" width="100" height="72" rx="8" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <text x="480" y="100" font-family="Libre Franklin, sans-serif" font-size="14" font-weight="700" fill="var(--text-primary)" text-anchor="middle">Controller</text>
+            <text x="480" y="120" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)" text-anchor="middle">Reconciliation</text>
+            <!-- Arrow -->
+            <line x1="280" y1="160" x2="280" y2="200" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>
+            <polygon points="274,196 280,208 286,196" fill="var(--accent)"/>
+            <!-- Worker Nodes -->
+            <rect x="20" y="210" width="520" height="252" rx="12" fill="var(--bg-raised)" stroke="var(--border-medium)" stroke-width="1.5"/>
+            <text x="40" y="242" font-family="Libre Franklin, sans-serif" font-size="14" font-weight="700" fill="var(--accent)" letter-spacing="0.08em">WORKER NODES</text>
+            <rect x="40" y="260" width="240" height="184" rx="8" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <text x="60" y="284" font-family="Libre Franklin, sans-serif" font-size="13" font-weight="700" fill="var(--text-primary)">Node 1</text>
+            <rect x="56" y="296" width="100" height="56" rx="6" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+            <text x="106" y="320" font-family="Libre Franklin, sans-serif" font-size="12" font-weight="600" fill="var(--text-primary)" text-anchor="middle">Pod A</text>
+            <text x="106" y="338" font-family="Libre Franklin, sans-serif" font-size="10" fill="var(--text-muted)" text-anchor="middle">nginx:1.25</text>
+            <rect x="168" y="296" width="100" height="56" rx="6" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+            <text x="218" y="320" font-family="Libre Franklin, sans-serif" font-size="12" font-weight="600" fill="var(--text-primary)" text-anchor="middle">Pod B</text>
+            <text x="218" y="338" font-family="Libre Franklin, sans-serif" font-size="10" fill="var(--text-muted)" text-anchor="middle">api:v2.1</text>
+            <text x="60" y="380" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)">kubelet</text>
+            <text x="140" y="380" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)">kube-proxy</text>
+            <text x="210" y="380" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)">container runtime</text>
+            <rect x="300" y="260" width="224" height="184" rx="8" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <text x="320" y="284" font-family="Libre Franklin, sans-serif" font-size="13" font-weight="700" fill="var(--text-primary)">Node 2</text>
+            <rect x="316" y="296" width="96" height="56" rx="6" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+            <text x="364" y="320" font-family="Libre Franklin, sans-serif" font-size="12" font-weight="600" fill="var(--text-primary)" text-anchor="middle">Pod C</text>
+            <text x="364" y="338" font-family="Libre Franklin, sans-serif" font-size="10" fill="var(--text-muted)" text-anchor="middle">redis:7.2</text>
+            <rect x="420" y="296" width="96" height="56" rx="6" fill="var(--accent-glow)" stroke="var(--border-accent)" stroke-width="1"/>
+            <text x="468" y="320" font-family="Libre Franklin, sans-serif" font-size="12" font-weight="600" fill="var(--text-primary)" text-anchor="middle">Pod D</text>
+            <text x="468" y="338" font-family="Libre Franklin, sans-serif" font-size="10" fill="var(--text-muted)" text-anchor="middle">worker:3.0</text>
+            <text x="320" y="380" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)">kubelet</text>
+            <text x="400" y="380" font-family="Libre Franklin, sans-serif" font-size="11" fill="var(--text-muted)">kube-proxy</text>
+          </svg>
+        </div>
+        <p class="card-body">The control plane schedules workloads and responds to cluster events. Worker nodes run your <strong>containerized applications</strong> as pods.</p>
+      </div>
+
+      <!-- B: Pods -->
+      <div class="card card-b card-tint--sage">
+        <div class="section-label section-label--accent">Core Concept</div>
+        <div class="card-title">Pods</div>
+        <p class="card-body">The <strong>smallest deployable unit</strong>. Wraps one or more containers sharing network and storage. Ephemeral by design.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Ephemeral</span>
+          <span class="pill">Shared Network</span>
+        </div>
+      </div>
+
+      <!-- C: Services -->
+      <div class="card card-c card-tint--sky">
+        <div class="section-label section-label--accent">Networking</div>
+        <div class="card-title">Services</div>
+        <p class="card-body">A stable endpoint that <strong>routes traffic</strong> to pods. Abstracts away pod IPs which change on every restart.</p>
+        <div class="pills">
+          <span class="pill pill--accent">ClusterIP</span>
+          <span class="pill">NodePort</span>
+          <span class="pill">LoadBalancer</span>
+        </div>
+      </div>
+
+      <!-- D: Key Resources (tall, spans 2 rows) -->
+      <div class="card card-d card-tint--terracotta">
+        <div class="section-label">Key Resources</div>
+        <div class="skill-list">
+          <div class="skill-item">
+            <div class="num-square num-square--sm">1</div>
+            <span class="skill-name">Deployment</span>
+          </div>
+          <div class="skill-item">
+            <div class="num-square num-square--sm">2</div>
+            <span class="skill-name">ConfigMap</span>
+          </div>
+          <div class="skill-item">
+            <div class="num-square num-square--sm">3</div>
+            <span class="skill-name">Secret</span>
+          </div>
+          <div class="skill-item">
+            <div class="num-square num-square--sm">4</div>
+            <span class="skill-name">Ingress</span>
+          </div>
+          <div class="skill-item">
+            <div class="num-square num-square--sm">5</div>
+            <span class="skill-name">PersistentVolume</span>
+          </div>
+          <div class="skill-item">
+            <div class="num-square num-square--sm">6</div>
+            <span class="skill-name">Namespace</span>
+          </div>
+          <div class="skill-item">
+            <div class="num-square num-square--sm">7</div>
+            <span class="skill-name">HPA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- E: Storage -->
+      <div class="card card-e card-tint--sand">
+        <div class="section-label section-label--accent">Storage</div>
+        <div class="card-title">Volumes</div>
+        <p class="card-body">Pods are stateless by default. <strong>PersistentVolumeClaims</strong> request durable storage that survives restarts.</p>
+      </div>
+
+      <!-- F: Ecosystem -->
+      <div class="card card-f card-tint--lavender">
+        <div class="section-label section-label--accent">Ecosystem</div>
+        <div class="card-title">Tools</div>
+        <div class="pills">
+          <span class="pill pill--accent">Helm</span>
+          <span class="pill pill--accent">ArgoCD</span>
+          <span class="pill">Istio</span>
+          <span class="pill">Prometheus</span>
+          <span class="pill">Kustomize</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

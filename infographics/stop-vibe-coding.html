@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How to Build Software with AI</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    /* ── Hero heading ─────────────────────────────── */
+    .hero {
+      margin-bottom: 20px;
+    }
+    .hero .section-label {
+      margin-bottom: 12px;
+    }
+    .hero-rule {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: var(--text-display); /* 74px — matches .hd h1 */
+      line-height: var(--leading-display); /* 80px */
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--text-primary);
+    }
+
+    /* ── Content wrapper ──────────────────────────── */
+    .content {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ── Pipeline box ─────────────────────────────── */
+    .pipeline {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 24px;
+    }
+
+    /* ── Anti-pattern panel ───────────────────────── */
+    .mistakes-panel {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .mistakes-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .mistakes-header .section-label {
+      margin: 0;
+      white-space: nowrap;
+    }
+    .mistakes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px 8px;
+    }
+    .mistake-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .mistake-bad, .mistake-good {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .mistake-bad {
+      background: var(--status-danger-glow);
+      border: 1px solid var(--status-danger-border);
+      color: var(--text-muted);
+    }
+    .mistake-bad::before {
+      content: "✕";
+      color: var(--status-danger);
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .mistake-good {
+      background: var(--status-success-glow);
+      border: 1px solid var(--status-success-border);
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+    }
+    .mistake-good::before {
+      content: "✓";
+      color: var(--status-success);
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Stage detail grid ────────────────────────── */
+    .stage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .stage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stage-num {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-medium);
+      color: var(--accent);
+    }
+    .stage-title {
+      font-size: var(--text-sub);
+      line-height: var(--leading-sub);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-card-title);
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .stage-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+    .stage-body strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+    .stage-keys {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .stage-key {
+      font-size: var(--text-meta);
+      line-height: 1;
+      font-weight: var(--weight-medium);
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-medium);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .stage-keys .stage-key:first-child {
+      border-color: var(--border-accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* ── Takeaway strip ──────────────────────────── */
+    .takeaway {
+      text-align: center;
+      padding: 4px 0 0;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+    .takeaway strong {
+      color: var(--accent);
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Hero heading -->
+    <div class="hero">
+      <div class="section-label section-label--accent">THE SOFTWARE LIFECYCLE</div>
+      <div class="hero-rule"></div>
+      <h1>Build Software <em>with AI</em></h1>
+    </div>
+
+    <div class="content">
+
+    <!-- Pipeline diagram — boxed -->
+    <div class="pipeline">
+      <svg viewBox="0 -46 984 214" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; display: block;">
+        <defs>
+          <filter id="buildGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+            <feColorMatrix in="blur" type="matrix"
+              values="0 0 0 0 0.43
+                      0 0 0 0 0.54
+                      0 0 0 0 0.91
+                      0 0 0 0.25 0"/>
+            <feMerge>
+              <feMergeNode/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Arrow marker -->
+        <defs>
+          <marker id="chevron" viewBox="0 0 6 10" refX="5" refY="5" markerWidth="5" markerHeight="8" orient="auto">
+            <path d="M0,1 L5,5 L0,9" fill="none" style="stroke: var(--svg-line-faint)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- Connection lines with chevrons -->
+        <line x1="146" y1="55" x2="165" y2="55" style="stroke: var(--svg-line-faint)" stroke-width="1.5" marker-end="url(#chevron)"/>
+        <line x1="314" y1="55" x2="333" y2="55" style="stroke: var(--svg-line-faint)" stroke-width="1.5" marker-end="url(#chevron)"/>
+        <line x1="482" y1="55" x2="501" y2="55" style="stroke: var(--svg-line-faint)" stroke-width="1.5" marker-end="url(#chevron)"/>
+        <line x1="650" y1="55" x2="669" y2="55" style="stroke: var(--svg-line-faint)" stroke-width="1.5" marker-end="url(#chevron)"/>
+        <line x1="818" y1="55" x2="837" y2="55" style="stroke: var(--svg-line-faint)" stroke-width="1.5" marker-end="url(#chevron)"/>
+
+        <!-- Annotation above Design & Plan -->
+        <circle cx="240" cy="-2" r="2" style="fill: var(--text-dim)" />
+        <line x1="240" y1="-4" x2="240" y2="-24" stroke-width="1" stroke-dasharray="3 2" style="stroke: var(--text-dim)"/>
+        <text x="240" y="-34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="font-style: italic; fill: var(--text-muted)">Spec-driven development</text>
+
+        <!-- 01 Requirements -->
+        <rect x="0" y="0" width="144" height="110" rx="10" style="fill: var(--bg-raised); stroke: var(--border-medium)" />
+        <text x="72" y="34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="fill: var(--text-muted)" >01</text>
+        <text x="72" y="60" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="17" font-weight="700" style="fill: var(--text-primary)" >Requirements</text>
+        <text x="72" y="84" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" style="fill: var(--text-muted)" >PRD, scope</text>
+
+        <!-- 02–03 Design & Plan -->
+        <rect x="168" y="0" width="144" height="110" rx="10" style="fill: var(--bg-raised); stroke: var(--border-medium)" />
+        <text x="240" y="34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="fill: var(--text-muted)" >02 — 03</text>
+        <text x="240" y="60" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="17" font-weight="700" style="fill: var(--text-primary)" >Design & Plan</text>
+        <text x="240" y="84" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" style="fill: var(--text-muted)" >Specs, tasks</text>
+
+        <!-- 04 Build (glowing) -->
+        <g filter="url(#buildGlow)">
+          <rect x="336" y="0" width="144" height="110" rx="10" stroke-width="1.5" style="fill: var(--accent-glow); stroke: var(--border-accent)"/>
+          <text x="408" y="34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="fill: var(--accent)" >04</text>
+          <text x="408" y="60" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="17" font-weight="700" style="fill: var(--text-primary)" >Build</text>
+          <text x="408" y="84" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" style="fill: var(--accent)" >Agent + context</text>
+        </g>
+
+        <!-- 05 Review -->
+        <rect x="504" y="0" width="144" height="110" rx="10" style="fill: var(--bg-raised); stroke: var(--border-medium)" />
+        <text x="576" y="34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="fill: var(--text-muted)" >05</text>
+        <text x="576" y="60" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="17" font-weight="700" style="fill: var(--text-primary)" >Review</text>
+        <text x="576" y="84" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" style="fill: var(--text-muted)" >AI + human review</text>
+
+        <!-- 06 Deploy -->
+        <rect x="672" y="0" width="144" height="110" rx="10" style="fill: var(--bg-raised); stroke: var(--border-medium)" />
+        <text x="744" y="34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="fill: var(--text-muted)" >06</text>
+        <text x="744" y="60" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="17" font-weight="700" style="fill: var(--text-primary)" >Deploy</text>
+        <text x="744" y="84" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" style="fill: var(--text-muted)" >CI/CD, infrastructure</text>
+
+        <!-- 07 Monitor -->
+        <rect x="840" y="0" width="144" height="110" rx="10" style="fill: var(--bg-raised); stroke: var(--border-medium)" />
+        <text x="912" y="34" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="fill: var(--text-muted)" >07</text>
+        <text x="912" y="60" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="17" font-weight="700" style="fill: var(--text-primary)" >Monitor</text>
+        <text x="912" y="84" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" style="fill: var(--text-muted)" >Errors, uptime, alerts</text>
+
+        <!-- Annotation below Build -->
+        <circle cx="408" cy="112" r="2" style="fill: var(--text-dim)" />
+        <line x1="408" y1="114" x2="408" y2="134" stroke-width="1" stroke-dasharray="3 2" style="stroke: var(--text-dim)"/>
+        <text x="408" y="156" text-anchor="middle" font-family="'Libre Franklin', sans-serif" font-size="14" font-weight="500" style="font-style: italic; fill: var(--text-muted)">Most people only use AI here</text>
+      </svg>
+    </div>
+
+    <!-- Anti-pattern → Best practice panel -->
+    <div class="mistakes-panel">
+      <div class="mistakes-header">
+        <div class="section-label" style="color: var(--status-danger);">COMMON MISTAKES</div>
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        <div class="section-label" style="color: var(--status-success);">WHAT TO DO INSTEAD</div>
+      </div>
+      <div class="mistakes-grid">
+        <div class="mistake-pair">
+          <div class="mistake-bad">Vague mega-prompt</div>
+          <div class="mistake-good">One scoped task per prompt</div>
+        </div>
+        <div class="mistake-pair">
+          <div class="mistake-bad">Skip straight to code</div>
+          <div class="mistake-good">Write a PRD first</div>
+        </div>
+        <div class="mistake-pair">
+          <div class="mistake-bad">Accept the first pass</div>
+          <div class="mistake-good">AI self-review, then yours</div>
+        </div>
+        <div class="mistake-pair">
+          <div class="mistake-bad">No architecture plan</div>
+          <div class="mistake-good">Design docs before code</div>
+        </div>
+        <div class="mistake-pair">
+          <div class="mistake-bad">Build everything at once</div>
+          <div class="mistake-good">Small, reviewable tasks</div>
+        </div>
+        <div class="mistake-pair">
+          <div class="mistake-bad">Ship and forget</div>
+          <div class="mistake-good">Error tracking from day one</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage detail cards -->
+    <div class="stage-grid">
+      <div class="stage-card">
+        <div class="stage-num">01</div>
+        <div class="stage-title">Requirements</div>
+        <p class="stage-body">A vague prompt gets a vague product. <strong>Write the PRD first.</strong> Build throwaway prototypes to explore options.</p>
+        <div class="stage-keys">
+          <span class="stage-key">PRD</span>
+          <span class="stage-key">In / out of scope</span>
+          <span class="stage-key">Prototypes</span>
+        </div>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">02 — 03</div>
+        <div class="stage-title">Design & Plan</div>
+        <p class="stage-body">The decisions you skip in planning are the ones <strong>you'll regret in production</strong>. Break the work into bounded tasks.</p>
+        <div class="stage-keys">
+          <span class="stage-key">Tech spec</span>
+          <span class="stage-key">Data model</span>
+          <span class="stage-key">Task list</span>
+        </div>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">04</div>
+        <div class="stage-title">Build</div>
+        <p class="stage-body"><strong>Context is the prompt.</strong> Give the agent what a developer joining mid-project would need. One task at a time.</p>
+        <div class="stage-keys">
+          <span class="stage-key">Scoped prompts</span>
+          <span class="stage-key">Context files</span>
+        </div>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">05</div>
+        <div class="stage-title">Review</div>
+        <p class="stage-body"><strong>Ask the AI to critique its own output</strong> before you read a single line. Then do your own review. Two passes always wins.</p>
+        <div class="stage-keys">
+          <span class="stage-key">AI self-review</span>
+          <span class="stage-key">Human review</span>
+        </div>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">06</div>
+        <div class="stage-title">Deploy</div>
+        <p class="stage-body">You don't need to know Kubernetes. You need to <strong>know what the config does</strong>. AI can generate your pipelines and infra.</p>
+        <div class="stage-keys">
+          <span class="stage-key">Docker</span>
+          <span class="stage-key">GitHub Actions</span>
+          <span class="stage-key">IaC</span>
+        </div>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">07</div>
+        <div class="stage-title">Monitor</div>
+        <p class="stage-body">Shipping without error tracking is just <strong>delaying the incident</strong>. Set up monitoring before you need it.</p>
+        <div class="stage-keys">
+          <span class="stage-key">Sentry</span>
+          <span class="stage-key">Uptime</span>
+          <span class="stage-key">Alerting</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div style="width: 40px; height: 1px; background: var(--border-medium); margin: 0 auto 8px;"></div>
+      Do the thinking. <strong>Then you've earned the right to move fast.</strong>
+    </div>
+
+    </div><!-- /content -->
+
+  </div>
+</body>
+</html>

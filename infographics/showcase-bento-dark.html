@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>The AI Engineering Toolkit — Showcase</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* Subtle radial gradient — lighter center, dark edges */
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "a a b"
+        "c c d"
+        "e f d"
+        "g h i";
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>The AI Engineering Toolkit</h1>
+    </div>
+
+    <div class="grid">
+
+      <!-- A: Wide intro -->
+      <div class="card card-a card--raised">
+        <div class="section-label section-label--accent">Why It Matters</div>
+        <p class="card-body">The gap between <strong>AI research and production</strong> is where most teams fail. A solid toolkit turns experiments into reliable systems. The right abstractions let you <strong>swap models without rewriting code</strong>, observe behaviour in production, and iterate fast.</p>
+        <div class="pills">
+          <span class="pill pill--accent">LLMs</span>
+          <span class="pill pill--accent">Agents</span>
+          <span class="pill">RAG</span>
+          <span class="pill">Evals</span>
+          <span class="pill">Observability</span>
+        </div>
+      </div>
+
+      <!-- B: Stat callout -->
+      <div class="card card-b">
+        <div class="section-label">By The Numbers</div>
+        <div style="font-size: 48px; line-height: 1; font-weight: 800; color: var(--accent-2);">73%</div>
+        <p class="card-body">of AI projects <strong>never reach production</strong>.</p>
+        <p class="card-body" style="padding: 8px 12px; border-radius: 6px; background: var(--accent-2-glow); border: 1px solid var(--border-accent-2);"><strong style="color: var(--accent-2);">Key insight:</strong> tooling beats talent</p>
+      </div>
+
+      <!-- C: Wide accent card -->
+      <div class="card card-c card--accent">
+        <div class="card-title">Core Principles</div>
+        <p class="card-body"><strong>Model-agnostic abstractions</strong> — never couple business logic to one provider</p>
+        <p class="card-body"><strong>Structured outputs</strong> — parse every LLM response into typed schemas</p>
+        <p class="card-body"><strong>Eval-driven development</strong> — measure before you ship, measure after</p>
+        <p class="card-body"><strong>Graceful degradation</strong> — fallback chains, not single points of failure</p>
+      </div>
+
+      <!-- D: Tall card — numbered steps -->
+      <div class="card card-d">
+        <div class="section-label section-label--accent">Build Phases</div>
+        <p class="card-body"><strong>1. Prototype</strong> — prove the concept works</p>
+        <p class="card-body"><strong>2. Evaluate</strong> — build your test suite</p>
+        <p class="card-body"><strong>3. Harden</strong> — add retries and fallbacks</p>
+        <p class="card-body"><strong>4. Observe</strong> — traces and cost tracking</p>
+        <p class="card-body"><strong>5. Ship</strong> — deploy with guardrails</p>
+      </div>
+
+      <!-- E -->
+      <div class="card card-e">
+        <div class="card-index">01</div>
+        <div class="card-title">Prompt Layer</div>
+        <p class="card-body">Version, test, and <strong>A/B test prompts</strong> independently of application code.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Critical</span>
+        </div>
+      </div>
+
+      <!-- F -->
+      <div class="card card-f">
+        <div class="card-index">02</div>
+        <div class="card-title">Model Router</div>
+        <p class="card-body">Route requests to the <strong>best model</strong> for cost, speed, and quality.</p>
+        <div class="pills">
+          <span class="pill">GPT-4o</span>
+          <span class="pill">Claude</span>
+          <span class="pill">Gemini</span>
+        </div>
+      </div>
+
+      <!-- G: SVG diagram -->
+      <div class="card card-g">
+        <div class="card-index">03</div>
+        <div class="card-title">Data Flow</div>
+        <div style="flex: 1; display: flex; align-items: center;">
+        <svg viewBox="0 0 300 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%;">
+          <rect x="0" y="8" width="68" height="32" rx="6" style="fill: var(--accent-glow); stroke: var(--border-accent)" />
+          <text x="34" y="28" text-anchor="middle" font-size="11" font-weight="600" style="fill: var(--text-primary)">Query</text>
+          <line x1="72" y1="24" x2="104" y2="24" stroke-width="1.5" stroke-dasharray="4 3" style="stroke: var(--text-muted)"/>
+          <rect x="108" y="8" width="68" height="32" rx="6" style="fill: var(--bg-raised); stroke: var(--border-medium)" />
+          <text x="142" y="28" text-anchor="middle" font-size="11" font-weight="600" style="fill: var(--text-primary)">LLM</text>
+          <line x1="180" y1="24" x2="212" y2="24" stroke-width="1.5" stroke-dasharray="4 3" style="stroke: var(--text-muted)"/>
+          <rect x="216" y="8" width="80" height="32" rx="6" style="fill: var(--accent-glow); stroke: var(--border-accent)" />
+          <text x="256" y="28" text-anchor="middle" font-size="11" font-weight="600" style="fill: var(--accent)">Response</text>
+        </svg>
+        </div>
+      </div>
+
+      <!-- H -->
+      <div class="card card-h card--raised">
+        <div class="card-index">04</div>
+        <div class="card-title">Guardrails</div>
+        <p class="card-body">Validate outputs <strong>before they reach users</strong>. Block harmful content, enforce schemas, check for hallucination.</p>
+      </div>
+
+      <!-- I -->
+      <div class="card card-i">
+        <div class="card-index">05</div>
+        <div class="card-title">Eval Suite</div>
+        <p class="card-body"><strong>Automated scoring</strong> across accuracy, latency, and cost.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Must-have</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

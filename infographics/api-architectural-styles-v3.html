@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>API Architectural Styles</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── CATALOG — 6 equal cards, 3×2 grid ────────────────── */
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+
+    /* ── Card highlight box ──────────────────────────────── */
+    /* card-highlight and diagram-wrap use design system defaults */
+  </style>
+</head>
+<body>
+  <!-- Shared SVG defs (hidden) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-dim" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--svg-line-dim)"/>
+      </marker>
+      <marker id="arr-light" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--text-dim)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>6 Patterns for API Design</h1>
+    </div>
+
+    <!-- Grid — 6 cards in 3×2 -->
+    <div class="grid">
+
+      <!-- Card 01: REST -->
+      <div class="card delay-1">
+        <div class="card-index">01</div>
+        <div class="card-title">REST</div>
+        <p class="card-body">Uses <strong>standard HTTP methods</strong> with stateless, cacheable, resource-based design.</p>
+        <p class="card-highlight"><strong>Best for</strong> — Public APIs, CRUD apps, mobile backends.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="14" width="62" height="36" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="33" y="37" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Client</text>
+            <line x1="68" y1="27" x2="128" y2="27" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="98" y="21" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">GET /users</text>
+            <line x1="128" y1="40" x2="68" y2="40" style="stroke: var(--svg-line-dim)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-dim)"/>
+            <text x="98" y="55" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="9">200 JSON</text>
+            <rect x="132" y="14" width="62" height="36" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="163" y="37" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Server</text>
+            <rect x="210" y="8" width="46" height="18" rx="3" fill="none" style="stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="233" y="20" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">/users</text>
+            <rect x="210" y="30" width="46" height="18" rx="3" fill="none" style="stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="233" y="42" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">/posts</text>
+            <rect x="210" y="52" width="46" height="18" rx="3" fill="none" style="stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="233" y="64" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">/items</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill">HTTP verbs</span>
+          <span class="pill pill--accent">Stateless</span>
+          <span class="pill">Cacheable</span>
+        </div>
+      </div>
+
+      <!-- Card 02: GraphQL -->
+      <div class="card delay-2">
+        <div class="card-index">02</div>
+        <div class="card-title">GraphQL</div>
+        <p class="card-body">Clients request <strong>exactly the data they need</strong> through a single endpoint. Typed schema prevents over-fetching.</p>
+        <p class="card-highlight"><strong>Best for</strong> — Complex frontends, mobile apps, data aggregation.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="18" width="62" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="33" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Client</text>
+            <line x1="68" y1="34" x2="118" y2="34" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="93" y="27" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">query { }</text>
+            <rect x="122" y="12" width="52" height="44" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="148" y="30" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">/graphql</text>
+            <text x="148" y="44" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">single endpoint</text>
+            <line x1="178" y1="24" x2="210" y2="14" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <line x1="178" y1="34" x2="210" y2="34" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <line x1="178" y1="44" x2="210" y2="54" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <text x="233" y="18" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9">Users DB</text>
+            <text x="233" y="38" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9">Posts DB</text>
+            <text x="233" y="58" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9">Auth API</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill">Query language</span>
+          <span class="pill pill--accent">Single endpoint</span>
+          <span class="pill">Typed schema</span>
+        </div>
+      </div>
+
+      <!-- Card 03: Webhooks -->
+      <div class="card delay-3">
+        <div class="card-index">03</div>
+        <div class="card-title">Webhooks</div>
+        <p class="card-body"><strong>Reverse HTTP callbacks</strong> triggered by events. Your server registers a URL and gets notified automatically.</p>
+        <p class="card-highlight"><strong>Best for</strong> — Payment notifications, CI/CD, third-party integrations.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="14" width="62" height="40" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="33" y="30" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Stripe</text>
+            <text x="33" y="44" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">event fires</text>
+            <line x1="68" y1="34" x2="138" y2="34" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="103" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">POST</text>
+            <text x="103" y="50" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">JSON payload</text>
+            <rect x="142" y="14" width="76" height="40" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="180" y="30" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">Your Server</text>
+            <text x="180" y="44" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">/webhooks/pay</text>
+            <line x1="222" y1="34" x2="248" y2="34" style="stroke: var(--svg-line-dim)" stroke-width="1" stroke-dasharray="4 3"/>
+            <text x="248" y="28" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">200</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Event-driven</span>
+          <span class="pill">HTTP POST</span>
+          <span class="pill">Async</span>
+        </div>
+      </div>
+
+      <!-- Card 04: gRPC -->
+      <div class="card delay-4">
+        <div class="card-index">04</div>
+        <div class="card-title">gRPC</div>
+        <p class="card-body">Google's <strong>high-performance RPC</strong> using Protocol Buffers and HTTP/2 with bidirectional streaming.</p>
+        <p class="card-highlight"><strong>Best for</strong> — Microservices, real-time streaming, polyglot systems.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="18" width="72" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="38" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Service A</text>
+            <rect x="84" y="24" width="92" height="20" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <line x1="92" y1="30" x2="130" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="168" y1="38" x2="130" y2="38" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="130" y="14" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">HTTP/2 STREAM</text>
+            <text x="130" y="58" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">Protobuf binary</text>
+            <rect x="186" y="18" width="72" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="222" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Service B</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill">Protobuf</span>
+          <span class="pill">HTTP/2</span>
+          <span class="pill pill--accent">Streaming</span>
+          <span class="pill">Code-gen</span>
+        </div>
+      </div>
+
+      <!-- Card 05: WebSockets -->
+      <div class="card delay-5">
+        <div class="card-index">05</div>
+        <div class="card-title">WebSockets</div>
+        <p class="card-body"><strong>Full-duplex communication</strong> over a persistent TCP connection. Server pushes data instantly.</p>
+        <p class="card-highlight"><strong>Best for</strong> — Chat, live dashboards, multiplayer games, editors.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="18" width="62" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="33" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Client</text>
+            <line x1="68" y1="34" x2="192" y2="34" style="stroke: var(--accent)" stroke-width="2"/>
+            <polygon points="90,30 100,34 90,38" style="fill: var(--accent)"/>
+            <polygon points="170,30 160,34 170,38" style="fill: var(--accent)"/>
+            <text x="130" y="20" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">PERSISTENT</text>
+            <text x="100" y="52" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">msg</text>
+            <text x="130" y="52" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">push</text>
+            <text x="160" y="52" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">msg</text>
+            <circle cx="90" cy="34" r="2.5" style="fill: var(--accent)"/>
+            <circle cx="130" cy="34" r="2.5" style="fill: var(--accent)"/>
+            <circle cx="170" cy="34" r="2.5" style="fill: var(--accent)"/>
+            <rect x="196" y="18" width="62" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="227" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Server</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Full-duplex</span>
+          <span class="pill">Persistent</span>
+          <span class="pill">Real-time</span>
+          <span class="pill">Event-driven</span>
+        </div>
+      </div>
+
+      <!-- Card 06: SSE -->
+      <div class="card delay-6">
+        <div class="card-index">06</div>
+        <div class="card-title">SSE</div>
+        <p class="card-body"><strong>Server-Sent Events</strong> over a single HTTP connection. How most LLM APIs stream tokens to the client.</p>
+        <p class="card-highlight"><strong>Best for</strong> — AI streaming, live feeds, notifications, stock tickers.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="16" width="62" height="36" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="33" y="30" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Server</text>
+            <text x="33" y="44" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">LLM API</text>
+            <line x1="68" y1="34" x2="192" y2="34" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <rect x="82" y="10" width="28" height="16" rx="3" style="fill: var(--svg-bg)" style="stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="96" y="21" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="7" font-weight="600">data:</text>
+            <rect x="118" y="10" width="28" height="16" rx="3" style="fill: var(--svg-bg)" style="stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="132" y="21" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="7" font-weight="600">data:</text>
+            <rect x="154" y="10" width="28" height="16" rx="3" style="fill: var(--svg-bg)" style="stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="168" y="21" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="7" font-weight="600">data:</text>
+            <text x="130" y="56" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">text/event-stream</text>
+            <rect x="196" y="16" width="62" height="36" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="227" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">Client</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill">One-way</span>
+          <span class="pill">HTTP native</span>
+          <span class="pill">Auto-reconnect</span>
+          <span class="pill pill--accent">AI streaming</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+
+  </div>
+</body>
+</html>

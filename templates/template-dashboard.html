@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Dashboard Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── DASHBOARD — 7 cards, stat row + detail grid ────────── */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto 1fr 1fr;
+      grid-template-areas:
+        "a b c"
+        "d d e"
+        "f g e";
+    }
+
+    /* Stat cards — centered big number */
+    .stat-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 0;
+    }
+    .stat-number {
+      font-size: 52px; /* Decorative — outside type scale */
+      line-height: 1;
+      font-weight: 800;
+      color: var(--accent-2);
+    }
+    .stat-label {
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .stat-detail {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+    }
+
+    /* Override skill-list: compact items instead of space-between */
+    .card-e .skill-list {
+      justify-content: start;
+      gap: 0;
+    }
+    .card-e .skill-item {
+      padding: 8px 0;
+    }
+
+    /* Tool detail (subtitle under skill-name) */
+    .tool-detail {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>AI Coding Tools</h1>
+    </div>
+
+    <div class="grid">
+
+      <!-- A: Stat -->
+      <div class="card card-a">
+        <div class="stat-inner">
+          <div class="stat-number">2.4M</div>
+          <div class="stat-label">Developers</div>
+          <div class="stat-detail">Using AI coding assistants daily</div>
+        </div>
+      </div>
+
+      <!-- B: Stat -->
+      <div class="card card-b">
+        <div class="stat-inner">
+          <div class="stat-number">75+</div>
+          <div class="stat-label">Models</div>
+          <div class="stat-detail">Code-capable LLMs available</div>
+        </div>
+      </div>
+
+      <!-- C: Stat -->
+      <div class="card card-c">
+        <div class="stat-inner">
+          <div class="stat-number">40%</div>
+          <div class="stat-label">AI-Assisted</div>
+          <div class="stat-detail">Of new code at top firms</div>
+        </div>
+      </div>
+
+      <!-- D: Analysis (2-col) -->
+      <div class="card card-d card--raised">
+        <div class="section-label section-label--accent">Analysis</div>
+        <div class="card-title">The New Developer Workflow</div>
+        <p class="card-body">AI coding tools have moved beyond autocomplete. The current generation offers <strong>agentic capabilities</strong> — planning multi-file changes, running tests, and iterating autonomously. The differentiator is <strong>tool integration depth</strong>: terminal access, file system awareness, and context management.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Agentic</span>
+          <span class="pill pill--accent">Multi-file</span>
+          <span class="pill">Context-aware</span>
+          <span class="pill">Test-driven</span>
+        </div>
+      </div>
+
+      <!-- E: Top Tools (tall, spans 2 rows) -->
+      <div class="card card-e">
+        <div class="section-label">Top Tools</div>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="num-square num-square--sm">1</span>
+            <div>
+              <div class="skill-name">Claude Code</div>
+              <div class="tool-detail">Anthropic · CLI agent</div>
+            </div>
+            <span class="pill pill--accent">Agent</span>
+          </div>
+          <div class="skill-item">
+            <span class="num-square num-square--sm">2</span>
+            <div>
+              <div class="skill-name">Cursor</div>
+              <div class="tool-detail">Anysphere · IDE</div>
+            </div>
+            <span class="pill pill--accent">IDE</span>
+          </div>
+          <div class="skill-item">
+            <span class="num-square num-square--sm">3</span>
+            <div>
+              <div class="skill-name">GitHub Copilot</div>
+              <div class="tool-detail">Microsoft · Extension</div>
+            </div>
+            <span class="pill pill--accent">Plugin</span>
+          </div>
+          <div class="skill-item">
+            <span class="num-square num-square--sm">4</span>
+            <div>
+              <div class="skill-name">Windsurf</div>
+              <div class="tool-detail">Codeium · IDE</div>
+            </div>
+            <span class="pill pill--accent">IDE</span>
+          </div>
+          <div class="skill-item">
+            <span class="num-square num-square--sm">5</span>
+            <div>
+              <div class="skill-name">Aider</div>
+              <div class="tool-detail">Open source · CLI</div>
+            </div>
+            <span class="pill pill--accent">Agent</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- F: Trends -->
+      <div class="card card-f">
+        <div class="section-label section-label--accent">Trends</div>
+        <div class="cat-rows">
+          <div>
+            <div class="cat-row-label">CLI-first agents</div>
+            <div class="cat-row-body">Terminal-native tools outscore IDE plugins on complex tasks</div>
+          </div>
+          <div>
+            <div class="cat-row-label">Context is king</div>
+            <div class="cat-row-body">200K+ token windows enable whole-codebase reasoning</div>
+          </div>
+          <div>
+            <div class="cat-row-label">MCP ecosystem</div>
+            <div class="cat-row-body">Model Context Protocol connects agents to any API</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- G: What's Next -->
+      <div class="card card-g">
+        <div class="section-label section-label--accent">What's Next</div>
+        <div class="cat-rows">
+          <div>
+            <div class="cat-row-label">Background agents</div>
+            <div class="cat-row-body">AI that works while you sleep — PRs ready by morning</div>
+          </div>
+          <div>
+            <div class="cat-row-label">Formal verification</div>
+            <div class="cat-row-body">AI code with mathematical correctness proofs</div>
+          </div>
+          <div>
+            <div class="cat-row-label">Multi-agent teams</div>
+            <div class="cat-row-body">Specialized agents collaborating end-to-end</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</body>
+</html>

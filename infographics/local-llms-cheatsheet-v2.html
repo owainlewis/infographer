@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Run LLMs Locally</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       LOCAL LLMs v2 — Uses teal secondary color (#7FA3B8)
+       Shared components from components.css:
+       .zbox, .zlabel, .zone-body, .row-2col, .mid-row,
+       .arrow-list, .feat-table, .wf-steps, .tip-box
+       ══════════════════════════════════════════════════════════ */
+
+    /* ── v2 overrides (remapped to brand tokens) ───────── */
+    .zlabel--teal { color: var(--accent-2); }
+    .why-icon--teal { background: var(--accent-2); }
+
+    .feat-table td:first-child { width: 132px; }
+
+    .tip-box { padding: var(--space-lg); }
+
+    .diagram-wrap { background: var(--accent-glow); }
+
+    /* ── Why-run-local items (infographic-specific) ──────── */
+    .why-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .why-item {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: var(--space-sm);
+      align-items: start;
+    }
+    .why-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-2);
+      color: var(--on-accent);
+      font-size: var(--text-body);
+      line-height: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .why-title {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+    .why-desc {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+    }
+
+    /* ── Tool cards (infographic-specific) ───────────────── */
+    .tool-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .tool-name {
+      font-size: var(--text-sub);
+      line-height: var(--leading-sub);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+    }
+    .tool-desc {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+    .tool-desc strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+    .tool-cmd {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--accent);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 6px var(--space-md);
+      border-radius: var(--radius-sm);
+      margin-top: var(--space-xs);
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared SVG defs (hidden) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-dim" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--svg-line-dim)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>Run LLMs Locally</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Row 1: Why run locally + Tools overview -->
+      <div class="row-2col">
+        <div class="zbox">
+          <span class="zlabel">Why Run Local?</span>
+          <div class="why-list">
+            <div class="why-item">
+              <div class="why-icon">&#x1f512;</div>
+              <div>
+                <div class="why-title">Privacy</div>
+                <div class="why-desc">Data never leaves your machine. No API logs, no third-party access.</div>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon why-icon--teal">&#x1f4b0;</div>
+              <div>
+                <div class="why-title">Zero Cost</div>
+                <div class="why-desc">No per-token fees. Run unlimited queries on your own hardware.</div>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon">&#x2708;</div>
+              <div>
+                <div class="why-title">Offline</div>
+                <div class="why-desc">Works on planes, in air-gapped networks, anywhere without internet.</div>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon why-icon--teal">&#x2699;</div>
+              <div>
+                <div class="why-title">Control</div>
+                <div class="why-desc">Fine-tune, quantize, and customize. No rate limits or policy filters.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="zbox">
+          <span class="zlabel zlabel--teal">The Toolkit</span>
+          <div class="tool-list">
+            <div class="tool-card">
+              <div class="tool-name">Ollama</div>
+              <div class="tool-desc">CLI-first. <strong>Pull and run models</strong> in one command. OpenAI-compatible API built in. The default choice for developers.</div>
+              <div class="tool-cmd">ollama run llama3.3</div>
+            </div>
+            <div class="tool-card">
+              <div class="tool-name">LM Studio</div>
+              <div class="tool-desc"><strong>GUI app</strong> with model browser, chat UI, and local server. Great for exploring models without touching the terminal.</div>
+            </div>
+            <div class="tool-card">
+              <div class="tool-name">llama.cpp</div>
+              <div class="tool-desc"><strong>The engine underneath.</strong> Pure C/C++ inference. Ollama and LM Studio both build on this. Use directly for max performance tuning.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Models table -->
+      <div class="zbox zbox--raised">
+        <span class="zlabel">Open-Weight Models Worth Running</span>
+        <table class="feat-table">
+          <thead>
+            <tr><th>Model</th><th>Parameters</th><th>Sweet Spot</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Llama 3.3</td><td>70B</td><td>General purpose, coding</td><td>Meta's best open model. <strong>Needs 48GB+ VRAM</strong> at full precision.</td></tr>
+            <tr><td>Qwen 2.5</td><td>7B–72B</td><td>Multilingual, reasoning</td><td>Alibaba. Strong at <strong>math and code</strong>. 7B runs great on 8GB.</td></tr>
+            <tr><td>Mistral</td><td>7B</td><td>Fast general chat</td><td>Punches above its weight. <strong>Best 7B all-rounder</strong>.</td></tr>
+            <tr><td>Phi-4</td><td>14B</td><td>Reasoning, STEM</td><td>Microsoft. <strong>Small but sharp</strong> — trained on synthetic data.</td></tr>
+            <tr><td>DeepSeek-R1</td><td>1.5B–671B</td><td>Deep reasoning, code</td><td>MoE architecture. <strong>Distilled 7B</strong> version is very capable.</td></tr>
+            <tr><td>Gemma 2</td><td>9B / 27B</td><td>Instruction following</td><td>Google. Good <strong>safety tuning</strong>. 9B fits easily on consumer GPUs.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Row 3: Quick start workflow + Hardware guide -->
+      <div class="mid-row">
+        <div class="zbox">
+          <span class="zlabel">Quick Start with Ollama</span>
+          <div class="wf-steps">
+            <div class="wf-step">
+              <span class="wf-badge">Step 1</span>
+              <div>
+                <div class="wf-title">Install Ollama</div>
+                <p class="wf-desc">macOS: <strong>brew install ollama</strong> — Linux: curl script — Windows: installer from ollama.com</p>
+              </div>
+            </div>
+            <div class="wf-step">
+              <span class="wf-badge">Step 2</span>
+              <div>
+                <div class="wf-title">Pull a model</div>
+                <p class="wf-desc"><strong>ollama pull llama3.3</strong> — downloads the quantized model (~4GB for 7B)</p>
+              </div>
+            </div>
+            <div class="wf-step">
+              <span class="wf-badge">Step 3</span>
+              <div>
+                <div class="wf-title">Chat or serve</div>
+                <p class="wf-desc"><strong>ollama run llama3.3</strong> for chat — or <strong>ollama serve</strong> to expose the API on :11434</p>
+              </div>
+            </div>
+            <div class="wf-step">
+              <span class="wf-badge">Step 4</span>
+              <div>
+                <div class="wf-title">Connect your tools</div>
+                <p class="wf-desc">Point any OpenAI SDK at <strong>localhost:11434/v1</strong> — works with LangChain, Continue, Cursor, etc.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="zbox">
+          <span class="zlabel zlabel--teal">Hardware Reality Check</span>
+          <p class="zone-body"><strong>RAM is the bottleneck.</strong> Models load entirely into memory. Quantization (Q4, Q5) shrinks them 4–8x with minimal quality loss.</p>
+          <ul class="arrow-list" style="flex:1;">
+            <li><strong>8GB RAM</strong> — 7B models (Mistral, Qwen 2.5 7B, Phi-4 mini)</li>
+            <li><strong>16GB RAM</strong> — 13–14B models (Phi-4, Qwen 2.5 14B)</li>
+            <li><strong>32GB RAM</strong> — 30–34B models (DeepSeek-R1 distilled)</li>
+            <li><strong>64GB+ RAM</strong> — 70B models (Llama 3.3 quantized)</li>
+          </ul>
+          <div class="tip-box" style="margin-top:auto;">
+            <span class="zlabel zlabel--teal">Pro Tip</span>
+            <p><strong>Apple Silicon excels at local LLMs</strong> — unified memory means the GPU can access all your RAM. A MacBook with 32GB runs 30B+ models at usable speed with no discrete GPU needed.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

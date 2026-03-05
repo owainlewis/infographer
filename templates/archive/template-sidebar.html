@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Sidebar Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── SIDEBAR — 6 cards, full-height left rail ───────────── */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-areas:
+        "a b c"
+        "a d d"
+        "a e f";
+    }
+
+    /* Command code blocks */
+    .cmd-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      justify-content: space-between;
+    }
+    .cmd-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cmd-code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--bg-raised);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .cmd-desc {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-secondary);
+    }
+
+    /* Wide card: two-column commands */
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>Docker Commands Cheat Sheet</h1>
+    </div>
+
+    <div class="grid">
+
+      <!-- A: Rail (full height) — categories -->
+      <div class="card card-a card--raised">
+        <div class="section-label section-label--accent">Categories</div>
+        <div class="install-paths">
+          <div>
+            <div class="install-path-label">Build</div>
+            <div class="install-path-body">Images, Dockerfiles, layers</div>
+          </div>
+          <div>
+            <div class="install-path-label">Run</div>
+            <div class="install-path-body">Containers, ports, volumes</div>
+          </div>
+          <div>
+            <div class="install-path-label">Network</div>
+            <div class="install-path-body">Bridges, DNS, port mapping</div>
+          </div>
+          <div>
+            <div class="install-path-label">Debug</div>
+            <div class="install-path-body">Logs, exec, inspect, stats</div>
+          </div>
+          <div>
+            <div class="install-path-label">Compose</div>
+            <div class="install-path-body">Multi-container orchestration</div>
+          </div>
+          <div>
+            <div class="install-path-label">Clean Up</div>
+            <div class="install-path-body">Prune images and volumes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Build -->
+      <div class="card card-b card-tint--terracotta">
+        <div class="section-label">Build</div>
+        <div class="cmd-list">
+          <div class="cmd-item">
+            <code class="cmd-code">docker build -t app:v1 .</code>
+            <span class="cmd-desc">Build from current Dockerfile</span>
+          </div>
+          <div class="cmd-item">
+            <code class="cmd-code">docker build --no-cache .</code>
+            <span class="cmd-desc">Build without layer cache</span>
+          </div>
+          <div class="cmd-item">
+            <code class="cmd-code">docker images</code>
+            <span class="cmd-desc">List all local images</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: Run -->
+      <div class="card card-c card-tint--sage">
+        <div class="section-label">Run</div>
+        <div class="cmd-list">
+          <div class="cmd-item">
+            <code class="cmd-code">docker run -d -p 8080:80 app</code>
+            <span class="cmd-desc">Run detached with port mapping</span>
+          </div>
+          <div class="cmd-item">
+            <code class="cmd-code">docker run -it --rm app sh</code>
+            <span class="cmd-desc">Interactive shell, auto-remove</span>
+          </div>
+          <div class="cmd-item">
+            <code class="cmd-code">docker ps -a</code>
+            <span class="cmd-desc">List all containers</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- D: Network & Debug (wide) -->
+      <div class="card card-d card-tint--sky">
+        <div class="section-label">Network & Debug</div>
+        <div class="cmd-grid">
+          <div class="cmd-list">
+            <div class="cmd-item">
+              <code class="cmd-code">docker network create mynet</code>
+              <span class="cmd-desc">Create bridge network</span>
+            </div>
+            <div class="cmd-item">
+              <code class="cmd-code">docker network inspect mynet</code>
+              <span class="cmd-desc">Show network config</span>
+            </div>
+            <div class="cmd-item">
+              <code class="cmd-code">docker port &lt;id&gt;</code>
+              <span class="cmd-desc">List port mappings</span>
+            </div>
+          </div>
+          <div class="cmd-list">
+            <div class="cmd-item">
+              <code class="cmd-code">docker logs -f &lt;id&gt;</code>
+              <span class="cmd-desc">Stream logs in real time</span>
+            </div>
+            <div class="cmd-item">
+              <code class="cmd-code">docker exec -it &lt;id&gt; sh</code>
+              <span class="cmd-desc">Shell into running container</span>
+            </div>
+            <div class="cmd-item">
+              <code class="cmd-code">docker stats</code>
+              <span class="cmd-desc">Live CPU, memory, I/O</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- E: Clean Up -->
+      <div class="card card-e card-tint--lavender">
+        <div class="section-label">Clean Up</div>
+        <div class="cmd-list">
+          <div class="cmd-item">
+            <code class="cmd-code">docker system prune -a</code>
+            <span class="cmd-desc">Remove all unused resources</span>
+          </div>
+          <div class="cmd-item">
+            <code class="cmd-code">docker volume prune</code>
+            <span class="cmd-desc">Remove unused volumes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- F: Compose -->
+      <div class="card card-f card-tint--sand">
+        <div class="section-label">Compose</div>
+        <div class="cmd-list">
+          <div class="cmd-item">
+            <code class="cmd-code">docker compose up -d</code>
+            <span class="cmd-desc">Start all services</span>
+          </div>
+          <div class="cmd-item">
+            <code class="cmd-code">docker compose down -v</code>
+            <span class="cmd-desc">Stop and remove everything</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

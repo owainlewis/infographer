@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Mosaic Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── MOSAIC — 8 cards, zigzag S-curve flow ──────────────── */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "a a a"
+        "b b c"
+        "d e e"
+        "f g h";
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>The AI Engineering Stack</h1>
+    </div>
+
+    <div class="grid">
+
+      <!-- A: Full-width banner -->
+      <div class="card card-a card--raised">
+        <div class="section-label section-label--accent">2025 Landscape</div>
+        <p class="card-body">The modern AI engineering stack has <strong>five distinct layers</strong> — from foundation models to production monitoring. Each layer has clear winners emerging, but the ecosystem changes fast. Here's the stack that ships.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Models</span>
+          <span class="pill pill--accent">Inference</span>
+          <span class="pill">Retrieval</span>
+          <span class="pill">Agents</span>
+          <span class="pill">Observability</span>
+        </div>
+      </div>
+
+      <!-- B: Foundation Models (2-col) -->
+      <div class="card card-b card-tint--terracotta">
+        <div class="section-label">Layer 1</div>
+        <div class="card-title">Foundation Models</div>
+        <p class="card-body">Choose between <strong>proprietary APIs</strong> for capability or <strong>open-weight models</strong> for control. Most teams use both.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Claude</span>
+          <span class="pill pill--accent">GPT-4o</span>
+          <span class="pill">Llama 3</span>
+          <span class="pill">Gemini</span>
+          <span class="pill">Mistral</span>
+        </div>
+      </div>
+
+      <!-- C: Inference -->
+      <div class="card card-c card-tint--sage">
+        <div class="section-label">Layer 2</div>
+        <div class="card-title">Inference</div>
+        <p class="card-body">Serve models with <strong>low latency</strong>. Self-hosted is 3–10× cheaper at scale.</p>
+        <div class="pills">
+          <span class="pill pill--accent">vLLM</span>
+          <span class="pill">TGI</span>
+          <span class="pill">Ollama</span>
+        </div>
+      </div>
+
+      <!-- D: Vector Storage -->
+      <div class="card card-d card-tint--sky">
+        <div class="section-label">Layer 3</div>
+        <div class="card-title">Retrieval</div>
+        <p class="card-body">RAG pipelines need <strong>vector databases</strong> for semantic search. Embed, store, query.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Pinecone</span>
+          <span class="pill">pgvector</span>
+          <span class="pill">Chroma</span>
+        </div>
+      </div>
+
+      <!-- E: Agent Frameworks (2-col) -->
+      <div class="card card-e card--accent">
+        <div class="section-label">Layer 4</div>
+        <div class="card-title">Agent Frameworks</div>
+        <p class="card-body">Orchestrate multi-step AI workflows with <strong>tool use, memory, and planning</strong>. The best frameworks are opinionated about structure but flexible on models.</p>
+        <div class="pills">
+          <span class="pill pill--accent">PydanticAI</span>
+          <span class="pill pill--accent">LangGraph</span>
+          <span class="pill">CrewAI</span>
+          <span class="pill">AutoGen</span>
+        </div>
+      </div>
+
+      <!-- F: Observability -->
+      <div class="card card-f card-tint--lavender">
+        <div class="section-label">Layer 5</div>
+        <div class="card-title">Observability</div>
+        <p class="card-body">Track <strong>cost, latency, and quality</strong> of every LLM call.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Langfuse</span>
+          <span class="pill">Braintrust</span>
+        </div>
+      </div>
+
+      <!-- G: Serving -->
+      <div class="card card-g card-tint--sand">
+        <div class="section-label">Deploy</div>
+        <div class="card-title">Serving</div>
+        <p class="card-body"><strong>GPU infrastructure</strong> for self-hosted models. Serverless for APIs.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Modal</span>
+          <span class="pill">Replicate</span>
+          <span class="pill">RunPod</span>
+        </div>
+      </div>
+
+      <!-- H: Guardrails -->
+      <div class="card card-h card-tint--terracotta">
+        <div class="section-label">Govern</div>
+        <div class="card-title">Guardrails</div>
+        <p class="card-body"><strong>Content filtering</strong>, PII detection, and output validation.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Guardrails AI</span>
+          <span class="pill">NeMo</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

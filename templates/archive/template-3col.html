@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Monolith vs Microservices vs Serverless</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── 3-COLUMN — 3 stacked sub-cards per column ──────────── */
+    .grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+    }
+
+    /* ── Column stack (replaces single tall card) ───────────── */
+    .col-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+    .col-stack > :nth-child(2) {
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    /* ── Column header ──────────────────────────────────────── */
+    .col-subtitle {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta-tight);
+      font-weight: var(--weight-extrabold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-label);
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .col-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-extrabold);
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <!-- REPLACE: Title -->
+      <h1>Monolith vs Microservices vs Serverless</h1>
+    </div>
+
+    <!-- Grid — 3 columns, each with 3 stacked sub-cards -->
+    <div class="grid">
+
+      <!-- Column A: Monolith -->
+      <div class="col-stack">
+        <div class="card">
+          <div class="col-subtitle">Traditional</div>
+          <div class="col-title">Monolith</div>
+          <p class="card-body">A single deployable unit containing all application logic. Simple to develop, test, and deploy initially.</p>
+        </div>
+        <div class="card">
+          <div class="section-label">Strengths</div>
+          <ul class="dlist">
+            <li>Simple local development</li>
+            <li>Easy to debug and trace</li>
+            <li>Single deploy pipeline</li>
+            <li>No network latency</li>
+          </ul>
+          <div class="section-label" style="margin-top: auto;">Weaknesses</div>
+          <ul class="dlist">
+            <li>Hard to scale individually</li>
+            <li>Long build and deploy cycles</li>
+            <li>Technology lock-in</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="section-label">Best For</div>
+          <p class="card-body"><strong>Early-stage startups</strong> and small teams who need to move fast before boundaries are clear.</p>
+          <div class="pills">
+            <span class="pill">Rails</span>
+            <span class="pill">Django</span>
+            <span class="pill">Spring</span>
+            <span class="pill">Laravel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column B: Microservices -->
+      <div class="col-stack">
+        <div class="card card--accent">
+          <div class="col-subtitle">Distributed</div>
+          <div class="col-title">Microservices</div>
+          <p class="card-body">Independent services owning their data and logic, communicating via APIs. Each deploys and scales separately.</p>
+        </div>
+        <div class="card card--accent">
+          <div class="section-label">Strengths</div>
+          <ul class="dlist">
+            <li>Independent scaling per service</li>
+            <li>Technology diversity</li>
+            <li>Fault isolation</li>
+            <li>Parallel team development</li>
+          </ul>
+          <div class="section-label" style="margin-top: auto;">Weaknesses</div>
+          <ul class="dlist">
+            <li>Distributed system complexity</li>
+            <li>Network latency overhead</li>
+            <li>Data consistency challenges</li>
+          </ul>
+        </div>
+        <div class="card card--accent">
+          <div class="section-label">Best For</div>
+          <p class="card-body"><strong>Large organizations</strong> with multiple teams needing to ship and scale independently.</p>
+          <div class="pills">
+            <span class="pill--accent pill">K8s</span>
+            <span class="pill--accent pill">gRPC</span>
+            <span class="pill">Docker</span>
+            <span class="pill">Consul</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column C: Serverless -->
+      <div class="col-stack">
+        <div class="card">
+          <div class="col-subtitle">Event-Driven</div>
+          <div class="col-title">Serverless</div>
+          <p class="card-body">Functions triggered by events, fully managed by the cloud provider. Pay only for execution time.</p>
+        </div>
+        <div class="card">
+          <div class="section-label">Strengths</div>
+          <ul class="dlist">
+            <li>Zero infrastructure management</li>
+            <li>Automatic scaling to zero</li>
+            <li>Pay-per-execution pricing</li>
+            <li>Built-in high availability</li>
+          </ul>
+          <div class="section-label" style="margin-top: auto;">Weaknesses</div>
+          <ul class="dlist">
+            <li>Cold start latency</li>
+            <li>Vendor lock-in</li>
+            <li>Limited execution duration</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="section-label">Best For</div>
+          <p class="card-body"><strong>Event-driven workloads</strong> with unpredictable traffic — APIs, webhooks, and background jobs.</p>
+          <div class="pills">
+            <span class="pill--accent pill">Lambda</span>
+            <span class="pill--accent pill">Cloud Run</span>
+            <span class="pill">Vercel</span>
+            <span class="pill">Cloudflare</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

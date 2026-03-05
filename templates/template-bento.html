@@ -5,222 +5,10 @@
   <meta name="viewport" content="width=1080">
   <!-- REPLACE: Infographic title -->
   <title>Bento Grid Template</title>
-  <link rel="stylesheet" href="/src/design-system/base.css">
-  <link rel="stylesheet" href="/templates/theme-dark.css">
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
   <style>
-    /* ── Reset ─────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    ul, ol { list-style: none; }
-
-    /* ══════════════════════════════════════════════════════════
-       LOCKED GEOMETRY — DO NOT MODIFY
-       Canvas: 1080 × 1350  |  Padding: 48  |  8px grid
-       Header: 112px  |  Footer: 64px  |  Grid: 1126px
-       ══════════════════════════════════════════════════════════ */
-    .infographic {
-      width: 1080px;
-      height: 1350px;
-      padding: 48px 48px 0 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      overflow: hidden;
-      background: var(--bg-canvas);
-      color: var(--text-primary);
-      font-family: 'Libre Franklin', sans-serif;
-    }
-
-    /* Header — 112px total */
-    .hd { margin-bottom: 24px; text-align: center; }
-    .hd h1 {
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 52px;
-      line-height: 56px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-    }
-    .hd h1 i {
-      font-family: 'Crimson Text', serif;
-      font-style: italic;
-      font-weight: 400;
-    }
-    .hd h1 .accent { color: var(--accent); }
-    .hd .sub {
-      font-size: 15px;
-      line-height: 24px;
-      margin-top: 8px;
-      color: var(--text-secondary);
-      font-weight: 400;
-    }
-
-    /* Grid — fills remaining 1126px */
-    .grid {
-      flex: 1;
-      display: grid;
-      gap: 8px;
-    }
-
-    /* Card — 16px pad, 8px radius */
-    .card {
-      padding: 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      box-shadow: var(--card-shadow);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* Card variants — depth + accent */
-    .card--accent {
-      border-color: var(--border-accent);
-      background: var(--accent-glow);
-    }
-    .card--raised {
-      background: var(--bg-raised);
-      border-color: var(--border-medium);
-    }
-
-    /* Animations (GIF export adds .animated to root) */
-    @keyframes card-highlight {
-      0%, 100% {
-        border-color: var(--border);
-        background: var(--bg-card);
-      }
-      50% {
-        border-color: var(--border-accent);
-        background: var(--bg-raised);
-      }
-    }
-    .animated .card {
-      animation: card-highlight 4s cubic-bezier(0.4, 0, 0.2, 1) 1;
-      animation-fill-mode: both;
-    }
-    .animated .delay-1  { animation-delay: 0s; }
-    .animated .delay-2  { animation-delay: 0.8s; }
-    .animated .delay-3  { animation-delay: 1.6s; }
-    .animated .delay-4  { animation-delay: 2.4s; }
-    .animated .delay-5  { animation-delay: 3.2s; }
-    .animated .delay-6  { animation-delay: 4.0s; }
-    .animated .delay-7  { animation-delay: 4.8s; }
-    .animated .delay-8  { animation-delay: 5.6s; }
-    .animated .delay-9  { animation-delay: 6.4s; }
-
-    /* Footer — 64px total (16px margin + 48px bar) */
-    .footer-bar {
-      height: 48px;
-      margin: 16px -48px 0 -48px;
-      padding: 0 48px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg-footer);
-      border-top: 2px solid var(--accent);
-    }
-    .footer-brand {
-      font-size: 11px;
-      line-height: 16px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--footer-text);
-    }
-    .footer-cta {
-      font-size: 11px;
-      line-height: 16px;
-      font-weight: 600;
-      color: var(--footer-text-hi);
-    }
-    .footer-cta strong { color: var(--accent); }
-    .footer-url {
-      font-size: 11px;
-      line-height: 16px;
-      font-weight: 600;
-      color: var(--footer-text);
-    }
-
-    /* ── Typography ────────────────────────────────────────── */
-    .card-index {
-      font-size: 11px;
-      line-height: 16px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .card-title {
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 22px;
-      line-height: 28px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-    .section-label {
-      font-size: 11px;
-      line-height: 16px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .card-body {
-      font-size: 13px;
-      line-height: 20px;
-      font-weight: 400;
-      color: var(--text-secondary);
-    }
-    .card-body strong {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-top: auto;
-      padding-top: 8px;
-    }
-    .pill {
-      font-size: 10px;
-      line-height: 16px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      white-space: nowrap;
-    }
-    .pill--accent {
-      border-color: var(--border-accent);
-      color: var(--accent);
-      background: var(--accent-glow);
-    }
-    .dlist {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .dlist li {
-      font-size: 13px;
-      line-height: 20px;
-      color: var(--text-secondary);
-    }
-    .dlist li::before {
-      content: '\25C6';
-      color: var(--accent);
-      font-size: 6px;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-
-    /* ══════════════════════════════════════════════════════════
-       TEMPLATE: BENTO — 9 cards, asymmetric 3×4 grid
-       Grid area: 984 × 1126px  |  4 rows × 3 cols
-       ══════════════════════════════════════════════════════════ */
+    /* ── BENTO — 9 cards, asymmetric 3×4 grid ─────────────── */
     .grid {
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 1fr 1fr 1fr;
@@ -230,29 +18,18 @@
         "e f d"
         "g h i";
     }
-    .card-a { grid-area: a; }
-    .card-b { grid-area: b; }
-    .card-c { grid-area: c; }
-    .card-d { grid-area: d; }
-    .card-e { grid-area: e; }
-    .card-f { grid-area: f; }
-    .card-g { grid-area: g; }
-    .card-h { grid-area: h; }
-    .card-i { grid-area: i; }
   </style>
 </head>
 <body>
-  <div class="infographic" id="infographic">
+  <div class="infographic" id="infographic" data-theme="dark">
 
-    <!-- Header — 112px -->
+    <!-- Header -->
     <div class="hd">
-      <!-- REPLACE: Title — use <i> for serif accent word -->
-      <h1>System Design <i class="accent">Patterns</i></h1>
-      <!-- REPLACE: Subtitle -->
-      <p class="sub">Nine essential patterns every engineer should know.</p>
+      <!-- REPLACE: Title -->
+      <h1>System Design Patterns</h1>
     </div>
 
-    <!-- Grid — 1126px, 9 cards -->
+    <!-- Grid — 9 cards -->
     <div class="grid">
 
       <!-- A: 2-col span, row 1 — intro / overview -->
@@ -271,41 +48,40 @@
       <!-- B: 1-col, row 1 — sidebar card -->
       <div class="card card-b delay-2">
         <!-- REPLACE: Card B content — small sidebar card -->
-        <div class="card-index">01</div>
+        <div class="section-label section-label--accent">Phase 1</div>
         <div class="card-title">Retry</div>
         <p class="card-body">Automatically re-attempt failed operations with exponential backoff and jitter.</p>
         <div class="pills">
-          <span class="pill--accent pill">Resilience</span>
+          <span class="pill pill--accent">Resilience</span>
         </div>
       </div>
 
       <!-- C: 2-col span, row 2 — main content card -->
-      <div class="card card-c card--accent delay-3">
+      <div class="card card-c card--warm delay-3">
         <!-- REPLACE: Card C content — wide main card -->
         <div class="card-title">Event-Driven Architecture</div>
         <p class="card-body">Decouple services using asynchronous events. Producers emit events without knowing who consumes them. Enables <strong>independent scaling</strong> and fault isolation across service boundaries.</p>
         <div class="pills">
-          <span class="pill--accent pill">Kafka</span>
-          <span class="pill--accent pill">RabbitMQ</span>
-          <span class="pill--accent pill">EventBridge</span>
+          <span class="pill pill--accent">Kafka</span>
+          <span class="pill pill--accent">RabbitMQ</span>
           <span class="pill">Pub/Sub</span>
           <span class="pill">Async</span>
         </div>
       </div>
 
       <!-- D: 1-col, rows 2–3 — tall card with list -->
-      <div class="card card-d card--raised delay-4">
+      <div class="card card-d delay-4">
         <!-- REPLACE: Card D content — tall list card -->
         <div class="section-label">Key Principles</div>
-        <ul class="dlist">
-          <li>Loose coupling between services</li>
-          <li>Single responsibility per service</li>
-          <li>Design for failure and recovery</li>
-          <li>Prefer async over sync calls</li>
-          <li>Use idempotent operations</li>
-          <li>Monitor at every boundary</li>
-          <li>Automate everything</li>
-        </ul>
+        <div class="principle-grid">
+          <div class="principle-pill">Loose coupling</div>
+          <div class="principle-pill">Single responsibility</div>
+          <div class="principle-pill">Design for failure</div>
+          <div class="principle-pill">Async over sync</div>
+          <div class="principle-pill">Idempotent operations</div>
+          <div class="principle-pill">Monitor boundaries</div>
+          <div class="principle-pill">Automate everything</div>
+        </div>
       </div>
 
       <!-- E: 1-col, row 3 -->
@@ -350,14 +126,7 @@
 
     </div>
 
-    <!-- Footer — 64px -->
-    <div class="footer-bar">
-      <!-- REPLACE: Brand name -->
-      <span class="footer-brand">YOUR BRAND</span>
-      <span class="footer-cta"><strong>Follow</strong> for more engineering visuals</span>
-      <!-- REPLACE: URL -->
-      <span class="footer-url">yoursite.com</span>
-    </div>
+    <!-- Footer -->
 
   </div>
 </body>

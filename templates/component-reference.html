@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Component Reference — Design System</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    /* Reference page uses a taller canvas to show all components */
+    .infographic {
+      height: auto;
+      min-height: var(--canvas-height);
+      overflow: visible;
+      gap: 48px;
+      padding-bottom: 48px;
+    }
+    .ref-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .ref-section-title {
+      font-size: var(--text-sub);
+      line-height: var(--leading-sub);
+      font-weight: var(--weight-extrabold);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--border-accent);
+      padding-bottom: 8px;
+    }
+    .ref-row {
+      display: flex;
+      gap: 8px;
+      align-items: start;
+    }
+    .ref-note {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-dim);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 1: TYPOGRAPHY SCALE
+         ═══════════════════════════════════════════════════════ -->
+    <div class="ref-section">
+      <div class="ref-section-title">Typography Scale — 7 Sizes, 4 Tiers</div>
+
+      <div style="font-size: var(--text-display); line-height: var(--leading-display); font-weight: var(--weight-extrabold); letter-spacing: var(--tracking-display-sans); color: var(--text-primary);">
+        Display 74px
+      </div>
+
+      <div style="font-size: var(--text-display-sm); line-height: var(--leading-display-sm); font-weight: var(--weight-extrabold); color: var(--text-primary);">
+        Display Small 56px
+      </div>
+
+      <div style="font-size: var(--text-h2); line-height: var(--leading-h2); font-weight: var(--weight-extrabold); letter-spacing: var(--tracking-card-title); color: var(--text-primary);">
+        Card Title 28px — heading tier
+      </div>
+
+      <div style="font-family: var(--font-serif); font-size: var(--text-sub); line-height: var(--leading-sub); font-style: italic; color: var(--text-muted);">
+        Subtitle 22px — Crimson Text italic
+      </div>
+
+      <div style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--text-secondary);">
+        Body 18px — primary reading text. <strong style="font-weight: var(--weight-bold); color: var(--text-primary);">Bold keywords</strong> create scan points for fast-scrolling readers on LinkedIn.
+      </div>
+
+      <div style="font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--text-secondary);">
+        Body Small 17px — secondary body, item descriptions, dense lists. <strong style="font-weight: var(--weight-bold); color: var(--text-primary);">Bold scan points</strong> still work at this size.
+      </div>
+
+      <div style="font-size: var(--text-meta); line-height: var(--leading-meta); font-weight: var(--weight-extrabold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary);">
+        META 14PX — LABELS, PILLS, BADGES, FOOTER (THE FLOOR)
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 2: HEADER TIERS
+         ═══════════════════════════════════════════════════════ -->
+    <div class="ref-section">
+      <div class="ref-section-title">Header — 3 Tiers</div>
+
+      <div class="hd" style="margin-bottom: 0;">
+        <h1>Tier 1: Single Line Title</h1>
+      </div>
+
+      <div class="hd hd--with-sub" style="margin-bottom: 0;">
+        <h1>Tier 2: Title + Subtitle</h1>
+        <p class="sub">A secondary line in Crimson Text italic</p>
+      </div>
+
+      <div class="hd hd--two-line" style="margin-bottom: 0;">
+        <h1>Tier 3: Two-Line Title That Wraps</h1>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 3: CARDS + TINT PALETTE
+         ═══════════════════════════════════════════════════════ -->
+    <div class="ref-section">
+      <div class="ref-section-title">Card Tint Palette — 5 Colors</div>
+
+      <div class="ref-row">
+        <div class="card card-tint--terracotta" style="flex: 1; min-height: 80px;">
+          <div class="section-label section-label--accent">Terracotta</div>
+          <p class="card-body">Warm amber glow. Use for intros, categories.</p>
+        </div>
+        <div class="card card-tint--sage" style="flex: 1; min-height: 80px;">
+          <div class="section-label section-label--accent">Sage</div>
+          <p class="card-body">Cool teal. Use for popular items, build steps.</p>
+        </div>
+        <div class="card card-tint--sky" style="flex: 1; min-height: 80px;">
+          <div class="section-label section-label--accent">Sky</div>
+          <p class="card-body">Clean blue. Use for phases, partners.</p>
+        </div>
+        <div class="card card-tint--sand" style="flex: 1; min-height: 80px;">
+          <div class="section-label section-label--accent">Sand</div>
+          <p class="card-body">Warm gold. Use for anatomy, file structures.</p>
+        </div>
+        <div class="card card-tint--lavender" style="flex: 1; min-height: 80px;">
+          <div class="section-label section-label--accent">Lavender</div>
+          <p class="card-body">Cool purple. Use for install paths, how-to.</p>
+        </div>
+      </div>
+
+      <div class="ref-row">
+        <div class="card" style="flex: 1; min-height: 80px;">
+          <div class="section-label">Default Card</div>
+          <p class="card-body">No tint — uses <strong>--bg-card</strong> background.</p>
+        </div>
+        <div class="card card--raised" style="flex: 1; min-height: 80px;">
+          <div class="section-label">Raised Card</div>
+          <p class="card-body">Elevated — uses <strong>--bg-raised</strong> background.</p>
+        </div>
+        <div class="card card--accent" style="flex: 1; min-height: 80px;">
+          <div class="section-label section-label--accent">Accent Card</div>
+          <p class="card-body">Terracotta glow — uses <strong>--accent-glow</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 4: CARD CONTENT RECIPES
+         ═══════════════════════════════════════════════════════ -->
+    <div class="ref-section">
+      <div class="ref-section-title">Card Content Recipes</div>
+
+      <div class="ref-row">
+        <!-- Recipe 1: Prose Card -->
+        <div class="card card-tint--terracotta" style="flex: 1; height: 280px;">
+          <div class="section-label section-label--accent">Prose Card</div>
+          <p class="card-body">
+            <strong>Bold lead sentence</strong> introduces the topic. Followed by
+            supporting body text with <strong>bold scan points</strong> every 1-2 lines
+            for readers scrolling fast on mobile.
+          </p>
+          <div class="pills">
+            <span class="pill pill--accent">Accent</span>
+            <span class="pill">Default</span>
+            <span class="pill">Tag</span>
+          </div>
+        </div>
+
+        <!-- Recipe 2: Ranked List -->
+        <div class="card card-tint--sage" style="flex: 1; height: 280px;">
+          <div class="section-label section-label--accent">Ranked List</div>
+          <div class="skill-list">
+            <div class="skill-item">
+              <span class="num-square num-square--md">1</span>
+              <span class="skill-name">First Item</span>
+              <span class="skill-stars">12.4K</span>
+            </div>
+            <div class="skill-item">
+              <span class="num-square num-square--md">2</span>
+              <span class="skill-name">Second Item</span>
+              <span class="skill-stars">8.2K</span>
+            </div>
+            <div class="skill-item">
+              <span class="num-square num-square--md">3</span>
+              <span class="skill-name">Third Item</span>
+              <span class="skill-stars">5.1K</span>
+            </div>
+            <div class="skill-item">
+              <span class="num-square num-square--md">4</span>
+              <span class="skill-name">Fourth Item</span>
+              <span class="skill-stars">3.7K</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe 3: Phase/Flow -->
+        <div class="card card-tint--sky" style="flex: 1; height: 280px;">
+          <div class="section-label section-label--accent">Phase Flow</div>
+          <div class="phase-list">
+            <div class="phase-item">
+              <span class="num-circle">1</span>
+              <span class="phase-title">Initialize <span>— set up config</span></span>
+            </div>
+            <div class="phase-item">
+              <span class="num-circle">2</span>
+              <span class="phase-title">Process <span>— run pipeline</span></span>
+            </div>
+            <div class="phase-item">
+              <span class="num-circle">3</span>
+              <span class="phase-title">Deploy <span>— push to prod</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ref-row">
+        <!-- Recipe 4: Label-Body -->
+        <div class="card card-tint--sand" style="flex: 1; height: 280px;">
+          <div class="section-label section-label--accent">Label-Body</div>
+          <div class="install-paths">
+            <div>
+              <div class="install-path-label">Personal</div>
+              <p class="install-path-body"><strong>Global config</strong> in home directory. Applies to all projects.</p>
+            </div>
+            <div>
+              <div class="install-path-label">Project</div>
+              <p class="install-path-body"><strong>Per-repo config</strong> in .config/ directory. Overrides personal.</p>
+            </div>
+            <div>
+              <div class="install-path-label">Registry</div>
+              <p class="install-path-body"><strong>Shared packages</strong> published to npm or private registry.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe 5: Anatomy/Icon -->
+        <div class="card card-tint--lavender" style="flex: 1; height: 280px;">
+          <h3 class="card-title">Inside the Config</h3>
+          <div class="anatomy-list">
+            <div class="anatomy-item">
+              <span class="anatomy-icon">Y</span>
+              <div>
+                <div class="anatomy-item-label">YAML Config</div>
+                <p class="anatomy-item-body"><strong>Schema-validated</strong> settings for plugins and tools.</p>
+              </div>
+            </div>
+            <div class="anatomy-item">
+              <span class="anatomy-icon">M</span>
+              <div>
+                <div class="anatomy-item-label">Markdown Docs</div>
+                <p class="anatomy-item-body"><strong>Auto-generated</strong> from inline docstrings and types.</p>
+              </div>
+            </div>
+            <div class="anatomy-item">
+              <span class="anatomy-icon">F</span>
+              <div>
+                <div class="anatomy-item-label">Functions</div>
+                <p class="anatomy-item-body"><strong>Exported handlers</strong> for lifecycle hooks.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diamond list -->
+        <div class="card" style="flex: 1; height: 280px;">
+          <div class="section-label section-label--accent">Diamond List</div>
+          <ul class="dlist" style="flex: 1; justify-content: space-between;">
+            <li><strong>First point</strong> — explanation of the concept with bold keyword.</li>
+            <li><strong>Second point</strong> — another supporting detail for the reader.</li>
+            <li><strong>Third point</strong> — final item wraps up the section cleanly.</li>
+            <li><strong>Fourth point</strong> — lists should have 3-5 items per card.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 5: PILLS, BADGES & NUMBER BADGES
+         ═══════════════════════════════════════════════════════ -->
+    <div class="ref-section">
+      <div class="ref-section-title">Pills, Badges &amp; Number Badges</div>
+
+      <div class="ref-row">
+        <div class="card" style="flex: 1;">
+          <div class="section-label">Pills (14px)</div>
+          <div class="pills" style="margin-top: 0;">
+            <span class="pill">Default</span>
+            <span class="pill pill--accent">Accent</span>
+            <span class="pill">Another</span>
+            <span class="pill pill--accent">Highlighted</span>
+          </div>
+        </div>
+
+        <div class="card" style="flex: 1;">
+          <div class="section-label">Badges (14px)</div>
+          <div class="badge-grid">
+            <span class="badge">Default</span>
+            <span class="badge badge--primary">Primary</span>
+            <span class="badge">Partner</span>
+            <span class="badge badge--primary">Featured</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ref-row">
+        <div class="card" style="flex: 1;">
+          <div class="section-label">Circles — sequential flows</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span class="num-circle">1</span>
+            <span class="num-circle">2</span>
+            <span class="num-circle">3</span>
+            <span class="ref-note">36px. Use for 1→2→3 flows.</span>
+          </div>
+        </div>
+
+        <div class="card" style="flex: 1;">
+          <div class="section-label">Squares — ranked lists</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span class="num-square num-square--md">1</span>
+            <span class="num-square num-square--md">2</span>
+            <span class="num-square num-square--md">3</span>
+            <span class="ref-note">32px md. Use for ranked items.</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+            <span class="num-square num-square--sm">1</span>
+            <span class="num-square num-square--sm">2</span>
+            <span class="num-square num-square--sm">3</span>
+            <span class="ref-note">28px sm. Use for build steps.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 6: FOOTER
+         ═══════════════════════════════════════════════════════ -->
+    <div class="ref-section">
+      <div class="ref-section-title">Footer Bar</div>
+      <div class="ref-note">All footer text uses --text-meta (14px). Dark background, accent CTA keyword.</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+      <span class="footer-brand">OWAIN LEWIS</span>
+      <span class="footer-cta"><strong>Follow</strong> for tech and AI content</span>
+      <span class="footer-url">youtube.com/@owainlewis</span>
+    </div>
+
+  </div>
+</body>
+</html>

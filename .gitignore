@@ -7,6 +7,9 @@ out
 dist
 *.tgz
 
+# Tailwind compiled output
+src/tw/out.css
+
 # code coverage
 coverage
 *.lcov

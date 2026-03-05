@@ -4,10 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run src/export/server.ts",
-    "export": "bun run src/export/cli.ts"
+    "dev": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --watch & bun run src/export/server.ts",
+    "tw:watch": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --watch",
+    "tw:build": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --minify",
+    "export": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --minify && bun run src/export/cli.ts",
+    "new": "bun run src/export/new.ts"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
     "@types/bun": "^1.3.9",
     "typescript": "^5.9.3"
   },

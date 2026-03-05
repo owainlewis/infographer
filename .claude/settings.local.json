@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ps aux --sort=-%cpu)",
+      "Bash(ps aux -r)"
+    ]
+  }
+}

@@ -8,12 +8,89 @@
   <link rel="stylesheet" href="/src/tw/out.css">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
   <style>
-    /* ── EDITORIAL — No local overrides needed.
-       All components from components.css:
-       .zbox, .zlabel, .zone-body, .row-2col, .mid-row,
-       .arrow-list, .cmp, .feat-table, .pr-grid, .wf-steps,
-       .gs-list, .tip-box
-       ────────────────────────────────────────────────────── */
+    /* ── EDITORIAL — Magazine-style zones ──────────────────── */
+
+    /* Tighter header for content-heavy layout */
+    .hd { margin-bottom: 24px; }
+
+    /* Content gap */
+    .content { gap: 14px; }
+
+    /* Zone label accent bar */
+    .zlabel {
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border-accent);
+      margin-bottom: 16px;
+    }
+    .zlabel--secondary {
+      border-bottom-color: var(--border-medium);
+    }
+
+    /* Tighter zone body spacing */
+    .zone-body {
+      margin-bottom: 12px;
+    }
+
+    /* Arrow list — slightly more gap */
+    .arrow-list {
+      gap: 10px;
+    }
+
+    /* Comparison columns — cleaner divider */
+    .cmp {
+      gap: 20px;
+    }
+
+    /* Feature table — tighter rows */
+    .feat-table td,
+    .feat-table th {
+      padding: 10px 14px;
+    }
+
+    /* Mid-row cards fill height */
+    .mid-row {
+      gap: 14px;
+    }
+    .mid-row .zbox {
+      justify-content: flex-start;
+    }
+
+    /* Numbered items — vertical breathing room */
+    .pr-grid {
+      gap: 14px;
+    }
+
+    /* Workflow steps */
+    .wf-steps {
+      gap: 14px;
+    }
+
+    /* Getting started list */
+    .gs-list {
+      gap: 14px;
+    }
+
+    /* Tip box — accent background with better contrast */
+    .tip-box {
+      padding: 24px;
+    }
+    .tip-box .zlabel {
+      border-bottom: 2px solid var(--border-accent);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    /* Bottom row: equal height */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .bottom-row .zbox,
+    .bottom-row .tip-box {
+      display: flex;
+      flex-direction: column;
+    }
   </style>
 </head>
 <body>
@@ -33,7 +110,7 @@
         <!-- REPLACE: Left card — overview / definition -->
         <div class="zbox">
           <span class="zlabel">What Is It?</span>
-          <p class="zone-body">A short definition or overview of the topic. Keep it to 2-3 sentences that give the reader immediate context and understanding.</p>
+          <p class="zone-body">A short definition or overview of the topic. Keep it to 2–3 sentences that give the reader <strong>immediate context</strong> and understanding.</p>
           <ul class="arrow-list">
             <li><strong>Key capability</strong> or feature one</li>
             <li><strong>Key capability</strong> or feature two</li>
@@ -67,16 +144,16 @@
       <!-- Row 2: Feature table (full width) -->
       <div class="zbox zbox--raised">
         <!-- REPLACE: Table section label -->
-        <span class="zlabel">Core Features</span>
+        <span class="zlabel zlabel--secondary">Core Features</span>
         <!-- REPLACE: Table rows -->
         <table class="feat-table">
           <thead>
             <tr><th>Feature</th><th>What It Does</th><th>Why It Matters</th></tr>
           </thead>
           <tbody>
-            <tr><td>Feature One</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
-            <tr><td>Feature Two</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
-            <tr><td>Feature Three</td><td>Description of what this feature does</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature One</td><td>Description of what this feature does in a sentence</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Two</td><td>Description of what this feature does in a sentence</td><td>Why the reader should care about it.</td></tr>
+            <tr><td>Feature Three</td><td>Description of what this feature does in a sentence</td><td>Why the reader should care about it.</td></tr>
           </tbody>
         </table>
       </div>
@@ -87,9 +164,27 @@
         <div class="zbox">
           <span class="zlabel">Examples You Can Try</span>
           <div class="pr-grid">
-            <div class="pr-item"><span class="pr-num">1</span><div><div class="pr-title">Example title one</div><div class="pr-desc">"Specific prompt or instruction to try."</div></div></div>
-            <div class="pr-item"><span class="pr-num">2</span><div><div class="pr-title">Example title two</div><div class="pr-desc">"Specific prompt or instruction to try."</div></div></div>
-            <div class="pr-item"><span class="pr-num">3</span><div><div class="pr-title">Example title three</div><div class="pr-desc">"Specific prompt or instruction to try."</div></div></div>
+            <div class="pr-item">
+              <span class="pr-num">1</span>
+              <div>
+                <div class="pr-title">Example title one</div>
+                <div class="pr-desc">"Specific prompt or instruction to try."</div>
+              </div>
+            </div>
+            <div class="pr-item">
+              <span class="pr-num">2</span>
+              <div>
+                <div class="pr-title">Example title two</div>
+                <div class="pr-desc">"Specific prompt or instruction to try."</div>
+              </div>
+            </div>
+            <div class="pr-item">
+              <span class="pr-num">3</span>
+              <div>
+                <div class="pr-title">Example title three</div>
+                <div class="pr-desc">"Specific prompt or instruction to try."</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -102,21 +197,21 @@
               <span class="wf-badge">Step 1</span>
               <div>
                 <div class="wf-title">First action to take</div>
-                <p class="wf-desc">Brief description of what happens.</p>
+                <p class="wf-desc">Brief description of what happens in this step.</p>
               </div>
             </div>
             <div class="wf-step">
               <span class="wf-badge">Step 2</span>
               <div>
                 <div class="wf-title">Second action to take</div>
-                <p class="wf-desc">Brief description of what happens.</p>
+                <p class="wf-desc">Brief description of what happens in this step.</p>
               </div>
             </div>
             <div class="wf-step">
               <span class="wf-badge">Step 3</span>
               <div>
                 <div class="wf-title">Final action and result</div>
-                <p class="wf-desc">Brief description of what happens.</p>
+                <p class="wf-desc">Brief description of what happens in this step.</p>
               </div>
             </div>
           </div>
@@ -124,7 +219,7 @@
       </div>
 
       <!-- Row 4: Getting started + Pro tip -->
-      <div class="row-2col">
+      <div class="bottom-row">
         <!-- REPLACE: Left card — quick start checklist -->
         <div class="zbox">
           <span class="zlabel">Getting Started</span>
@@ -142,6 +237,8 @@
       </div>
 
     </div>
+
+    <!-- Footer -->
 
   </div>
 </body>

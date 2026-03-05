@@ -3,7 +3,7 @@ import { readFile, writeFile, access } from "fs/promises";
 
 const PROJECT_ROOT = resolve(import.meta.dir, "../..");
 
-const LAYOUTS = ["bento", "catalog", "3col", "stack", "editorial"] as const;
+const LAYOUTS = ["bento", "catalog", "3col", "stack", "editorial", "dashboard"] as const;
 const THEMES = ["light", "dark"] as const;
 
 type Layout = (typeof LAYOUTS)[number];
@@ -126,10 +126,6 @@ async function main() {
     /<h1>.*?<\/h1>/s,
     `<h1>${formatTitle(title)}</h1>`
   );
-
-  // Replace footer brand + URL
-  html = html.replace(/YOUR BRAND/g, "OWAIN LEWIS");
-  html = html.replace(/yoursite\.com/g, "youtube.com/@owainlewis");
 
   // Set theme via data-theme attribute
   html = html.replace(/data-theme="(dark|light)"/, `data-theme="${theme}"`);

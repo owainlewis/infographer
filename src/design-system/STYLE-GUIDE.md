@@ -6,6 +6,42 @@ Practical rules for producing LinkedIn infographics with fewer iterations. This 
 
 ---
 
+## 0. Typography Scale — THE LAW
+
+7 sizes, 4 tiers. Major Third (×1.25) from 18px base. **Nothing smaller than 14px — EVER.**
+
+```
+Tier       Token              Size   Line-H  @51%     Role
+────────   ──────────────     ────   ──────  ─────    ─────────────────────────
+Display    --text-display     74px   80px    37.7px   Hero title
+Display    --text-display-sm  56px   64px    28.6px   Two-line / subtitle title
+Heading    --text-h2          28px   32px    14.3px   Card title
+Heading    --text-sub         22px   28px    11.2px   Subtitle, intro accent
+Body       --text-body        18px   28px     9.2px   Primary body text
+Body       --text-body-sm     17px   24px     8.7px   Secondary body, items
+Meta       --text-meta        14px   20px     7.1px   Labels, pills, badges, footer
+```
+
+### Rules
+
+1. **Every font-size MUST use a `var(--text-*)` token.** Never hardcode px values for readable text.
+2. **14px is the floor.** If text needs to be smaller, it doesn't belong in the design.
+3. **Decorative numbers** (listicle numbers, band numbers, stat callouts) are exempt — they're visual impact, not reading text. Hardcode their size with a comment: `/* Decorative — outside scale */`
+4. **The 17px/18px pair** is for body text: 18px for primary reading, 17px for dense item lists.
+5. **Don't invent sizes between tiers.** If 14px is too small and 17px is too big, use 17px.
+
+### Why these sizes
+
+```
+14 × 1.25 = 17.5 → 18 (body)
+18 × 1.25 = 22.5 → 22 (subtitle)
+22 × 1.25 = 27.5 → 28 (card title)
+74px = anchored to canvas proportion (6.85%)
+17px = half-step between meta and body for dense content
+```
+
+---
+
 ## 1. Content Budgets Per Card Size
 
 Every card has a fixed pixel budget. Content that exceeds it clips silently (`overflow: hidden`). Content that falls short creates dead space. The math below is based on the bento grid (4 equal rows).

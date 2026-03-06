@@ -30,8 +30,6 @@ bun run new "Title" --layout bento --theme dark  # Scaffold new infographic
 | `bento` | General purpose, 9-card asymmetric grid |
 | `catalog` | "6 types of X", equal 3×2 grid |
 | `stack` | "N layers of X", full-width bands |
-| `editorial` | Guides with tables, workflows, tips |
-| `dashboard` | Data-driven, stat row + detail grid |
 
 ## Key Files
 

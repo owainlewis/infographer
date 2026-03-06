@@ -47,10 +47,7 @@ function injectLiveReload(html: string): string {
 const LAYOUT_INFO: Record<string, { name: string; desc: string; grid: string }> = {
   bento:     { name: "Bento",      desc: "9 cards, asymmetric 3×4 grid",    grid: "3×4" },
   catalog:   { name: "Catalog",    desc: "6 equal cards, 3×2 grid",         grid: "3×2" },
-  "3col":    { name: "Three-Col",  desc: "3 full-height columns",           grid: "3×1" },
   stack:     { name: "Stack",      desc: "5 full-width horizontal bands",    grid: "1×5" },
-  editorial: { name: "Editorial",  desc: "Magazine-style mixed sections",    grid: "mixed" },
-  dashboard: { name: "Dashboard",  desc: "7 cards, stat row + detail grid",   grid: "3×3" },
 };
 
 async function getInfographicFiles(): Promise<string[]> {
@@ -103,21 +100,23 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --sidebar-w: 240px;
+      --sidebar-w: 256px;
       --bg-app: #09090b;
-      --bg-sidebar: #0f0f11;
-      --bg-card: #141416;
-      --bg-card-hover: #1a1a1e;
-      --bg-surface: #18181b;
-      --border: #1f1f23;
-      --border-hover: #2e2e33;
+      --bg-sidebar: #09090b;
+      --bg-card: rgba(255,255,255,0.03);
+      --bg-card-hover: rgba(255,255,255,0.05);
+      --bg-surface: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.10);
       --text-primary: #fafafa;
       --text-secondary: #a1a1aa;
       --text-muted: #52525b;
-      --accent: #c15f3c;
-      --accent-dim: rgba(193, 95, 60, 0.12);
-      --radius: 10px;
-      --radius-sm: 6px;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --accent-dim: rgba(99,102,241,0.10);
+      --accent-dim-hover: rgba(99,102,241,0.16);
+      --radius: 12px;
+      --radius-sm: 8px;
       --transition: 0.15s ease;
     }
 
@@ -146,24 +145,25 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     }
 
     .sidebar-brand {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid var(--border);
+      padding: 28px 24px 24px;
     }
     .sidebar-brand h1 {
-      font-size: 17px;
+      font-size: 20px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      color: #fff;
     }
-    .sidebar-brand h1 span { color: var(--accent); }
     .sidebar-brand p {
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 500;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .sidebar-nav {
-      padding: 12px 10px;
+      padding: 8px 12px;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -173,29 +173,30 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
+      gap: 12px;
+      padding: 10px 14px;
       border-radius: var(--radius-sm);
       text-decoration: none;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       font-size: 13px;
       font-weight: 500;
       transition: all var(--transition);
     }
     .nav-item:hover {
-      background: var(--bg-card);
-      color: var(--text-primary);
+      background: var(--bg-card-hover);
+      color: var(--text-secondary);
     }
     .nav-item.active {
       background: var(--accent-dim);
       color: var(--accent);
     }
     .nav-item svg {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
-      opacity: 0.6;
+      opacity: 0.4;
     }
+    .nav-item:hover svg { opacity: 0.7; }
     .nav-item.active svg { opacity: 1; }
     .nav-label { flex: 1; }
     .nav-count {
@@ -203,31 +204,32 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       font-weight: 600;
       color: var(--text-muted);
       background: var(--bg-surface);
-      padding: 1px 7px;
-      border-radius: 10px;
-      min-width: 20px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      min-width: 24px;
       text-align: center;
     }
     .nav-item.active .nav-count {
       color: var(--accent);
-      background: rgba(193, 95, 60, 0.08);
+      background: var(--accent-dim);
     }
 
     .sidebar-footer {
-      padding: 16px 20px;
+      padding: 20px 24px;
       border-top: 1px solid var(--border);
     }
     .sidebar-cmd {
       font-size: 11px;
       font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.7;
     }
     .sidebar-cmd code {
       color: var(--accent);
       background: var(--accent-dim);
-      padding: 1px 5px;
-      border-radius: 3px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
     }
 
     /* ── Main content ────────────────────────────── */
@@ -240,21 +242,22 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     }
 
     .page-header {
-      padding: 32px 40px 0;
+      padding: 40px 48px 0;
     }
     .page-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
     }
     .page-subtitle {
       font-size: 14px;
       color: var(--text-muted);
+      margin-top: 4px;
     }
 
     .page-content {
-      padding: 24px 40px 48px;
+      padding: 28px 48px 48px;
       flex: 1;
     }
 
@@ -273,12 +276,12 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      transition: all var(--transition);
     }
     .card:hover {
       border-color: var(--border-hover);
       transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     }
     .card:hover .card-label { color: var(--text-primary); }
 
@@ -300,11 +303,11 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     }
 
     .card-label {
-      padding: 10px 14px;
+      padding: 12px 16px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       text-transform: capitalize;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       border-top: 1px solid var(--border);
       transition: color var(--transition);
       white-space: nowrap;
@@ -323,8 +326,8 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
-      transition: border-color var(--transition);
+      padding: 20px;
+      transition: all var(--transition);
     }
     .tpl-card:hover { border-color: var(--border-hover); }
 
@@ -340,12 +343,14 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       color: var(--text-primary);
     }
     .tpl-badge {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--accent);
       background: var(--accent-dim);
-      padding: 2px 8px;
-      border-radius: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .tpl-desc {
       font-size: 13px;
@@ -364,13 +369,13 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       border-radius: var(--radius-sm);
       overflow: hidden;
       border: 1px solid var(--border);
-      transition: border-color var(--transition);
+      transition: all var(--transition);
     }
     .tpl-thumb:hover { border-color: var(--accent); }
     .tpl-thumb .thumb-wrap { aspect-ratio: 1080 / 1350; }
     .tpl-variant-label {
       display: block;
-      padding: 5px 8px;
+      padding: 6px 8px;
       font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
@@ -391,31 +396,31 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 24px;
     }
     .stat-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
-    }
-    .stat-value {
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text-primary);
-    }
-    .stat-value span { color: var(--accent); }
-
-    .home-section-title {
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       margin-bottom: 12px;
+    }
+    .stat-value {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+    }
+    .stat-value span { color: var(--accent); }
+
+    .home-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
     }
 
     .recent-grid {
@@ -434,13 +439,13 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 18px;
+      padding: 10px 20px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: var(--bg-card);
       color: var(--text-secondary);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       text-decoration: none;
       transition: all var(--transition);
     }
@@ -450,14 +455,12 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       background: var(--bg-card-hover);
     }
     .quick-btn--accent {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-dim);
+      border-color: transparent;
+      color: #fff;
+      background: var(--accent);
     }
     .quick-btn--accent:hover {
-      background: rgba(193, 95, 60, 0.18);
-      border-color: var(--accent);
-      color: var(--accent);
+      background: var(--accent-hover);
     }
 
     /* ── Empty state ─────────────────────────────── */
@@ -491,7 +494,7 @@ function shell(activePage: string, title: string, content: string, counts: { inf
 <body>
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <h1>Infogra<span>.</span>pher</h1>
+      <h1>Infographer</h1>
       <p>Dev Server</p>
     </div>
     <nav class="sidebar-nav">
@@ -550,7 +553,7 @@ async function buildHomePage(): Promise<string> {
       </div>
       <div class="stat-card">
         <div class="stat-label">Layouts</div>
-        <div class="stat-value">${Object.keys(groups).length}</div>
+        <div class="stat-value">${Object.keys(LAYOUT_INFO).length}</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Themes</div>
@@ -633,16 +636,19 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
     .toolbar {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px; height: 52px;
-      background: #0f0f11;
-      border-bottom: 1px solid #1f1f23;
+      padding: 0 20px; height: 48px;
+      background: rgba(9,9,11,0.85);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
       flex-shrink: 0;
     }
-    .toolbar-left { display: flex; align-items: center; gap: 16px; }
+    .toolbar-left { display: flex; align-items: center; gap: 12px; }
     .back {
       display: inline-flex; align-items: center; gap: 6px;
       color: #52525b; text-decoration: none; font-size: 13px; font-weight: 500;
@@ -650,20 +656,20 @@ function generatePreview(filename: string, dir: string = "infographics"): string
     }
     .back:hover { color: #fafafa; }
     .back svg { width: 14px; height: 14px; }
-    .divider { width: 1px; height: 20px; background: #1f1f23; }
-    .filename { font-size: 13px; font-weight: 600; color: #a1a1aa; }
-    .toolbar-center { display: flex; align-items: center; gap: 16px; }
-    .zoom-controls { display: flex; gap: 3px; }
+    .divider { width: 1px; height: 16px; background: rgba(255,255,255,0.08); }
+    .filename { font-size: 12px; font-weight: 500; color: #71717a; font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace; }
+    .toolbar-center { display: flex; align-items: center; gap: 12px; }
+    .zoom-controls { display: flex; gap: 2px; background: rgba(255,255,255,0.04); border-radius: 8px; padding: 2px; }
+    .theme-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.04); border-radius: 8px; padding: 2px; }
     .zoom-btn, .theme-btn {
-      padding: 5px 12px; border: 1px solid #1f1f23; border-radius: 6px;
+      padding: 5px 12px; border: none; border-radius: 6px;
       background: transparent; color: #52525b; font-family: inherit;
-      font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+      font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s;
     }
-    .zoom-btn:hover, .theme-btn:hover { border-color: #2e2e33; color: #a1a1aa; }
-    .zoom-btn.active { border-color: #c15f3c; color: #c15f3c; background: rgba(193,95,60,0.06); }
-    .theme-toggle { display: flex; gap: 3px; }
-    .theme-btn.active { border-color: #c15f3c; color: #c15f3c; background: rgba(193,95,60,0.06); }
-    .theme-btn svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 4px; }
+    .zoom-btn:hover, .theme-btn:hover { color: #a1a1aa; }
+    .zoom-btn.active { color: #fafafa; background: rgba(255,255,255,0.08); }
+    .theme-btn.active { color: #fafafa; background: rgba(255,255,255,0.08); }
+    .theme-btn svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px; }
     .toolbar-right { display: flex; align-items: center; gap: 12px; }
     .raw-link {
       font-size: 12px; color: #52525b; text-decoration: none; font-weight: 500; transition: color 0.15s;
@@ -671,12 +677,12 @@ function generatePreview(filename: string, dir: string = "infographics"): string
     .raw-link:hover { color: #a1a1aa; }
     .download-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 14px; border-radius: 6px; border: 1px solid #c15f3c;
-      background: rgba(193,95,60,0.1); color: #c15f3c;
+      padding: 6px 14px; border-radius: 8px; border: none;
+      background: #6366f1; color: #fff;
       font-family: inherit; font-size: 12px; font-weight: 600;
       cursor: pointer; transition: all 0.15s; text-decoration: none;
     }
-    .download-btn:hover { background: rgba(193,95,60,0.2); }
+    .download-btn:hover { background: #818cf8; }
     .download-btn.loading { opacity: 0.5; pointer-events: none; }
     .download-btn svg { width: 14px; height: 14px; }
     .preview-area {
@@ -687,8 +693,8 @@ function generatePreview(filename: string, dir: string = "infographics"): string
     }
     .iframe-wrap { transform-origin: top center; transition: transform 0.2s ease; cursor: default; }
     .iframe-wrap iframe {
-      width: 1080px; height: 1350px; border: none; display: block; border-radius: 6px;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.5);
+      width: 1080px; height: 1350px; border: none; display: block; border-radius: 8px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 24px 64px rgba(0,0,0,0.6);
       overflow: hidden;
       pointer-events: none;
       user-select: none;
@@ -783,7 +789,20 @@ function generatePreview(filename: string, dir: string = "infographics"): string
         });
       } catch(e) {}
     }
-    iframe.addEventListener('load', syncThemeButtons);
+    iframe.addEventListener('load', function() {
+      syncThemeButtons();
+      try {
+        var ig = iframe.contentDocument.querySelector('.infographic');
+        var current = ig ? ig.getAttribute('data-theme') || 'dark' : 'dark';
+        updateDownloadTheme(current);
+      } catch(e) {}
+    });
+    function updateDownloadTheme(theme) {
+      if (dlBtn) {
+        var base = '/export/${filename}';
+        dlBtn.href = base + '?theme=' + theme;
+      }
+    }
     themeBtns.forEach(function(btn) {
       btn.addEventListener('click', function() {
         try {
@@ -791,6 +810,7 @@ function generatePreview(filename: string, dir: string = "infographics"): string
           if (ig) ig.setAttribute('data-theme', btn.dataset.theme);
           themeBtns.forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
+          updateDownloadTheme(btn.dataset.theme);
         } catch(e) {}
       });
     });
@@ -874,7 +894,8 @@ const server = Bun.serve({
       const htmlFile = join(PROJECT_ROOT, "infographics", filename);
       if (await Bun.file(htmlFile).exists()) {
         try {
-          const pngPath = await exportPng(`infographics/${filename}`);
+          const theme = url.searchParams.get("theme") || undefined;
+          const pngPath = await exportPng(`infographics/${filename}`, "output", theme);
           const pngFile = Bun.file(pngPath);
           const pngName = filename.replace(".html", "-2x.png");
           return new Response(pngFile, {

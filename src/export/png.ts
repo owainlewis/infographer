@@ -5,7 +5,8 @@ import { startLocalServer } from "./local-server";
 
 export async function exportPng(
   htmlPath: string,
-  outputDir: string = "output"
+  outputDir: string = "output",
+  theme?: string
 ): Promise<string> {
   const name = basename(htmlPath, ".html");
   const outPath = resolve(outputDir, `${name}-2x.png`);
@@ -30,6 +31,14 @@ export async function exportPng(
     await page.goto(`${baseUrl}/${htmlPath}`, {
       waitUntil: "networkidle0",
     });
+
+    // Set theme if specified
+    if (theme) {
+      await page.evaluate((t) => {
+        const el = document.querySelector('.infographic');
+        if (el) el.setAttribute('data-theme', t);
+      }, theme);
+    }
 
     // Wait for fonts to load
     await page.evaluate(() => document.fonts.ready);

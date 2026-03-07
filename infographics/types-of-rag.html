@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>6 Types Of RAG (I Actually Use)</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* -- CATALOG -- 6 equal cards, 3x2 grid */
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+    /* -- LinkedIn contrast boost -- */
+    [data-theme="dark"] .card {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared SVG defs (hidden) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-dim" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--svg-line-dim)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>6 Types Of RAG (I Actually Use)</h1>
+    </div>
+
+    <!-- Grid -- 6 cards in 3x2 -->
+    <div class="grid">
+
+      <!-- Card 01: Context Stuffing -->
+      <div class="card delay-1">
+        <div class="card-index">01</div>
+        <div class="card-title">Context Stuffing</div>
+        <p class="card-body"><strong>Load the entire document</strong> into the prompt. No chunking, no embeddings, no infrastructure. Just read the file and send it.</p>
+        <p class="card-highlight"><strong>Tip</strong> — With 200k+ context windows, this handles more than you think. Try it before building a pipeline.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 60" fill="none">
+            <rect x="2" y="10" width="56" height="40" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="30" y="26" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">Doc</text>
+            <text x="30" y="40" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="7">full text</text>
+            <line x1="62" y1="30" x2="108" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="85" y="22" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">paste</text>
+            <rect x="112" y="6" width="80" height="48" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="152" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">LLM</text>
+            <text x="152" y="40" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="7">200k context</text>
+            <line x1="196" y1="30" x2="232" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <rect x="236" y="14" width="22" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="247" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="14" font-weight="600">A</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Simplest</span>
+          <span class="pill">No infra</span>
+          <span class="pill">Long context</span>
+        </div>
+      </div>
+
+      <!-- Card 02: SQL RAG -->
+      <div class="card delay-2">
+        <div class="card-index">02</div>
+        <div class="card-title">SQL RAG</div>
+        <p class="card-body">Two flavors: <strong>text-to-SQL</strong> (LLM writes raw queries) or <strong>tool-use</strong> (agent calls functions that query the DB). No embeddings needed.</p>
+        <p class="card-highlight"><strong>Tip</strong> — Criminally underrated. Tool-use is safer in production. Text-to-SQL is powerful but needs guardrails.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 60" fill="none">
+            <rect x="2" y="14" width="56" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="30" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">Query</text>
+            <line x1="62" y1="30" x2="98" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="80" y="22" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">SQL</text>
+            <rect x="102" y="8" width="56" height="44" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="130" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Postgres</text>
+            <text x="130" y="40" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">SELECT *</text>
+            <line x1="162" y1="30" x2="198" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <text x="180" y="22" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">rows</text>
+            <rect x="202" y="14" width="54" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="229" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">LLM</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Structured</span>
+          <span class="pill">Tool-use</span>
+          <span class="pill">Text-to-SQL</span>
+        </div>
+      </div>
+
+      <!-- Card 03: Naive RAG -->
+      <div class="card delay-3">
+        <div class="card-index">03</div>
+        <div class="card-title">Naive RAG</div>
+        <p class="card-body">Chunk your docs, <strong>embed as vectors</strong>, embed the query, retrieve nearest neighbors by cosine similarity. The classic RAG pipeline.</p>
+        <p class="card-highlight"><strong>Tip</strong> — The default when docs exceed context limits. Chunk size and overlap matter more than which embedding model you pick.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 60" fill="none">
+            <rect x="2" y="14" width="56" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="30" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">Query</text>
+            <line x1="62" y1="30" x2="98" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="80" y="22" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">embed</text>
+            <rect x="102" y="8" width="56" height="44" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="130" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Vector</text>
+            <text x="130" y="40" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">DB</text>
+            <line x1="162" y1="30" x2="198" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <text x="180" y="22" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">top-k</text>
+            <rect x="202" y="14" width="54" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="229" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">LLM</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Semantic</span>
+          <span class="pill">Cosine sim</span>
+          <span class="pill">Embeddings</span>
+        </div>
+      </div>
+
+      <!-- Card 04: Keyword RAG -->
+      <div class="card delay-4">
+        <div class="card-index">04</div>
+        <div class="card-title">Keyword RAG</div>
+        <p class="card-body"><strong>Full-text search</strong> with BM25. Tokenize, match terms, rank by relevance with document length normalization. No embeddings required.</p>
+        <p class="card-highlight"><strong>Tip</strong> — Users search for error codes, product names, IDs. Vectors miss exact matches. Full-text nails them.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 60" fill="none">
+            <rect x="2" y="14" width="56" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="30" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">Query</text>
+            <line x1="62" y1="30" x2="98" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="80" y="22" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">BM25</text>
+            <rect x="102" y="8" width="56" height="44" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="130" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Full</text>
+            <text x="130" y="40" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Text</text>
+            <line x1="162" y1="30" x2="198" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <text x="180" y="22" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">ranked</text>
+            <rect x="202" y="14" width="54" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="229" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">LLM</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">BM25</span>
+          <span class="pill">Exact match</span>
+          <span class="pill">Proven</span>
+        </div>
+      </div>
+
+      <!-- Card 05: Hybrid RAG -->
+      <div class="card delay-5">
+        <div class="card-index">05</div>
+        <div class="card-title">Hybrid RAG</div>
+        <p class="card-body">Run <strong>semantic + keyword in parallel</strong>, then merge results with Reciprocal Rank Fusion. Better recall than either strategy alone.</p>
+        <p class="card-highlight"><strong>Tip</strong> — The production sweet spot. Postgres can do pgvector + tsvector in one query. One database, both strategies.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="20" width="50" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="27" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">Query</text>
+            <line x1="56" y1="30" x2="88" y2="16" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="56" y1="38" x2="88" y2="52" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <rect x="92" y="2" width="52" height="24" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="118" y="18" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="700">Vector</text>
+            <rect x="92" y="42" width="52" height="24" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1"/>
+            <text x="118" y="58" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="700">BM25</text>
+            <line x1="148" y1="16" x2="178" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <line x1="148" y1="52" x2="178" y2="38" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <rect x="182" y="20" width="36" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="200" y="32" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="7" font-weight="600">RRF</text>
+            <text x="200" y="44" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="7">merge</text>
+            <line x1="222" y1="34" x2="234" y2="34" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <rect x="238" y="22" width="20" height="24" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="248" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">LLM</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Best recall</span>
+          <span class="pill">RRF</span>
+          <span class="pill">Production</span>
+        </div>
+      </div>
+
+      <!-- Card 06: Agentic RAG -->
+      <div class="card delay-6">
+        <div class="card-index">06</div>
+        <div class="card-title">Agentic RAG</div>
+        <p class="card-body">The agent <strong>decides which retrieval strategy</strong> to use per query. Grep, read a file, vector search, SQL — it picks the right tool for the job.</p>
+        <p class="card-highlight"><strong>Tip</strong> — Claude Code does this over codebases: grep, glob, read files. It's agentic RAG and it works extremely well.</p>
+
+        <div class="diagram-wrap">
+          <svg class="diagram-svg" viewBox="0 0 260 68" fill="none">
+            <rect x="2" y="18" width="52" height="32" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="28" y="38" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Agent</text>
+            <!-- Fan out to tools -->
+            <line x1="58" y1="28" x2="98" y2="10" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="58" y1="34" x2="98" y2="34" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="58" y1="40" x2="98" y2="58" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- Tool boxes -->
+            <rect x="102" y="0" width="56" height="20" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="130" y="14" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">Grep</text>
+            <rect x="102" y="24" width="56" height="20" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="130" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">Read File</text>
+            <rect x="102" y="48" width="56" height="20" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="130" y="62" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">SQL</text>
+            <!-- Converge -->
+            <line x1="162" y1="10" x2="198" y2="28" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <line x1="162" y1="34" x2="198" y2="34" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <line x1="162" y1="58" x2="198" y2="40" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <rect x="202" y="20" width="54" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="229" y="38" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">LLM</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Tool-use</span>
+          <span class="pill">Routing</span>
+          <span class="pill">Multi-source</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+
+  </div>
+</body>
+</html>

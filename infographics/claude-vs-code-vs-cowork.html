@@ -40,16 +40,16 @@
       flex-shrink: 0;
     }
     .col-head--claude {
-      background: rgba(99, 102, 241, 0.06);
-      border: 1px solid var(--border-accent);
+      background: rgba(99, 102, 241, 0.08);
+      border: 1.5px solid var(--border-accent);
     }
     .col-head--code {
-      background: var(--accent-2-glow);
-      border: 1px solid var(--border-accent-2);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1.5px solid var(--border-accent-2);
     }
     .col-head--cowork {
-      background: rgba(251, 146, 60, 0.06);
-      border: 1px solid rgba(251, 146, 60, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
     }
 
     .col-icon {
@@ -63,7 +63,7 @@
     }
     .col-icon--claude { background: var(--accent); }
     .col-icon--code { background: var(--accent-2); }
-    .col-icon--cowork { background: #F97316; }
+    .col-icon--cowork { background: var(--text-muted); }
 
     .col-head-label {
       font-size: var(--text-meta);
@@ -74,7 +74,7 @@
     }
     .col-head--claude .col-head-label { color: var(--accent); }
     .col-head--code .col-head-label { color: var(--accent-2); }
-    .col-head--cowork .col-head-label { color: #F97316; }
+    .col-head--cowork .col-head-label { color: var(--text-secondary); }
 
     .col-head-name {
       font-size: var(--text-h2);
@@ -96,8 +96,8 @@
 
     /* ── Feature card ──────────────────────────── */
     .feat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--card-radius);
       padding: 0;
       display: flex;
@@ -125,7 +125,7 @@
     }
     .col--claude .feat-card-header-icon { background: var(--accent); }
     .col--code .feat-card-header-icon { background: var(--accent-2); }
-    .col--cowork .feat-card-header-icon { background: #F97316; }
+    .col--cowork .feat-card-header-icon { background: var(--text-muted); }
 
     .feat-card-title {
       font-size: var(--text-meta);
@@ -176,9 +176,9 @@
       border: 1px solid var(--border-accent-2);
     }
     .col--cowork .feat-pill {
-      background: rgba(251, 146, 60, 0.08);
-      color: #F97316;
-      border: 1px solid rgba(251, 146, 60, 0.20);
+      background: var(--bg-raised);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-medium);
     }
 
     .feat-desc {
@@ -209,7 +209,7 @@
     }
     .col--claude .how-check { background: var(--accent-glow); border: 1px solid var(--border-accent); }
     .col--code .how-check { background: var(--accent-2-glow); border: 1px solid var(--border-accent-2); }
-    .col--cowork .how-check { background: rgba(251, 146, 60, 0.08); border: 1px solid rgba(251, 146, 60, 0.20); }
+    .col--cowork .how-check { background: var(--bg-raised); border: 1px solid var(--border-medium); }
 
     .how-text {
       font-size: var(--text-meta);
@@ -225,16 +225,16 @@
       flex-shrink: 0;
     }
     .col--claude .best-for {
-      background: rgba(99, 102, 241, 0.05);
+      background: rgba(99, 102, 241, 0.06);
       border-color: var(--border-accent);
     }
     .col--code .best-for {
-      background: var(--accent-2-glow);
+      background: rgba(34, 211, 238, 0.06);
       border-color: var(--border-accent-2);
     }
     .col--cowork .best-for {
-      background: rgba(251, 146, 60, 0.05);
-      border-color: rgba(251, 146, 60, 0.20);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
     }
 
     .best-for-label {
@@ -247,7 +247,7 @@
     }
     .col--claude .best-for-label { color: var(--accent); }
     .col--code .best-for-label { color: var(--accent-2); }
-    .col--cowork .best-for-label { color: #F97316; }
+    .col--cowork .best-for-label { color: var(--text-secondary); }
 
     .best-for-text {
       font-size: var(--text-meta);
@@ -273,16 +273,16 @@
       border: 1px solid;
     }
     .decision-card--claude {
-      background: rgba(99, 102, 241, 0.05);
+      background: rgba(99, 102, 241, 0.06);
       border-color: var(--border-accent);
     }
     .decision-card--code {
-      background: var(--accent-2-glow);
+      background: rgba(34, 211, 238, 0.06);
       border-color: var(--border-accent-2);
     }
     .decision-card--cowork {
-      background: rgba(251, 146, 60, 0.05);
-      border-color: rgba(251, 146, 60, 0.20);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
     }
 
     .decision-arrow {
@@ -296,7 +296,7 @@
     }
     .decision-card--claude .decision-arrow { background: var(--accent); }
     .decision-card--code .decision-arrow { background: var(--accent-2); }
-    .decision-card--cowork .decision-arrow { background: #F97316; }
+    .decision-card--cowork .decision-arrow { background: var(--text-muted); }
 
     .decision-prompt {
       font-size: var(--text-meta);
@@ -377,7 +377,7 @@
           <div class="col-icon col-icon--cowork">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
-          <div class="col-head-label">Desktop App (macOS & Windows)</div>
+          <div class="col-head-label">Desktop App</div>
           <div class="col-head-name">Cowork</div>
           <p class="col-head-desc"><strong>Work together.</strong> Agentic automation without a terminal.</p>
         </div>
@@ -406,10 +406,10 @@
             <div class="feat-card-title">How It Works</div>
           </div>
           <div class="feat-card-body">
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Proactive: describe a goal, it executes</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Sandboxed Linux VM on your machine</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Data stays local, never on servers</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">MCP connectors for enterprise tools</span></div>
+            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Proactive: describe a goal, it executes</span></div>
+            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Sandboxed Linux VM on your machine</span></div>
+            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Data stays local, never on servers</span></div>
+            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">MCP connectors for enterprise tools</span></div>
           </div>
         </div>
 

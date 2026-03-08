@@ -219,6 +219,7 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       display: flex;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     /* ── Sidebar ─────────────────────────────────── */
@@ -233,6 +234,7 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       z-index: 50;
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
     .sidebar-brand {
@@ -415,7 +417,7 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      transition: all var(--transition-slow);
+      transition: all var(--transition-slow), background 0.15s ease;
       box-shadow: var(--shadow-sm);
     }
     .card:hover {
@@ -925,6 +927,7 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.15s ease, color 0.15s ease;
     }
     .toolbar {
       position: sticky; top: 0; z-index: 100;
@@ -935,6 +938,7 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       -webkit-backdrop-filter: blur(16px) saturate(180%);
       border-bottom: 1px solid var(--toolbar-border);
       flex-shrink: 0;
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
     .toolbar-left { display: flex; align-items: center; gap: 14px; }
     .back {
@@ -1002,16 +1006,17 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       background-size: 24px 24px;
       background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
       background-color: var(--preview-bg);
+      transition: background-color 0.15s ease;
     }
     .iframe-wrap {
       transform-origin: top center;
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: default;
-      animation: previewIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+      animation: previewIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     @keyframes previewIn {
-      from { opacity: 0; transform: scale(0.96) translateY(8px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     .iframe-wrap iframe {
       width: 1080px; height: 1350px; border: none; display: block;

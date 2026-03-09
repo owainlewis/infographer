@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How I Test AI Applications</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, 1fr);
+    }
+
+    .card {
+      padding: 18px 28px;
+      justify-content: center;
+    }
+
+    .band-inner {
+      align-items: start;
+      gap: 20px;
+    }
+
+    .band-number {
+      font-size: 32px;
+      line-height: 36px;
+      width: 40px;
+      opacity: 0.35;
+    }
+
+    .card-title {
+      margin-bottom: 2px;
+    }
+
+    .band-what {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+    .band-what strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+
+    .pills {
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 20px;">
+      <h1>How I Test AI <span class="accent">Applications</span></h1>
+    </div>
+
+    <!-- Grid — 5 horizontal bands -->
+    <div class="grid">
+
+      <!-- 01 Unit Tests -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">01</div>
+          <div class="band-content">
+            <div class="card-title">Unit Tests</div>
+            <p class="band-what"><strong>Cheap, fast, run on every PR.</strong> Assert that classifications return valid categories. Check confidence scores are floats between 0 and 1. Verify response schemas match. These catch the obvious breaks in minutes.</p>
+            <div class="pills">
+              <span class="pill pill--accent">pytest</span>
+              <span class="pill pill--accent">Fast</span>
+              <span class="pill">Every PR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Tracing -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">02</div>
+          <div class="band-content">
+            <div class="card-title">Tracing</div>
+            <p class="band-what"><strong>Capture every request, response, and intermediate step.</strong> You cannot test what you cannot see. Find the most common queries. Find where things break. Without tracing you are guessing what to test.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Langfuse</span>
+              <span class="pill pill--accent">Foundation</span>
+              <span class="pill">Day one</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Golden Datasets -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">03</div>
+          <div class="band-content">
+            <div class="card-title">Golden Datasets</div>
+            <p class="band-what"><strong>Build sample questions from your requirements.</strong> 10-20 per category. Does it handle warranty questions? Does it get pricing right? Does it know when to escalate? This defines what good looks like before you tune anything.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Requirements-driven</span>
+              <span class="pill pill--accent">Curated</span>
+              <span class="pill">10-20 per category</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Human Evaluation -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">04</div>
+          <div class="band-content">
+            <div class="card-title">Human Evaluation</div>
+            <p class="band-what">The step everyone skips. Have domain experts <strong>rate real outputs on defined criteria</strong>. Start binary: good or bad. Use a spreadsheet. This is your gold standard — everything else calibrates against it.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Gold standard</span>
+              <span class="pill pill--accent">Binary first</span>
+              <span class="pill">Domain experts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 LLM-as-Judge -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">05</div>
+          <div class="band-content">
+            <div class="card-title">LLM-as-Judge</div>
+            <p class="band-what">Use a strong model to <strong>grade outputs at scale</strong>, but only after human eval. Run model and human critique on the same 100 pairs. Meta-prompt to optimize the judge. Repeat until &gt;90% aligned.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Scalable</span>
+              <span class="pill pill--accent">Meta-prompting</span>
+              <span class="pill">&gt;90% agreement</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

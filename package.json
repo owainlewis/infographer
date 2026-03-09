@@ -8,7 +8,8 @@
     "tw:watch": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --watch",
     "tw:build": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --minify",
     "export": "bunx @tailwindcss/cli -i ./src/tw/app.css -o ./src/tw/out.css --minify && bun run src/export/cli.ts",
-    "new": "bun run src/export/new.ts"
+    "new": "bun run src/export/new.ts",
+    "move": "bun run src/export/move.ts"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",

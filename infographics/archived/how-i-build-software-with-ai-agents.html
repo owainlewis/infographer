@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How I Build Software with AI Agents</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, 1fr);
+    }
+
+    .card {
+      padding: 18px 28px;
+      justify-content: center;
+    }
+
+    .band-inner {
+      align-items: start;
+      gap: 20px;
+    }
+
+    .band-number {
+      font-size: 32px;
+      line-height: 36px;
+      width: 40px;
+      opacity: 0.35;
+    }
+
+    .card-title {
+      margin-bottom: 2px;
+    }
+
+    .band-what {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+    .band-what strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+
+    .pills {
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 20px;">
+      <h1>How I Build Software<br>with AI <span class="accent">Agents</span></h1>
+    </div>
+
+    <!-- Grid — 5 horizontal bands -->
+    <div class="grid">
+
+      <!-- 01 Design -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">01</div>
+          <div class="band-content">
+            <div class="card-title">Design</div>
+            <p class="band-what"><strong>Write the spec before you write a single line of code.</strong> Start with a PRD. Define what you're building and why. Then write a technical spec covering architecture, data models, and constraints. A good spec means the agent gets it right first pass.</p>
+            <div class="pills">
+              <span class="pill pill--accent">PRD</span>
+              <span class="pill pill--accent">Technical spec</span>
+              <span class="pill">Architecture</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Plan -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">02</div>
+          <div class="band-content">
+            <div class="card-title">Plan</div>
+            <p class="band-what"><strong>Break the spec into small, well-defined tickets.</strong> Each ticket has clear inputs, outputs, and acceptance criteria. One task should take an agent minutes, not hours. Write them like you would for a junior engineer — specific file paths, expected behavior, edge cases.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Linear</span>
+              <span class="pill pill--accent">Task breakdown</span>
+              <span class="pill">Acceptance criteria</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Build -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">03</div>
+          <div class="band-content">
+            <div class="card-title">Build</div>
+            <p class="band-what"><strong>One agent per ticket. Isolated context. No bleed.</strong> Each agent picks up a single ticket and sees only what it needs: the spec, the relevant files, the acceptance criteria. A focused agent with 3 files of context outperforms a bloated agent with 50.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Claude Code</span>
+              <span class="pill pill--accent">Isolated context</span>
+              <span class="pill">Sub-agents</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Review -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">04</div>
+          <div class="band-content">
+            <div class="card-title">Review</div>
+            <p class="band-what"><strong>Separate agents review the code. Agents checking agents.</strong> Never let the same agent that wrote the code review it. Use dedicated review agents that check for quality, simplification, and consistency with the spec. Ask "can this be simpler?"</p>
+            <div class="pills">
+              <span class="pill pill--accent">Simplification</span>
+              <span class="pill pill--accent">Quality</span>
+              <span class="pill">Security</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 Ship -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">05</div>
+          <div class="band-content">
+            <div class="card-title">Ship</div>
+            <p class="band-what"><strong>CI/CD runs. Tests pass. Human approves the final output.</strong> The human reviews the final diff, not every intermediate step. Your job shifts from writing code to reviewing architecture. You approve the what and the why. Agents handle the how.</p>
+            <div class="pills">
+              <span class="pill pill--accent">CI/CD</span>
+              <span class="pill pill--accent">Human review</span>
+              <span class="pill">Architecture decisions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

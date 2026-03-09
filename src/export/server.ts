@@ -1,6 +1,6 @@
 import { watch } from "fs";
-import { resolve, join, extname } from "path";
-import { readdir } from "fs/promises";
+import { resolve, join, extname, basename, dirname } from "path";
+import { readdir, rename, mkdir } from "fs/promises";
 import { exportPng } from "./png";
 
 const PROJECT_ROOT = resolve(import.meta.dir, "../..");
@@ -52,8 +52,18 @@ const LAYOUT_INFO: Record<string, { name: string; desc: string; grid: string }> 
 
 async function getInfographicFiles(): Promise<string[]> {
   try {
-    const entries = await readdir(join(PROJECT_ROOT, "infographics"));
+    const entries = await readdir(join(PROJECT_ROOT, "infographics"), { recursive: true });
     return entries.filter((f) => f.endsWith(".html")).sort();
+  } catch {
+    return [];
+  }
+}
+
+async function getInfographicFolders(): Promise<string[]> {
+  try {
+    const infographicsDir = join(PROJECT_ROOT, "infographics");
+    const entries = await readdir(infographicsDir, { withFileTypes: true });
+    return entries.filter((e) => e.isDirectory()).map((e) => e.name).sort();
   } catch {
     return [];
   }
@@ -400,6 +410,47 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     .page-content {
       padding: 32px 56px 56px;
       flex: 1;
+    }
+
+    .section-heading {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin: 32px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-heading:first-child { margin-top: 0; }
+
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .filter-pill {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-pill:hover {
+      border-color: var(--border-hover, var(--border));
+      color: var(--text-secondary);
+    }
+    .filter-pill.active {
+      background: var(--accent, #4338CA);
+      border-color: var(--accent, #4338CA);
+      color: #fff;
     }
 
     /* ── Card grid (infographics + templates) ────── */
@@ -813,18 +864,80 @@ async function buildInfographicsPage(): Promise<string> {
   const templates = await getTemplateFiles();
   const counts = { infographics: files.length, templates: templates.length };
 
-  const cards = files.map((f) => {
-    const name = f.replace(".html", "").replace(/-/g, " ");
-    return `<a class="card" href="/preview/${f}">
-        <div class="thumb-wrap"><iframe src="/infographics/${f}" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="card-label">${name}</div>
-      </a>`;
-  }).join("\n");
+  // Group files by folder
+  const groups = new Map<string, string[]>();
+  for (const f of files) {
+    const sep = f.lastIndexOf("/");
+    const folder = sep === -1 ? "" : f.slice(0, sep);
+    if (!groups.has(folder)) groups.set(folder, []);
+    groups.get(folder)!.push(f);
+  }
 
-  const content = `
-    <div class="card-grid">
-      ${files.length > 0 ? cards : '<div class="empty">No infographics yet.<br>Run <code>bun run new "Your Title"</code> to create one.</div>'}
+  // Root files first, then sorted folder names
+  const sortedFolders = [...groups.keys()].sort((a, b) => {
+    if (a === "") return -1;
+    if (b === "") return 1;
+    return a.localeCompare(b);
+  });
+
+  // Build filter pills if there are subfolders
+  const hasSubfolders = sortedFolders.some((f) => f !== "");
+  let filterBar = "";
+  if (hasSubfolders) {
+    const pills = sortedFolders.map((f) => {
+      const label = f || "Root";
+      const isHidden = f === "archived";
+      return `<button class="filter-pill${isHidden ? "" : " active"}" data-filter="${f}">${label}</button>`;
+    });
+    filterBar = `<div class="filter-bar">
+      ${pills.join("\n      ")}
     </div>`;
+  }
+
+  let sections = "";
+  for (const folder of sortedFolders) {
+    const folderFiles = groups.get(folder)!;
+    const folderAttr = folder || "__root";
+    const isHidden = folder === "archived";
+    const heading = folder
+      ? `<h3 class="section-heading">${folder}</h3>`
+      : sortedFolders.length > 1
+        ? `<h3 class="section-heading">Root</h3>`
+        : "";
+
+    const cards = folderFiles.map((f) => {
+      const displayName = f.slice(f.lastIndexOf("/") + 1).replace(".html", "").replace(/-/g, " ");
+      return `<a class="card" href="/preview/${f}">
+        <div class="thumb-wrap"><iframe src="/infographics/${f}" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="card-label">${displayName}</div>
+      </a>`;
+    }).join("\n");
+
+    sections += `<div class="folder-section" data-folder="${folderAttr}"${isHidden ? ' style="display:none"' : ''}>${heading}\n<div class="card-grid">${cards}</div></div>\n`;
+  }
+
+  const filterScript = hasSubfolders ? `
+    <script>
+    (function() {
+      var pills = document.querySelectorAll('.filter-pill');
+      var sections = document.querySelectorAll('.folder-section');
+      pills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+          var filter = pill.dataset.filter;
+          var section = document.querySelector('[data-folder="' + (filter || '__root') + '"]');
+          if (section) {
+            var visible = section.style.display !== 'none';
+            section.style.display = visible ? 'none' : '';
+            pill.classList.toggle('active', !visible);
+          }
+        });
+      });
+    })();
+    </script>` : "";
+
+  const content = files.length > 0
+    ? filterBar + sections + filterScript
+    : '<div class="card-grid"><div class="empty">No infographics yet.<br>Run <code>bun run new "Your Title"</code> to create one.</div></div>';
 
   return shell("infographics", "Infographics", content, counts, `${files.length} designs in your collection`);
 }
@@ -993,6 +1106,35 @@ function generatePreview(filename: string, dir: string = "infographics"): string
     }
     .download-btn.loading { opacity: 0.5; pointer-events: none; }
     .download-btn svg { width: 14px; height: 14px; }
+    .move-wrap { position: relative; }
+    .move-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 10px;
+      border: 1px solid var(--control-border);
+      background: var(--control-bg); color: var(--text-secondary);
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .move-btn:hover { color: var(--text-primary); border-color: var(--divider-color); }
+    .move-btn svg { width: 14px; height: 14px; }
+    .move-menu {
+      display: none; position: absolute; right: 0; top: calc(100% + 6px);
+      min-width: 180px; background: var(--toolbar-bg);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--toolbar-border); border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18); padding: 4px; z-index: 200;
+    }
+    .move-menu.open { display: block; }
+    .move-menu-item {
+      display: block; width: 100%; padding: 8px 12px; border: none; border-radius: 7px;
+      background: transparent; color: var(--text-secondary); font-family: inherit;
+      font-size: 13px; font-weight: 500; cursor: pointer; text-align: left;
+      transition: all 0.15s;
+    }
+    .move-menu-item:hover { background: var(--control-bg); color: var(--text-primary); }
+    .move-menu-item.current { color: var(--text-muted); font-style: italic; pointer-events: none; }
+    .move-menu-sep { height: 1px; background: var(--divider-color); margin: 4px 8px; }
     .preview-area {
       flex: 1; display: flex; align-items: flex-start; justify-content: center;
       padding: 40px; overflow: auto;
@@ -1051,6 +1193,13 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       </div>
     </div>
     <div class="toolbar-right">
+      ${dir === "infographics" ? `<div class="move-wrap">
+        <button class="move-btn" id="moveBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Move to\u2026
+        </button>
+        <div class="move-menu" id="moveMenu"></div>
+      </div>` : ""}
       ${dir === "infographics" ? `<a class="download-btn" id="downloadBtn" href="/export/${filename}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export PNG
@@ -1167,6 +1316,68 @@ function generatePreview(filename: string, dir: string = "infographics"): string
         }, 8000);
       });
     }
+
+    // ── Move to folder ──────────────────────────────
+    var moveBtn = document.getElementById('moveBtn');
+    var moveMenu = document.getElementById('moveMenu');
+    var currentFile = '${filename}';
+
+    if (moveBtn && moveMenu) {
+      var currentFolder = currentFile.indexOf('/') !== -1 ? currentFile.substring(0, currentFile.lastIndexOf('/')) : '';
+
+      moveBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (moveMenu.classList.contains('open')) {
+          moveMenu.classList.remove('open');
+          return;
+        }
+        fetch('/__api/folders').then(function(r) { return r.json(); }).then(function(folders) {
+          var items = '';
+          // Root option
+          var isRoot = currentFolder === '';
+          items += '<button class="move-menu-item' + (isRoot ? ' current' : '') + '" data-folder="">' + (isRoot ? '\u2713 ' : '') + 'Root</button>';
+          // Folder options
+          folders.forEach(function(f) {
+            var isCurrent = f === currentFolder;
+            items += '<button class="move-menu-item' + (isCurrent ? ' current' : '') + '" data-folder="' + f + '">' + (isCurrent ? '\u2713 ' : '') + f + '</button>';
+          });
+          // New folder option
+          items += '<div class="move-menu-sep"></div>';
+          items += '<button class="move-menu-item" data-folder="__new">+ New folder\u2026</button>';
+          moveMenu.innerHTML = items;
+          moveMenu.classList.add('open');
+
+          moveMenu.querySelectorAll('.move-menu-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+              var folder = item.dataset.folder;
+              if (folder === '__new') {
+                folder = prompt('Folder name:');
+                if (!folder) { moveMenu.classList.remove('open'); return; }
+                folder = folder.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+                if (!folder) { moveMenu.classList.remove('open'); return; }
+              }
+              if (folder === currentFolder) { moveMenu.classList.remove('open'); return; }
+              // Move to root: we need a special "root" value the server understands
+              var targetFolder = folder === '' ? '__root' : folder;
+              fetch('/__api/move', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file: currentFile, folder: targetFolder })
+              }).then(function(r) { return r.json(); }).then(function(data) {
+                if (data.ok) {
+                  window.location.href = '/preview/' + data.newPath;
+                } else {
+                  alert('Move failed: ' + (data.error || 'Unknown error'));
+                }
+              });
+              moveMenu.classList.remove('open');
+            });
+          });
+        });
+      });
+
+      document.addEventListener('click', function() { moveMenu.classList.remove('open'); });
+    }
   })();
   </script>
 </body>
@@ -1203,6 +1414,40 @@ const server = Bun.serve({
     if (pathname === "/templates") {
       const html = await buildTemplatesPage();
       return new Response(injectLiveReload(html), { headers: { "Content-Type": "text/html" } });
+    }
+
+    // ── API routes ──────────────────────────────────
+    if (pathname === "/__api/folders") {
+      const folders = await getInfographicFolders();
+      return new Response(JSON.stringify(folders), { headers: { "Content-Type": "application/json" } });
+    }
+
+    if (pathname === "/__api/move" && req.method === "POST") {
+      try {
+        const body = await req.json() as { file: string; folder: string };
+        const { file, folder } = body;
+        if (!file || folder == null) {
+          return new Response(JSON.stringify({ error: "file and folder required" }), { status: 400, headers: { "Content-Type": "application/json" } });
+        }
+        const infographicsDir = join(PROJECT_ROOT, "infographics");
+        const absSource = join(infographicsDir, file);
+        if (!await Bun.file(absSource).exists()) {
+          return new Response(JSON.stringify({ error: "File not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
+        }
+        const isRoot = folder === "__root";
+        const targetDir = isRoot ? infographicsDir : join(infographicsDir, folder);
+        if (!isRoot) await mkdir(targetDir, { recursive: true });
+        const fname = basename(file);
+        const absDest = join(targetDir, fname);
+        if (await Bun.file(absDest).exists()) {
+          return new Response(JSON.stringify({ error: "File already exists in target folder" }), { status: 409, headers: { "Content-Type": "application/json" } });
+        }
+        await rename(absSource, absDest);
+        const newPath = isRoot ? fname : `${folder}/${fname}`;
+        return new Response(JSON.stringify({ ok: true, newPath }), { headers: { "Content-Type": "application/json" } });
+      } catch (err: any) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+      }
     }
 
     // ── Preview routes ─────────────────────────────

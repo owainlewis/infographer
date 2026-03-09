@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Load Balancer Algorithms</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(7, 1fr);
+    }
+
+    .card {
+      padding: 14px 24px;
+      justify-content: center;
+    }
+
+    .band-inner {
+      align-items: center;
+      gap: 18px;
+    }
+
+    .band-number {
+      font-size: 32px;
+      line-height: 36px;
+      width: 36px;
+      flex-shrink: 0;
+      opacity: 0.35;
+    }
+
+    .band-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      margin-bottom: 2px;
+    }
+
+    .band-what {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+    .band-what strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+
+    .pills {
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+
+    .band-diagram {
+      flex-shrink: 0;
+      width: 100px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* -- LinkedIn contrast boost -- */
+    [data-theme="dark"] .card {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Load Balancer <span class="accent">Algorithms</span></h1>
+    </div>
+
+    <!-- Grid — 7 horizontal bands -->
+    <div class="grid">
+
+      <!-- 01 Round Robin -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">01</div>
+          <div class="band-content">
+            <div class="card-title">Round Robin</div>
+            <p class="band-what"><strong>Rotate through servers one by one.</strong> Each request goes to the next server in line. Works when all servers are identical and requests cost roughly the same.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Simple</span>
+              <span class="pill">Homogeneous servers</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- Three equal servers -->
+              <rect x="60" y="4" width="32" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <rect x="60" y="27" width="32" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <rect x="60" y="50" width="32" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <!-- Circular arrow -->
+              <path d="M 18 16 A 18 18 0 1 1 18 52" style="stroke: var(--accent-2); fill: none" stroke-width="1.8"/>
+              <polygon points="14,52 18,58 22,52" style="fill: var(--accent-2)"/>
+              <!-- Lines to servers -->
+              <line x1="36" y1="12" x2="58" y2="12" style="stroke: var(--accent)" stroke-width="1.2" stroke-dasharray="3,2"/>
+              <line x1="36" y1="35" x2="58" y2="35" style="stroke: var(--accent)" stroke-width="1.2" stroke-dasharray="3,2"/>
+              <line x1="36" y1="58" x2="58" y2="58" style="stroke: var(--accent)" stroke-width="1.2" stroke-dasharray="3,2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Weighted Round Robin -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">02</div>
+          <div class="band-content">
+            <div class="card-title">Weighted Round Robin</div>
+            <p class="band-what"><strong>Stronger servers get more traffic.</strong> Assign weights based on capacity. A server with weight 3 gets three requests for every one sent to a weight-1 server.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Weighted</span>
+              <span class="pill">Mixed hardware</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- Three servers, different sizes -->
+              <rect x="58" y="2" width="38" height="20" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="77" y="16" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">3x</text>
+              <rect x="62" y="28" width="30" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <text x="77" y="40" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">2x</text>
+              <rect x="66" y="50" width="22" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <text x="77" y="62" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">1x</text>
+              <!-- Arrows with varying thickness -->
+              <line x1="10" y1="35" x2="56" y2="12" style="stroke: var(--accent)" stroke-width="2.5" opacity="0.9"/>
+              <line x1="10" y1="35" x2="60" y2="36" style="stroke: var(--accent)" stroke-width="1.8" opacity="0.6"/>
+              <line x1="10" y1="35" x2="64" y2="58" style="stroke: var(--accent)" stroke-width="1" opacity="0.4"/>
+              <!-- LB dot -->
+              <circle cx="10" cy="35" r="5" style="fill: var(--accent)" opacity="0.3"/>
+              <circle cx="10" cy="35" r="2.5" style="fill: var(--accent)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Least Connections -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">03</div>
+          <div class="band-content">
+            <div class="card-title">Least Connections</div>
+            <p class="band-what"><strong>Send traffic to the server with the fewest active connections.</strong> Adapts in real time. Better than round robin when requests have variable processing times.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Adaptive</span>
+              <span class="pill">Variable workloads</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- Three servers with connection counts -->
+              <rect x="56" y="4" width="36" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <text x="74" y="15" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">14</text>
+              <rect x="56" y="27" width="36" height="16" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="74" y="38" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">2</text>
+              <rect x="56" y="50" width="36" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <text x="74" y="61" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">9</text>
+              <!-- Arrow pointing to lowest -->
+              <line x1="10" y1="35" x2="54" y2="35" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+              <!-- LB dot -->
+              <circle cx="10" cy="35" r="5" style="fill: var(--accent-2)" opacity="0.2"/>
+              <circle cx="10" cy="35" r="2.5" style="fill: var(--accent-2)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Least Response Time -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">04</div>
+          <div class="band-content">
+            <div class="card-title">Least Response Time</div>
+            <p class="band-what"><strong>Pick the server that responds fastest.</strong> Combines active connections with latency. Best when backend performance varies due to caching or data locality.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Latency-aware</span>
+              <span class="pill">Health checks</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- Three servers with latency -->
+              <rect x="56" y="4" width="36" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <text x="74" y="15" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">120ms</text>
+              <rect x="56" y="27" width="36" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <text x="74" y="38" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">85ms</text>
+              <rect x="56" y="50" width="36" height="16" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="74" y="61" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="700">12ms</text>
+              <!-- Arrow to fastest -->
+              <line x1="10" y1="35" x2="54" y2="58" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+              <!-- LB dot -->
+              <circle cx="10" cy="35" r="5" style="fill: var(--accent-2)" opacity="0.2"/>
+              <circle cx="10" cy="35" r="2.5" style="fill: var(--accent-2)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 IP Hash -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">05</div>
+          <div class="band-content">
+            <div class="card-title">IP Hash</div>
+            <p class="band-what"><strong>Hash the client IP to always route to the same server.</strong> Sticky sessions without cookies. Breaks when clients share IPs or servers go down.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Sticky sessions</span>
+              <span class="pill">Stateful apps</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- Client IPs on left -->
+              <text x="4" y="16" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">.42</text>
+              <text x="4" y="38" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">.87</text>
+              <text x="4" y="60" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">.15</text>
+              <!-- Hash box -->
+              <rect x="28" y="20" width="28" height="24" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="42" y="36" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">h()</text>
+              <!-- Arrows to hash -->
+              <line x1="18" y1="14" x2="28" y2="28" style="stroke: var(--accent)" stroke-width="1" opacity="0.5"/>
+              <line x1="18" y1="36" x2="28" y2="32" style="stroke: var(--accent)" stroke-width="1" opacity="0.5"/>
+              <line x1="18" y1="58" x2="28" y2="38" style="stroke: var(--accent)" stroke-width="1" opacity="0.5"/>
+              <!-- Servers -->
+              <rect x="68" y="4" width="26" height="16" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <rect x="68" y="27" width="26" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <rect x="68" y="50" width="26" height="16" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.2"/>
+              <!-- Deterministic arrows from hash -->
+              <line x1="56" y1="30" x2="66" y2="12" style="stroke: var(--accent-2)" stroke-width="1.5"/>
+              <line x1="56" y1="32" x2="66" y2="35" style="stroke: var(--accent)" stroke-width="1" opacity="0.4"/>
+              <line x1="56" y1="34" x2="66" y2="58" style="stroke: var(--accent)" stroke-width="1" opacity="0.4"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 Consistent Hashing -->
+      <div class="card">
+        <div class="band-inner">
+          <div class="band-number">06</div>
+          <div class="band-content">
+            <div class="card-title">Consistent Hashing</div>
+            <p class="band-what"><strong>Map servers to a ring. Adding or removing a node only moves nearby keys.</strong> Minimal redistribution during scaling. Powers every distributed cache and CDN.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Distributed</span>
+              <span class="pill">Caches &amp; CDNs</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- Hash ring -->
+              <circle cx="50" cy="35" r="26" style="stroke: var(--border-medium); fill: none" stroke-width="1.5"/>
+              <!-- Nodes on ring -->
+              <circle cx="50" cy="9" r="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="50" y="12" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="6" font-weight="700">A</text>
+              <circle cx="72" cy="48" r="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="72" y="51" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="6" font-weight="700">B</text>
+              <circle cx="28" cy="48" r="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <text x="28" y="51" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="6" font-weight="700">C</text>
+              <!-- Key points -->
+              <circle cx="63" cy="16" r="2.5" style="fill: var(--accent)"/>
+              <circle cx="38" cy="16" r="2.5" style="fill: var(--accent)"/>
+              <circle cx="76" cy="35" r="2.5" style="fill: var(--accent)"/>
+              <!-- Clockwise arrow hint -->
+              <path d="M 60 10 A 26 26 0 0 1 74 24" style="stroke: var(--accent-2); fill: none" stroke-width="1.2" stroke-dasharray="3,2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 07 Random -->
+      <div class="card card--raised">
+        <div class="band-inner">
+          <div class="band-number">07</div>
+          <div class="band-content">
+            <div class="card-title">Random</div>
+            <p class="band-what"><strong>Pick a server at random.</strong> No state, no coordination, no overhead. Statistically converges to even distribution at scale. Surprisingly effective for large pools.</p>
+            <div class="pills">
+              <span class="pill pill--accent">Zero state</span>
+              <span class="pill">Large pools</span>
+            </div>
+          </div>
+          <div class="band-diagram">
+            <svg viewBox="0 0 100 70" fill="none" width="100" height="70">
+              <!-- LB dot -->
+              <circle cx="12" cy="35" r="5" style="fill: var(--accent)" opacity="0.3"/>
+              <circle cx="12" cy="35" r="2.5" style="fill: var(--accent)"/>
+              <!-- Question mark / dice -->
+              <text x="12" y="22" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">?</text>
+              <!-- Scattered arrows -->
+              <line x1="18" y1="32" x2="56" y2="12" style="stroke: var(--accent)" stroke-width="1.2" opacity="0.3"/>
+              <line x1="18" y1="35" x2="56" y2="35" style="stroke: var(--accent-2)" stroke-width="1.8"/>
+              <line x1="18" y1="38" x2="56" y2="58" style="stroke: var(--accent)" stroke-width="1.2" opacity="0.3"/>
+              <!-- Six small servers in grid -->
+              <rect x="58" y="4" width="16" height="12" rx="3" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+              <rect x="78" y="4" width="16" height="12" rx="3" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+              <rect x="58" y="27" width="16" height="16" rx="3" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.2"/>
+              <rect x="78" y="27" width="16" height="16" rx="3" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+              <rect x="58" y="54" width="16" height="12" rx="3" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+              <rect x="78" y="54" width="16" height="12" rx="3" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SVG defs for arrow markers -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+</body>
+</html>

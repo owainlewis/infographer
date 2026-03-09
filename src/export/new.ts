@@ -1,5 +1,5 @@
 import { resolve, join } from "path";
-import { readFile, writeFile, access } from "fs/promises";
+import { readFile, writeFile, access, mkdir } from "fs/promises";
 
 const PROJECT_ROOT = resolve(import.meta.dir, "../..");
 
@@ -18,11 +18,12 @@ function usage() {
                       Choices: ${LAYOUTS.join(", ")}
     --theme <name>    Color theme (default: light)
                       Choices: ${THEMES.join(", ")}
+    --folder <name>   Subfolder within infographics/ (default: root)
 
   Examples:
     bun run new "How to Master Docker"
     bun run new "API Gateway Patterns" --layout catalog --theme dark
-    bun run new "REST vs GraphQL vs gRPC" --layout 3col
+    bun run new "REST vs GraphQL vs gRPC" --folder drafts
 `);
 }
 
@@ -37,6 +38,7 @@ function parseArgs() {
   let title = "";
   let layout: Layout = "bento";
   let theme: Theme = "light";
+  let folder = "";
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--layout" && args[i + 1]) {
@@ -55,6 +57,9 @@ function parseArgs() {
       }
       theme = val;
       i++;
+    } else if (args[i] === "--folder" && args[i + 1]) {
+      folder = args[i + 1];
+      i++;
     } else if (!args[i].startsWith("--")) {
       title = args[i];
     }
@@ -66,7 +71,7 @@ function parseArgs() {
     process.exit(1);
   }
 
-  return { title, layout, theme };
+  return { title, layout, theme, folder };
 }
 
 function titleToFilename(title: string): string {
@@ -89,7 +94,7 @@ function formatTitle(title: string): string {
 }
 
 async function main() {
-  const { title, layout, theme } = parseArgs();
+  const { title, layout, theme, folder } = parseArgs();
 
   // Resolve template file (themes are now set via data-theme attribute, not separate files)
   const templateFile = `template-${layout}.html`;
@@ -102,14 +107,23 @@ async function main() {
     process.exit(1);
   }
 
-  // Generate filename
+  // Generate filename and output dir
   const filename = titleToFilename(title) + ".html";
-  const outputPath = join(PROJECT_ROOT, "infographics", filename);
+  const outputDir = folder
+    ? join(PROJECT_ROOT, "infographics", folder)
+    : join(PROJECT_ROOT, "infographics");
+  const outputPath = join(outputDir, filename);
+  const relativePath = folder ? `${folder}/${filename}` : filename;
+
+  // Create folder if needed
+  if (folder) {
+    await mkdir(outputDir, { recursive: true });
+  }
 
   // Check if file already exists
   try {
     await access(outputPath);
-    console.error(`  Error: File already exists: infographics/${filename}`);
+    console.error(`  Error: File already exists: infographics/${relativePath}`);
     process.exit(1);
   } catch {
     // Good — file doesn't exist
@@ -135,10 +149,11 @@ async function main() {
 
   await writeFile(outputPath, html, "utf-8");
 
-  console.log(`\n  Created: infographics/${filename}`);
+  console.log(`\n  Created: infographics/${relativePath}`);
   console.log(`  Layout:  ${layout}`);
   console.log(`  Theme:   ${theme}`);
-  console.log(`\n  Preview: http://localhost:3000/preview/${filename}\n`);
+  if (folder) console.log(`  Folder:  ${folder}`);
+  console.log(`\n  Preview: http://localhost:3000/preview/${relativePath}\n`);
 }
 
 main();

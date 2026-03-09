@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Agentic Engineering Workflow</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .diagram-section {
+      display: flex;
+      justify-content: center;
+      padding: 28px 32px;
+      margin: 0;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+    }
+
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+    }
+
+    .card {
+      padding: 18px 20px;
+    }
+
+    .card-title {
+      margin-bottom: 2px;
+    }
+
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+    }
+
+    .pills {
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .card-step {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* -- LinkedIn contrast boost -- */
+    [data-theme="dark"] .card {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Agentic Engineering <span class="accent">Workflow</span></h1>
+    </div>
+
+    <!-- Flow diagram -->
+    <div class="diagram-section" style="margin-bottom: 16px;">
+      <svg viewBox="0 0 740 150" fill="none" style="width: 100%; max-width: 960px; height: auto;">
+
+        <!-- 01 Design -->
+        <rect x="6" y="24" width="110" height="64" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <text x="61" y="48" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">01</text>
+        <text x="61" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Design</text>
+
+        <!-- Arrow -->
+        <line x1="120" y1="56" x2="152" y2="56" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 02 Plan -->
+        <rect x="156" y="24" width="110" height="64" rx="10" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+        <text x="211" y="48" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">02</text>
+        <text x="211" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Plan</text>
+
+        <!-- Arrow -->
+        <line x1="270" y1="56" x2="298" y2="56" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- Build/Review loop group -->
+        <rect x="294" y="4" width="264" height="106" rx="12" style="fill: none; stroke: var(--border-medium)" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="426" y="22" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600" letter-spacing="0.1em">ITERATE</text>
+
+        <!-- 03 Build -->
+        <rect x="314" y="34" width="100" height="60" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <text x="364" y="56" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">03</text>
+        <text x="364" y="78" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Build</text>
+
+        <!-- Forward arrow Build → Review -->
+        <line x1="418" y1="56" x2="436" y2="56" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 04 Review -->
+        <rect x="440" y="34" width="100" height="60" rx="10" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+        <text x="490" y="56" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">04</text>
+        <text x="490" y="78" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Review</text>
+
+        <!-- Loop arrow Review → Build (below) -->
+        <path d="M 490 98 L 490 126 L 364 126 L 364 98" style="stroke: var(--accent-2); fill: none" stroke-width="2" marker-end="url(#arr-cyan)"/>
+        <text x="427" y="142" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">fix &amp; simplify</text>
+
+        <!-- Arrow out of loop -->
+        <line x1="562" y1="56" x2="594" y2="56" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 05 Ship -->
+        <rect x="598" y="24" width="130" height="64" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <text x="663" y="48" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">05</text>
+        <text x="663" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Ship</text>
+
+      </svg>
+    </div>
+
+    <!-- Grid — compact 3x2 cards -->
+    <div class="grid">
+
+      <div class="card card--raised delay-1">
+        <div class="card-step">01 Design</div>
+        <div class="card-title">Write the Spec First</div>
+        <p class="card-body"><strong>Start with a PRD.</strong> Define what you're building and why. Then a technical spec: architecture, data models, and constraints. A good spec means the agent gets it right first pass.</p>
+        <p class="card-highlight"><strong>Tip:</strong> I spend more time on specs now than I ever spent on code.</p>
+        <div class="pills">
+          <span class="pill pill--accent">PRD</span>
+          <span class="pill">Technical spec</span>
+        </div>
+      </div>
+
+      <div class="card delay-2">
+        <div class="card-step">02 Plan</div>
+        <div class="card-title">Break into Tickets</div>
+        <p class="card-body"><strong>Small, well-defined tasks.</strong> Clear inputs, outputs, and acceptance criteria. Write them like you would for a junior engineer — specific file paths, expected behavior, edge cases.</p>
+        <p class="card-highlight"><strong>Tip:</strong> If a ticket needs a paragraph to explain, it's too big.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Linear</span>
+          <span class="pill">Acceptance criteria</span>
+        </div>
+      </div>
+
+      <div class="card card--raised delay-3">
+        <div class="card-step">03 Build</div>
+        <div class="card-title">One Agent per Ticket</div>
+        <p class="card-body"><strong>Isolated context. No bleed.</strong> Each agent sees only the spec, the relevant files, and the acceptance criteria. No shared state between agents.</p>
+        <p class="card-highlight"><strong>Tip:</strong> A focused agent with 3 files outperforms a bloated agent with 50.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Claude Code</span>
+          <span class="pill">Sub-agents</span>
+        </div>
+      </div>
+
+      <div class="card delay-4">
+        <div class="card-step">04 Review</div>
+        <div class="card-title">Agents Checking Agents</div>
+        <p class="card-body"><strong>Never self-review.</strong> Dedicated review agents check for quality, simplification, and consistency with the spec. This is the self-improving loop.</p>
+        <p class="card-highlight"><strong>Tip:</strong> "Can this be simpler?" catches over-engineering humans miss.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Simplification</span>
+          <span class="pill">Quality</span>
+        </div>
+      </div>
+
+      <div class="card card--raised delay-5">
+        <div class="card-step">05 Ship</div>
+        <div class="card-title">Human Reviews Architecture</div>
+        <p class="card-body"><strong>CI/CD runs. Tests pass.</strong> The human reviews the final diff, not every intermediate step. You approve the what and the why. Agents handle the how.</p>
+        <p class="card-highlight"><strong>Tip:</strong> Your job shifts from writing code to reviewing architecture.</p>
+        <div class="pills">
+          <span class="pill pill--accent">CI/CD</span>
+          <span class="pill">Final diff</span>
+        </div>
+      </div>
+
+      <div class="card delay-6">
+        <div class="card-step">Common Mistakes</div>
+        <div class="card-title">What Not to Do</div>
+        <div class="principle-grid" style="gap: 4px;">
+          <div class="principle-pill">Vague prompts, no spec</div>
+          <div class="principle-pill">One agent, huge task</div>
+          <div class="principle-pill">Skipping review step</div>
+          <div class="principle-pill">Reviewing every line manually</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

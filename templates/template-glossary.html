@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Glossary Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    /* ── GLOSSARY — 12 compact cards, 3×4 grid ─────────────── */
+    .gl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      flex: 1;
+    }
+
+    .gl-card {
+      padding: 20px 22px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--bg-card);
+    }
+
+    /* Remove right border on last column */
+    .gl-card:nth-child(3n) { border-right: none; }
+
+    /* Remove bottom border on last row */
+    .gl-card:nth-child(n+10) { border-bottom: none; }
+
+    /* Checkerboard: alternate background on even cards */
+    .gl-card:nth-child(even) { background: var(--bg-raised); }
+
+    .gl-num {
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .gl-term {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .gl-def {
+      font-size: 15px;
+      line-height: 21px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ── Header ────────────────────────────────────────────────── */
+    .hd--glossary {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .hd--glossary h1 {
+      font-family: var(--font-display);
+      font-size: 56px;
+      line-height: 64px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+    }
+
+    .hd--glossary .hd-sub {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-family: var(--font-sans);
+    }
+
+    /* ── Grid outer border ───────────────────────────────────── */
+    .gl-grid-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ── Bottom callout band ─────────────────────────────────── */
+    .gl-callout {
+      margin-top: 20px;
+      padding: 28px 36px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .gl-callout-icon {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+    }
+
+    .gl-callout-body {
+      flex: 1;
+    }
+
+    .gl-callout-title {
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .gl-callout-text {
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--text-secondary);
+    }
+
+    .gl-callout-text strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .gl-callout-stat {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .gl-callout-stat-num {
+      font-family: var(--font-display);
+      font-size: 52px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .gl-callout-stat-label {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd--glossary">
+      <!-- REPLACE: Title (line 1) -->
+      <h1>12 Software Engineering <span class="accent">Concepts</span></h1>
+      <!-- REPLACE: Subtitle (line 2) -->
+      <div class="hd-sub">Every Developer Should Know</div>
+    </div>
+
+    <!-- Grid wrapper with outer border -->
+    <div class="gl-grid-wrap">
+      <div class="gl-grid">
+
+        <!-- REPLACE: Card 01 -->
+        <div class="gl-card">
+          <span class="gl-num">01</span>
+          <span class="gl-term">Idempotency</span>
+          <p class="gl-def">Running the same operation multiple times produces the same result. Critical for payment systems and retries.</p>
+        </div>
+
+        <!-- REPLACE: Card 02 -->
+        <div class="gl-card">
+          <span class="gl-num">02</span>
+          <span class="gl-term">CAP Theorem</span>
+          <p class="gl-def">You can only guarantee two of three: consistency, availability, partition tolerance. Every distributed system makes this tradeoff.</p>
+        </div>
+
+        <!-- REPLACE: Card 03 -->
+        <div class="gl-card">
+          <span class="gl-num">03</span>
+          <span class="gl-term">Eventual Consistency</span>
+          <p class="gl-def">Data will be consistent eventually, just not right now. The tradeoff most scalable systems accept.</p>
+        </div>
+
+        <!-- REPLACE: Card 04 -->
+        <div class="gl-card">
+          <span class="gl-num">04</span>
+          <span class="gl-term">Sharding</span>
+          <p class="gl-def">Splitting data across multiple databases by a key. Horizontal scaling for when one database isn't enough.</p>
+        </div>
+
+        <!-- REPLACE: Card 05 -->
+        <div class="gl-card">
+          <span class="gl-num">05</span>
+          <span class="gl-term">Circuit Breaker</span>
+          <p class="gl-def">Stops calling a service that's failing. Prevents cascade failures from taking down everything.</p>
+        </div>
+
+        <!-- REPLACE: Card 06 -->
+        <div class="gl-card">
+          <span class="gl-num">06</span>
+          <span class="gl-term">Backpressure</span>
+          <p class="gl-def">When a system pushes back against incoming load it can't handle. The queue is your natural pressure valve.</p>
+        </div>
+
+        <!-- REPLACE: Card 07 -->
+        <div class="gl-card">
+          <span class="gl-num">07</span>
+          <span class="gl-term">CQRS</span>
+          <p class="gl-def">Separate read and write models. Optimize each side independently for different access patterns.</p>
+        </div>
+
+        <!-- REPLACE: Card 08 -->
+        <div class="gl-card">
+          <span class="gl-num">08</span>
+          <span class="gl-term">Event Sourcing</span>
+          <p class="gl-def">Store events, not state. Replay the event log to reconstruct any point in time.</p>
+        </div>
+
+        <!-- REPLACE: Card 09 -->
+        <div class="gl-card">
+          <span class="gl-num">09</span>
+          <span class="gl-term">Saga Pattern</span>
+          <p class="gl-def">Coordinate distributed transactions without a central coordinator. Each step has a compensating rollback.</p>
+        </div>
+
+        <!-- REPLACE: Card 10 -->
+        <div class="gl-card">
+          <span class="gl-num">10</span>
+          <span class="gl-term">Blue-Green Deploy</span>
+          <p class="gl-def">Run two identical environments. Switch traffic instantly between them. Zero-downtime releases.</p>
+        </div>
+
+        <!-- REPLACE: Card 11 -->
+        <div class="gl-card">
+          <span class="gl-num">11</span>
+          <span class="gl-term">Feature Flags</span>
+          <p class="gl-def">Toggle functionality without deploying. Ship code dark, enable for 1% of users, then roll out.</p>
+        </div>
+
+        <!-- REPLACE: Card 12 -->
+        <div class="gl-card">
+          <span class="gl-num">12</span>
+          <span class="gl-term">Observability</span>
+          <p class="gl-def">Logs, metrics, traces. The three pillars that tell you what's happening inside your system.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REPLACE: Bottom callout -->
+    <div class="gl-callout">
+      <svg class="gl-callout-icon" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" style="fill: var(--accent-glow); stroke: var(--border-accent)" stroke-width="1.5"/>
+        <path d="M32 18 L32 36" style="stroke: var(--accent)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M32 36 L42 30" style="stroke: var(--accent-2)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="32" cy="32" r="3" style="fill: var(--accent)"/>
+      </svg>
+      <div class="gl-callout-body">
+        <div class="gl-callout-title">You don't need all 12 on day one</div>
+        <p class="gl-callout-text"><strong>Start with idempotency, circuit breakers, and observability.</strong> These three cover 80% of production failures. Add the rest as your system grows and the pain points emerge.</p>
+      </div>
+      <div class="gl-callout-stat">
+        <div class="gl-callout-stat-num">80%</div>
+        <div class="gl-callout-stat-label">of failures<br>covered by 3</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

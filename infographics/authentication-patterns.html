@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Authentication Patterns</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .grid {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: auto auto;
+    }
+    .card { padding: 18px 20px; }
+    .card-title { margin-bottom: 2px; }
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+    }
+    .card-highlight {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+    }
+    .card-step {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .pills { margin-top: auto; padding-top: 6px; }
+    .grid .card:nth-child(-n+3) { grid-column: span 2; }
+    .grid .card:nth-child(n+4) { grid-column: span 3; }
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+    <div class="hd" style="margin-bottom: 14px;">
+      <h1>Authentication <span class="accent">Patterns</span></h1>
+    </div>
+    <div class="grid">
+
+      <!-- 01 Session Tokens -->
+      <div class="card card--raised delay-1">
+        <div class="card-step">01 Stateful</div>
+        <div class="card-title">Session Tokens</div>
+        <p class="card-body">Server creates a session ID, stores state server-side, sends an opaque token in a cookie. Every request looks up state in a DB or cache. <strong>Simple to revoke — delete the row.</strong></p>
+        <p class="card-highlight"><strong>Best for:</strong> Server-rendered apps, admin panels, anything where instant revocation matters.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Server-side state</span>
+          <span class="pill">Cookie-based</span>
+          <span class="pill">Instant revoke</span>
+        </div>
+      </div>
+
+      <!-- 02 JWT -->
+      <div class="card delay-2">
+        <div class="card-step">02 Stateless</div>
+        <div class="card-title">JWT</div>
+        <p class="card-body">Self-contained signed token with claims inside. Server never stores anything — just verifies the signature. <strong>Fast to validate but impossible to revoke until it expires.</strong> Keep expiry short.</p>
+        <p class="card-highlight"><strong>Best for:</strong> Microservices, API auth between services, anywhere you can't afford a DB lookup per request.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Stateless</span>
+          <span class="pill">Self-contained</span>
+          <span class="pill">Short-lived</span>
+        </div>
+      </div>
+
+      <!-- 03 OAuth 2.0 -->
+      <div class="card card--raised delay-3">
+        <div class="card-step">03 Delegated</div>
+        <div class="card-title">OAuth 2.0</div>
+        <p class="card-body">Authorization framework, not authentication. User grants limited access to a third party without sharing credentials. <strong>The token represents what you can do, not who you are.</strong> Add OIDC for identity.</p>
+        <p class="card-highlight"><strong>Best for:</strong> Third-party integrations, "Sign in with Google", granting scoped API access.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Delegated</span>
+          <span class="pill">Scoped access</span>
+          <span class="pill">OIDC for identity</span>
+        </div>
+      </div>
+
+      <!-- 04 API Keys -->
+      <div class="card delay-4">
+        <div class="card-step">04 Simple</div>
+        <div class="card-title">API Keys</div>
+        <p class="card-body">A long random string sent in a header. No user context, no expiry logic built in. Easy to issue, easy to leak. <strong>Identifies the calling application, not the user.</strong> Rate limit and rotate frequently.</p>
+        <p class="card-highlight"><strong>Best for:</strong> Server-to-server calls, public APIs with usage billing, webhook verification.</p>
+        <div class="pills">
+          <span class="pill pill--accent">App-level identity</span>
+          <span class="pill">Simple</span>
+          <span class="pill">Rotate often</span>
+        </div>
+      </div>
+
+      <!-- 05 mTLS -->
+      <div class="card card--raised delay-5">
+        <div class="card-step">05 Infrastructure</div>
+        <div class="card-title">mTLS</div>
+        <p class="card-body">Both client and server present certificates. The TLS handshake itself is the auth layer — no tokens, no passwords. <strong>Strong identity guarantee but complex certificate management.</strong> Used where trust must be absolute.</p>
+        <p class="card-highlight"><strong>Best for:</strong> Service mesh auth, zero-trust networks, financial/healthcare inter-service communication.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Mutual certificates</span>
+          <span class="pill">Zero-trust</span>
+          <span class="pill">Infrastructure-level</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

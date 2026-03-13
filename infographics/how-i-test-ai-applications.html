@@ -3,143 +3,239 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1080">
-  <title>How I Test AI Applications</title>
+  <title>How to Test AI Applications</title>
   <link rel="stylesheet" href="/src/tw/out.css">
   <style>
-    .infographic {
-      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    .diagram-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 28px 32px 24px;
+      margin: 0;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
     }
 
     .grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: auto auto;
     }
 
     .card {
-      padding: 18px 28px;
-      justify-content: center;
-    }
-
-    .band-inner {
-      align-items: start;
-      gap: 20px;
-    }
-
-    .band-number {
-      font-size: 32px;
-      line-height: 36px;
-      width: 40px;
-      opacity: 0.35;
+      padding: 18px 20px;
     }
 
     .card-title {
       margin-bottom: 2px;
     }
 
-    .band-what {
-      font-size: var(--text-body);
-      line-height: var(--leading-body);
-      color: var(--text-secondary);
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
     }
-    .band-what strong {
-      font-weight: var(--weight-semibold);
-      color: var(--text-primary);
+
+    .card-highlight {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+    }
+
+    .card-step {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .card-catches {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--accent-2);
+      margin-top: 4px;
+    }
+
+    .card-failure {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .pill--cost {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
     }
 
     .pills {
-      padding-top: 4px;
-      margin-top: 4px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    /* Top row: 3 cards, each span 2 of 6 cols */
+    .grid .card:nth-child(-n+3) {
+      grid-column: span 2;
+    }
+    /* Bottom row: 2 cards, each span 3 of 6 cols */
+    .grid .card:nth-child(n+4) {
+      grid-column: span 3;
+    }
+
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
     }
   </style>
 </head>
 <body>
+  <!-- SVG defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+      <marker id="arr-dim" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--svg-line-dim)"/>
+      </marker>
+    </defs>
+  </svg>
+
   <div class="infographic" id="infographic" data-theme="dark">
 
     <!-- Header -->
-    <div class="hd" style="margin-bottom: 20px;">
-      <h1>How I Test AI <span class="accent">Applications</span></h1>
+    <div class="hd" style="margin-bottom: 14px;">
+      <h1>How to Test AI <span class="accent">Applications</span></h1>
     </div>
 
-    <!-- Grid — 5 horizontal bands -->
+    <!-- Pipeline diagram -->
+    <div class="diagram-bar" style="margin-bottom: 14px;">
+      <svg viewBox="0 0 900 140" fill="none" style="width: 100%; max-width: 960px; height: auto;">
+
+        <!-- Step 1: Trace -->
+        <rect x="8" y="30" width="130" height="56" rx="10" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+        <text x="73" y="52" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">01</text>
+        <text x="73" y="72" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="600">Trace</text>
+        <text x="73" y="104" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9">Langfuse</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="142" y1="58" x2="176" y2="58" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- Step 2: Build Dataset -->
+        <rect x="180" y="30" width="146" height="56" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <text x="253" y="52" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">02</text>
+        <text x="253" y="72" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="600">Build Dataset</text>
+        <text x="253" y="104" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9">from traces</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="330" y1="58" x2="364" y2="58" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- Step 3: Unit Test -->
+        <rect x="368" y="30" width="130" height="56" rx="10" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+        <text x="433" y="52" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">03</text>
+        <text x="433" y="72" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="600">Unit Test</text>
+        <text x="433" y="104" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9">pytest + CI</text>
+
+        <!-- Arrow 3→4 -->
+        <line x1="502" y1="58" x2="536" y2="58" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- Calibrate loop group -->
+        <rect x="528" y="6" width="364" height="102" rx="12" style="fill: none; stroke: var(--border-medium)" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="710" y="22" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600" letter-spacing="0.1em">CALIBRATE</text>
+
+        <!-- Step 4: Human Eval -->
+        <rect x="548" y="30" width="138" height="56" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <text x="617" y="52" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">04</text>
+        <text x="617" y="72" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="600">Human Eval</text>
+
+        <!-- Arrow 4→5 -->
+        <line x1="690" y1="58" x2="724" y2="58" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- Step 5: LLM Judge -->
+        <rect x="728" y="30" width="144" height="56" rx="10" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+        <text x="800" y="52" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">05</text>
+        <text x="800" y="72" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="600">LLM Judge</text>
+
+        <!-- Loop arrow LLM Judge → Human Eval -->
+        <path d="M 800 90 L 800 120 L 617 120 L 617 90" style="stroke: var(--accent-2); fill: none" stroke-width="2" marker-end="url(#arr-cyan)"/>
+        <text x="708" y="135" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">align until &gt;90%</text>
+
+      </svg>
+    </div>
+
+    <!-- Grid — 3 top + 2 bottom -->
     <div class="grid">
 
-      <!-- 01 Unit Tests -->
-      <div class="card card--raised">
-        <div class="band-inner">
-          <div class="band-number">01</div>
-          <div class="band-content">
-            <div class="card-title">Unit Tests</div>
-            <p class="band-what"><strong>Cheap, fast, run on every PR.</strong> Assert that classifications return valid categories. Check confidence scores are floats between 0 and 1. Verify response schemas match. These catch the obvious breaks in minutes.</p>
-            <div class="pills">
-              <span class="pill pill--accent">pytest</span>
-              <span class="pill pill--accent">Fast</span>
-              <span class="pill">Every PR</span>
-            </div>
-          </div>
+      <!-- 01 Tracing -->
+      <div class="card delay-1">
+        <div class="card-step">01 Trace</div>
+        <div class="card-title">Trace First</div>
+        <p class="card-body"><strong>Capture every request, response, and intermediate step.</strong> You cannot test what you cannot see. Find the most common queries and where things break.</p>
+        <p class="card-catches"><strong>Catches:</strong> regressions, latency spikes, error patterns.</p>
+        <p class="card-failure">"You find out from a customer that pricing answers have been wrong for 2 weeks."</p>
+        <div class="pills">
+          <span class="pill pill--accent">Langfuse</span>
+          <span class="pill pill--cost">Nearly free</span>
         </div>
       </div>
 
-      <!-- 02 Tracing -->
-      <div class="card">
-        <div class="band-inner">
-          <div class="band-number">02</div>
-          <div class="band-content">
-            <div class="card-title">Tracing</div>
-            <p class="band-what"><strong>Capture every request, response, and intermediate step.</strong> You cannot test what you cannot see. Find the most common queries. Find where things break. Without tracing you are guessing what to test.</p>
-            <div class="pills">
-              <span class="pill pill--accent">Langfuse</span>
-              <span class="pill pill--accent">Foundation</span>
-              <span class="pill">Day one</span>
-            </div>
-          </div>
+      <!-- 02 Golden Datasets -->
+      <div class="card card--raised delay-2">
+        <div class="card-step">02 Dataset</div>
+        <div class="card-title">Golden Dataset</div>
+        <p class="card-body"><strong>Curate from real traces, not imagination.</strong> 10-20 examples per category. This defines what good looks like before you tune anything.</p>
+        <p class="card-catches"><strong>Catches:</strong> requirement gaps, edge cases.</p>
+        <p class="card-failure">"You're tuning prompts against vibes."</p>
+        <div class="pills">
+          <span class="pill pill--accent">Requirements</span>
+          <span class="pill pill--cost">A weekend</span>
         </div>
       </div>
 
-      <!-- 03 Golden Datasets -->
-      <div class="card card--raised">
-        <div class="band-inner">
-          <div class="band-number">03</div>
-          <div class="band-content">
-            <div class="card-title">Golden Datasets</div>
-            <p class="band-what"><strong>Build sample questions from your requirements.</strong> 10-20 per category. Does it handle warranty questions? Does it get pricing right? Does it know when to escalate? This defines what good looks like before you tune anything.</p>
-            <div class="pills">
-              <span class="pill pill--accent">Requirements-driven</span>
-              <span class="pill pill--accent">Curated</span>
-              <span class="pill">10-20 per category</span>
-            </div>
-          </div>
+      <!-- 03 Unit Tests -->
+      <div class="card delay-3">
+        <div class="card-step">03 Unit Test</div>
+        <div class="card-title">Deterministic Tests</div>
+        <p class="card-body"><strong>Cheap, fast, run on every PR.</strong> Mock the LLM, test your logic. Assert valid categories, check types, verify response schemas match.</p>
+        <p class="card-catches"><strong>Catches:</strong> schema violations, type errors, logic bugs.</p>
+        <p class="card-failure">"A schema change breaks downstream parsing and you find out in production."</p>
+        <div class="pills">
+          <span class="pill pill--accent">pytest</span>
+          <span class="pill pill--cost">Cheap to run</span>
         </div>
       </div>
 
       <!-- 04 Human Evaluation -->
-      <div class="card">
-        <div class="band-inner">
-          <div class="band-number">04</div>
-          <div class="band-content">
-            <div class="card-title">Human Evaluation</div>
-            <p class="band-what">The step everyone skips. Have domain experts <strong>rate real outputs on defined criteria</strong>. Start binary: good or bad. Use a spreadsheet. This is your gold standard — everything else calibrates against it.</p>
-            <div class="pills">
-              <span class="pill pill--accent">Gold standard</span>
-              <span class="pill pill--accent">Binary first</span>
-              <span class="pill">Domain experts</span>
-            </div>
-          </div>
+      <div class="card card--raised delay-4">
+        <div class="card-step">04 Human Eval</div>
+        <div class="card-title">Human Review</div>
+        <p class="card-body">The step everyone skips. Have domain experts <strong>rate real outputs on defined criteria</strong>. Start binary: good or bad. Everything else calibrates against human judgement.</p>
+        <p class="card-catches"><strong>Catches:</strong> tone issues, hallucinations, quality drift.</p>
+        <p class="card-failure">"Your LLM judge gives high scores to hallucinated answers because they're fluent."</p>
+        <div class="pills">
+          <span class="pill pill--accent">Gold standard</span>
+          <span class="pill pill--cost">Expensive &amp; slow</span>
         </div>
       </div>
 
       <!-- 05 LLM-as-Judge -->
-      <div class="card card--raised">
-        <div class="band-inner">
-          <div class="band-number">05</div>
-          <div class="band-content">
-            <div class="card-title">LLM-as-Judge</div>
-            <p class="band-what">Use a strong model to <strong>grade outputs at scale</strong>, but only after human eval. Run model and human critique on the same 100 pairs. Meta-prompt to optimize the judge. Repeat until &gt;90% aligned.</p>
-            <div class="pills">
-              <span class="pill pill--accent">Scalable</span>
-              <span class="pill pill--accent">Meta-prompting</span>
-              <span class="pill">&gt;90% agreement</span>
-            </div>
-          </div>
+      <div class="card delay-5">
+        <div class="card-step">05 LLM Judge</div>
+        <div class="card-title">LLM-as-Judge</div>
+        <p class="card-body">Use a strong model to <strong>grade outputs at scale</strong>, but only after human eval. Run model and human scores on the same 100 pairs. Meta-prompt to optimize the judge. Repeat until &gt;90% aligned.</p>
+        <p class="card-catches"><strong>Catches:</strong> the same things as human eval, at scale.</p>
+        <p class="card-failure">"You're manually reviewing 500 outputs a week."</p>
+        <div class="pills">
+          <span class="pill pill--accent">Braintrust</span>
+          <span class="pill pill--cost">Tokens, not hours</span>
         </div>
       </div>
 

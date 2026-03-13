@@ -12,11 +12,6 @@
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(2, 1fr);
     }
-    /* -- LinkedIn contrast boost -- */
-    [data-theme="dark"] .card {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.14);
-    }
     [data-theme="light"] .card {
       background: #ffffff;
       border-color: #cdd0d8;
@@ -51,29 +46,29 @@
       <!-- Card 01: Context Stuffing -->
       <div class="card delay-1">
         <div class="card-index">01</div>
-        <div class="card-title">Context Stuffing</div>
-        <p class="card-body"><strong>Load the entire document</strong> into the prompt. No chunking, no embeddings, no infrastructure. Just read the file and send it.</p>
-        <p class="card-highlight"><strong>Tip</strong> — With 200k+ context windows, this handles more than you think. Try it before building a pipeline.</p>
+        <div class="card-title">Document Retrieval</div>
+        <p class="card-body"><strong>Match the query to the right document and load it whole.</strong> A simple index maps topics to files — questions about payments load <code>payments_faq.md</code>. No chunking, no embeddings.</p>
+        <p class="card-highlight"><strong>Tip</strong> — Start here. A routing table + full document often beats a chunked vector pipeline.</p>
 
         <div class="diagram-wrap">
           <svg class="diagram-svg" viewBox="0 0 260 60" fill="none">
-            <rect x="2" y="10" width="56" height="40" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
-            <text x="30" y="26" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">Doc</text>
-            <text x="30" y="40" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="7">full text</text>
-            <line x1="62" y1="30" x2="108" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
-            <text x="85" y="22" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">paste</text>
-            <rect x="112" y="6" width="80" height="48" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
-            <text x="152" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">LLM</text>
-            <text x="152" y="40" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="7">200k context</text>
-            <line x1="196" y1="30" x2="232" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
-            <rect x="236" y="14" width="22" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
-            <text x="247" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="14" font-weight="600">A</text>
+            <rect x="2" y="14" width="56" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="30" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">Query</text>
+            <line x1="62" y1="30" x2="98" y2="30" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="80" y="22" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">lookup</text>
+            <rect x="102" y="8" width="56" height="44" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="130" y="26" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Index</text>
+            <text x="130" y="40" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">full doc</text>
+            <line x1="162" y1="30" x2="198" y2="30" style="stroke: var(--svg-line-dim)" stroke-width="1" marker-end="url(#arr-dim)"/>
+            <text x="180" y="22" text-anchor="middle" style="fill: var(--svg-line-dim)" font-family="Libre Franklin,sans-serif" font-size="8">load</text>
+            <rect x="202" y="14" width="54" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <text x="229" y="34" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">LLM</text>
           </svg>
         </div>
 
         <div class="pills">
           <span class="pill pill--accent">Simplest</span>
-          <span class="pill">No infra</span>
+          <span class="pill">Index lookup</span>
           <span class="pill">Long context</span>
         </div>
       </div>
@@ -108,10 +103,10 @@
         </div>
       </div>
 
-      <!-- Card 03: Naive RAG -->
+      <!-- Card 03: Vector RAG -->
       <div class="card delay-3">
         <div class="card-index">03</div>
-        <div class="card-title">Naive RAG</div>
+        <div class="card-title">Vector RAG</div>
         <p class="card-body">Chunk your docs, <strong>embed as vectors</strong>, embed the query, retrieve nearest neighbors by cosine similarity. The classic RAG pipeline.</p>
         <p class="card-highlight"><strong>Tip</strong> — The default when docs exceed context limits. Chunk size and overlap matter more than which embedding model you pick.</p>
 

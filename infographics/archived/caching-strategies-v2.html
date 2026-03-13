@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Caching Strategies</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .grid {
+      grid-template-columns: 3fr 3fr 3fr;
+      grid-template-rows: 1fr 1fr 1fr auto;
+      grid-template-areas:
+        "hero hero b"
+        "hero hero c"
+        "hero hero d"
+        "e    f    g";
+    }
+
+    .card-hero  { grid-area: hero; }
+    .card-b     { grid-area: b; }
+    .card-c     { grid-area: c; }
+    .card-d     { grid-area: d; }
+    .card-e     { grid-area: e; }
+    .card-f     { grid-area: f; }
+    .card-g     { grid-area: g; }
+
+    .hero-diagram {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+      padding: 16px;
+    }
+    [data-theme="dark"] .hero-diagram {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="light"] .hero-diagram {
+      background: #f4f5f7;
+      border-color: #dde0e6;
+    }
+
+    /* Side cards */
+    .card-b, .card-c, .card-d {
+      padding: 16px 18px;
+    }
+
+    /* Bottom cards */
+    .card-e, .card-f, .card-g {
+      padding: 16px 18px;
+    }
+
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+    }
+
+    .card-title {
+      margin-bottom: 0;
+    }
+
+    .card-num {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .pills {
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    /* Mini diagram in side cards */
+    .mini-diagram {
+      width: 100%;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+    }
+    [data-theme="dark"] .mini-diagram {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="light"] .mini-diagram {
+      background: #f4f5f7;
+      border-color: #dde0e6;
+    }
+
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Caching <span class="accent">Strategies</span></h1>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid">
+
+      <!-- HERO: How Caching Works -->
+      <div class="card card-hero card--raised">
+        <div class="section-label section-label--accent">The Big Picture</div>
+        <div class="card-title">How Caching Works</div>
+        <p class="card-body">Every strategy answers <strong>two questions</strong>: where do reads come from, and when do writes reach the database? The hard part is never caching. It's <strong>invalidation</strong>.</p>
+
+        <div class="hero-diagram">
+          <svg viewBox="0 0 440 450" fill="none" style="width: 100%; height: auto;">
+
+            <!-- === READ PATH === -->
+            <text x="140" y="20" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700" letter-spacing="0.06em">READ PATH</text>
+
+            <!-- App box -->
+            <rect x="80" y="36" width="120" height="40" rx="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="140" y="60" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="14" font-weight="700">App</text>
+
+            <!-- Arrow down: App → Cache -->
+            <line x1="140" y1="78" x2="140" y2="108" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <text x="158" y="98" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">GET key</text>
+
+            <!-- Cache box -->
+            <rect x="80" y="112" width="120" height="40" rx="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="2"/>
+            <text x="140" y="136" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="14" font-weight="700">Cache</text>
+
+            <!-- Decision diamond -->
+            <polygon points="140,174 176,200 140,226 104,200" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="140" y="204" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">Hit?</text>
+
+            <!-- Arrow down to diamond -->
+            <line x1="140" y1="154" x2="140" y2="174" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+
+            <!-- HIT path (left): return to app -->
+            <line x1="104" y1="200" x2="32" y2="200" style="stroke: var(--accent-2)" stroke-width="2"/>
+            <line x1="32" y1="200" x2="32" y2="56" style="stroke: var(--accent-2)" stroke-width="2"/>
+            <line x1="32" y1="56" x2="78" y2="56" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <text x="20" y="134" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700" transform="rotate(-90 20 134)">HIT</text>
+
+            <!-- MISS path (right): query DB -->
+            <line x1="176" y1="200" x2="222" y2="200" style="stroke: var(--accent)" stroke-width="2"/>
+            <text x="200" y="194" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">MISS</text>
+
+            <!-- DB box -->
+            <rect x="224" y="180" width="80" height="40" rx="8" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="264" y="204" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="600">DB</text>
+
+            <!-- DB → fill cache (dashed back) -->
+            <line x1="264" y1="178" x2="264" y2="132" style="stroke: var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="264" y1="132" x2="202" y2="132" style="stroke: var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+            <text x="244" y="148" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">fill cache</text>
+
+            <!-- Divider -->
+            <line x1="20" y1="258" x2="420" y2="258" style="stroke: var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+
+            <!-- === WRITE PATH === -->
+            <text x="220" y="284" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700" letter-spacing="0.06em">WRITE PATH</text>
+
+            <!-- Three write strategy lanes -->
+
+            <!-- Write-Through -->
+            <rect x="20" y="300" width="120" height="32" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="80" y="320" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">Write-Through</text>
+            <text x="80" y="348" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10">App → Cache → DB</text>
+            <text x="80" y="366" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">blocks until both ACK</text>
+
+            <!-- Write-Behind -->
+            <rect x="160" y="300" width="120" height="32" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="220" y="320" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">Write-Behind</text>
+            <text x="220" y="348" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10">App → Cache ... DB</text>
+            <text x="220" y="366" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">async flush</text>
+
+            <!-- Write-Around -->
+            <rect x="300" y="300" width="120" height="32" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="360" y="320" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">Write-Around</text>
+            <text x="360" y="348" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10">App → DB (skip cache)</text>
+            <text x="360" y="366" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">read fills later</text>
+
+            <!-- Spectrum bar -->
+            <rect x="40" y="392" width="360" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <!-- Gradient line inside bar -->
+            <line x1="60" y1="406" x2="380" y2="406" style="stroke: var(--border-medium)" stroke-width="2"/>
+            <!-- Left marker -->
+            <circle cx="60" cy="406" r="4" style="fill: var(--accent-2)"/>
+            <!-- Right marker -->
+            <circle cx="380" cy="406" r="4" style="fill: var(--accent)"/>
+            <!-- Labels -->
+            <text x="60" y="436" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Consistency</text>
+            <text x="380" y="436" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Performance</text>
+
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Redis</span>
+          <span class="pill pill--accent">Memcached</span>
+          <span class="pill">Invalidation is the hard part</span>
+        </div>
+      </div>
+
+      <!-- B: Cache-Aside -->
+      <div class="card card-b">
+        <div class="card-num">01 · Read</div>
+        <div class="card-title">Cache-Aside</div>
+        <div class="mini-diagram">
+          <svg viewBox="0 0 200 44" fill="none" width="180" height="44">
+            <rect x="4" y="10" width="44" height="22" rx="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="26" y="25" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">App</text>
+            <rect x="78" y="10" width="44" height="22" rx="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="100" y="25" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Cache</text>
+            <rect x="152" y="10" width="44" height="22" rx="5" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="174" y="25" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">DB</text>
+            <line x1="50" y1="18" x2="76" y2="18" style="stroke: var(--accent-2)" stroke-width="1.5" marker-end="url(#arr-cyan)"/>
+            <line x1="50" y1="28" x2="76" y2="28" style="stroke: var(--accent)" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+            <line x1="124" y1="21" x2="150" y2="21" style="stroke: var(--accent)" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+          </svg>
+        </div>
+        <p class="card-body"><strong>The one you'll use 90% of the time.</strong> App checks cache, misses go to DB, result gets stored. Under load, a cold key can trigger a stampede: hundreds of concurrent misses all hitting the DB at once.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Redis</span>
+          <span class="pill">Stampede risk</span>
+        </div>
+      </div>
+
+      <!-- C: Read-Through -->
+      <div class="card card-c card--raised">
+        <div class="card-num">02 · Read</div>
+        <div class="card-title">Read-Through</div>
+        <div class="mini-diagram">
+          <svg viewBox="0 0 200 44" fill="none" width="180" height="44">
+            <rect x="4" y="10" width="44" height="22" rx="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="26" y="25" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">App</text>
+            <rect x="72" y="4" width="56" height="34" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="100" y="17" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">Cache</text>
+            <text x="100" y="30" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">auto-load</text>
+            <rect x="152" y="10" width="44" height="22" rx="5" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="174" y="25" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">DB</text>
+            <line x1="50" y1="21" x2="70" y2="21" style="stroke: var(--accent-2)" stroke-width="1.5" marker-end="url(#arr-cyan)"/>
+            <line x1="130" y1="21" x2="150" y2="21" style="stroke: var(--accent)" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Same as cache-aside, but the cache fetches on miss.</strong> The difference is who loads: your app code (cache-aside) vs the cache layer itself (read-through). The DB still gets hit on every miss.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Ehcache</span>
+          <span class="pill">Caffeine</span>
+        </div>
+      </div>
+
+      <!-- D: Refresh-Ahead -->
+      <div class="card card-d">
+        <div class="card-num">03 · Predictive</div>
+        <div class="card-title">Refresh-Ahead</div>
+        <div class="mini-diagram">
+          <svg viewBox="0 0 200 44" fill="none" width="180" height="44">
+            <!-- TTL bar -->
+            <rect x="16" y="12" width="168" height="12" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1"/>
+            <rect x="16" y="12" width="118" height="12" rx="4" style="fill: var(--accent-2)" opacity="0.25"/>
+            <line x1="134" y1="8" x2="134" y2="30" style="stroke: var(--accent)" stroke-width="2" stroke-dasharray="3 2"/>
+            <text x="134" y="40" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="700">refresh</text>
+            <text x="16" y="9" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8">0%</text>
+            <text x="184" y="22" text-anchor="end" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="8">TTL</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Reload before anyone notices it's stale.</strong> When a key nears expiry, the cache pre-fetches from DB. If your predictions are wrong, you waste DB reads refreshing keys nobody asks for.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Hot keys only</span>
+          <span class="pill">Prediction risk</span>
+        </div>
+      </div>
+
+      <!-- E: Write-Through -->
+      <div class="card card-e">
+        <div class="card-num">04 · Write</div>
+        <div class="card-title">Write-Through</div>
+        <p class="card-body"><strong>Cache and DB updated in the same call.</strong> The write blocks until both cache and DB confirm. No stale reads, but every write pays the latency of two sequential stores.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Strong consistency</span>
+          <span class="pill">Blocking</span>
+        </div>
+      </div>
+
+      <!-- F: Write-Behind -->
+      <div class="card card-f card--raised">
+        <div class="card-num">05 · Write</div>
+        <div class="card-title">Write-Behind</div>
+        <p class="card-body"><strong>Write to cache, ACK instantly.</strong> Cache flushes to DB async. If the cache node dies before flushing, those writes are permanently lost. Not an option for financial data or anything you can't afford to lose.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Throughput</span>
+          <span class="pill">Durability risk</span>
+        </div>
+      </div>
+
+      <!-- G: Write-Around -->
+      <div class="card card-g">
+        <div class="card-num">06 · Write</div>
+        <div class="card-title">Write-Around</div>
+        <p class="card-body"><strong>Skip the cache on writes.</strong> Data goes straight to DB. Cache only fills when someone actually reads it. Prevents polluting your cache with data nobody queries.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Write-heavy</span>
+          <span class="pill">Log data</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

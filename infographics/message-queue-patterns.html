@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Message Queue Patterns</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 12px;
+      flex: 1;
+    }
+    .card { padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .card-title { margin-bottom: 0; }
+    .card-body { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+    .card-num {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .diagram-box {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+    }
+    .pills { padding-top: 4px; margin-top: auto; }
+    .card-highlight { font-size: var(--text-meta); line-height: var(--leading-meta); }
+    [data-theme="light"] .card { background: #ffffff; border-color: #cdd0d8; }
+    [data-theme="dark"] .diagram-box { background: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.08); }
+    [data-theme="light"] .diagram-box { background: #f4f5f7; border-color: #dde0e6; }
+  </style>
+</head>
+<body>
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+      <marker id="arr-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--status-danger)"/>
+      </marker>
+    </defs>
+  </svg>
+  <div class="infographic" id="infographic" data-theme="dark">
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Message Queue <span class="text-accent">Patterns</span></h1>
+    </div>
+    <div class="grid">
+
+      <!-- 01 Point-to-Point -->
+      <div class="card card--raised delay-1">
+        <span class="card-num">01</span>
+        <h2 class="card-title">Point-to-Point</h2>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 80" width="100%" height="100%" font-family="Libre Franklin,sans-serif">
+            <rect x="4" y="24" width="48" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="28" y="44" text-anchor="middle" font-size="10" font-weight="600" style="fill: var(--text-muted)">Producer</text>
+            <line x1="56" y1="40" x2="80" y2="40" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <rect x="84" y="20" width="52" height="40" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="110" y="44" text-anchor="middle" font-size="10" font-weight="700" style="fill: var(--accent-2)">Queue</text>
+            <line x1="140" y1="40" x2="164" y2="40" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <rect x="168" y="24" width="48" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="192" y="44" text-anchor="middle" font-size="10" font-weight="600" style="fill: var(--text-muted)">Consumer</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>One message, one consumer.</strong> The queue guarantees each message is processed exactly once. If the consumer dies, messages wait. The simplest reliable pattern.</p>
+        <div class="card-highlight"><strong>Use when</strong> every job must happen exactly once. Order processing, email sending, payment handling.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Exactly-once</span>
+          <span class="pill">SQS</span>
+          <span class="pill">RabbitMQ</span>
+        </div>
+      </div>
+
+      <!-- 02 Pub/Sub -->
+      <div class="card delay-2">
+        <span class="card-num">02</span>
+        <h2 class="card-title">Pub/Sub</h2>
+        <div class="diagram-box">
+          <svg viewBox="0 0 240 100" width="100%" height="100%" font-family="Libre Franklin,sans-serif">
+            <rect x="4" y="34" width="48" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="28" y="54" text-anchor="middle" font-size="10" font-weight="600" style="fill: var(--text-muted)">Publisher</text>
+            <line x1="56" y1="50" x2="84" y2="50" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <rect x="88" y="30" width="52" height="40" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="114" y="54" text-anchor="middle" font-size="10" font-weight="700" style="fill: var(--accent-2)">Topic</text>
+            <!-- Fan-out arrows -->
+            <line x1="144" y1="42" x2="176" y2="18" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <line x1="144" y1="50" x2="176" y2="50" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <line x1="144" y1="58" x2="176" y2="82" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <!-- Subscribers -->
+            <rect x="180" y="4" width="52" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="206" y="22" text-anchor="middle" font-size="9" font-weight="600" style="fill: var(--text-muted)">Sub A</text>
+            <rect x="180" y="36" width="52" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="206" y="54" text-anchor="middle" font-size="9" font-weight="600" style="fill: var(--text-muted)">Sub B</text>
+            <rect x="180" y="68" width="52" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="206" y="86" text-anchor="middle" font-size="9" font-weight="600" style="fill: var(--text-muted)">Sub C</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>One message, many consumers.</strong> Publisher doesn't know who's listening. Each subscriber gets its own copy. Add new consumers without changing the publisher.</p>
+        <div class="card-highlight"><strong>Use when</strong> multiple services need the same event. User signup triggers email, analytics, and provisioning.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Broadcast</span>
+          <span class="pill">Kafka</span>
+          <span class="pill">SNS</span>
+        </div>
+      </div>
+
+      <!-- 03 Competing Consumers -->
+      <div class="card card--raised delay-3">
+        <span class="card-num">03</span>
+        <h2 class="card-title">Competing Consumers</h2>
+        <div class="diagram-box">
+          <svg viewBox="0 0 240 100" width="100%" height="100%" font-family="Libre Franklin,sans-serif">
+            <rect x="4" y="30" width="52" height="40" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="30" y="54" text-anchor="middle" font-size="10" font-weight="700" style="fill: var(--accent-2)">Queue</text>
+            <!-- Active arrow to Worker 1 -->
+            <line x1="60" y1="42" x2="100" y2="18" stroke-width="2" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <!-- Dashed arrows to waiting workers -->
+            <line x1="60" y1="50" x2="100" y2="50" stroke-width="1.5" stroke-dasharray="4,3" style="stroke: var(--svg-line-dim)"/>
+            <line x1="60" y1="58" x2="100" y2="82" stroke-width="1.5" stroke-dasharray="4,3" style="stroke: var(--svg-line-dim)"/>
+            <!-- Workers -->
+            <rect x="104" y="4" width="56" height="28" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="132" y="22" text-anchor="middle" font-size="9" font-weight="700" style="fill: var(--accent-2)">Worker 1</text>
+            <rect x="104" y="36" width="56" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="132" y="54" text-anchor="middle" font-size="9" font-weight="600" style="fill: var(--text-muted)">Worker 2</text>
+            <rect x="104" y="68" width="56" height="28" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="132" y="86" text-anchor="middle" font-size="9" font-weight="600" style="fill: var(--text-muted)">Worker 3</text>
+            <!-- "waiting" labels -->
+            <text x="174" y="54" font-size="8" font-style="italic" style="fill: var(--text-dim)">idle</text>
+            <text x="174" y="86" font-size="8" font-style="italic" style="fill: var(--text-dim)">idle</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Scale horizontally by adding consumers.</strong> Multiple workers pull from the same queue. Each message goes to exactly one worker. More traffic? Add more consumers.</p>
+        <div class="card-highlight"><strong>Use when</strong> throughput matters more than ordering. Image processing, report generation, batch jobs.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Horizontal scale</span>
+          <span class="pill">Worker pools</span>
+          <span class="pill">Backpressure</span>
+        </div>
+      </div>
+
+      <!-- 04 Dead Letter Queue -->
+      <div class="card delay-4">
+        <span class="card-num">04</span>
+        <h2 class="card-title">Dead Letter Queue</h2>
+        <div class="diagram-box">
+          <svg viewBox="0 0 240 120" width="100%" height="100%" font-family="Libre Franklin,sans-serif">
+            <!-- Main Queue -->
+            <rect x="4" y="16" width="56" height="36" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="32" y="38" text-anchor="middle" font-size="9" font-weight="700" style="fill: var(--accent-2)">Main Q</text>
+            <!-- Arrow to Consumer -->
+            <line x1="64" y1="34" x2="96" y2="34" stroke-width="1.5" style="stroke: var(--accent-2)" marker-end="url(#arr-cyan)"/>
+            <!-- Consumer with fail indicator -->
+            <rect x="100" y="16" width="56" height="36" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="128" y="32" text-anchor="middle" font-size="9" font-weight="600" style="fill: var(--text-muted)">Consumer</text>
+            <text x="128" y="46" text-anchor="middle" font-size="12" font-weight="700" style="fill: var(--status-danger)">FAIL</text>
+            <!-- Retry arrow (back to main queue) -->
+            <path d="M 118 16 L 118 6 L 42 6 L 42 16" fill="none" stroke-width="1.5" style="stroke: var(--accent)" marker-end="url(#arr)"/>
+            <text x="80" y="4" text-anchor="middle" font-size="8" font-weight="600" style="fill: var(--accent)">retry</text>
+            <!-- Fail arrow down to DLQ -->
+            <line x1="140" y1="56" x2="140" y2="78" stroke-width="1.5" style="stroke: var(--status-danger)" marker-end="url(#arr-red)"/>
+            <text x="154" y="70" font-size="8" font-weight="600" style="fill: var(--status-danger)">N fails</text>
+            <!-- DLQ -->
+            <rect x="108" y="82" width="64" height="32" rx="4" style="fill: var(--svg-bg); stroke: var(--status-danger-border)" stroke-width="1.5"/>
+            <text x="140" y="102" text-anchor="middle" font-size="10" font-weight="700" style="fill: var(--status-danger)">DLQ</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Where failed messages go to be investigated, not lost.</strong> After N retries, poison messages move to the DLQ instead of blocking the queue. Alert on DLQ depth.</p>
+        <div class="card-highlight"><strong>Use when</strong> you need to handle failures gracefully. Every production queue should have one.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Fault tolerance</span>
+          <span class="pill">Retry + inspect</span>
+          <span class="pill">Safety net</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

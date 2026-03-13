@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Spotlight Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    /* ── SPOTLIGHT — hero card + detail cards + bottom row ── */
+    .grid {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "hero  b"
+        "hero  c"
+        "hero  d"
+        "e     f";
+    }
+
+    .card-hero  { grid-area: hero; }
+    .card-b     { grid-area: b; }
+    .card-c     { grid-area: c; }
+    .card-d     { grid-area: d; }
+    .card-e     { grid-area: e; }
+    .card-f     { grid-area: f; }
+
+    /* Hero card: larger title, centered diagram area */
+    .card-hero .card-title {
+      font-size: var(--text-h1);
+      line-height: var(--leading-h1);
+    }
+
+    .hero-diagram {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+    }
+    [data-theme="dark"] .hero-diagram {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="light"] .hero-diagram {
+      background: #f4f5f7;
+      border-color: #dde0e6;
+    }
+
+    /* Side cards: compact */
+    .card-b, .card-c, .card-d {
+      padding: 16px 20px;
+    }
+
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+    }
+
+    .card-highlight {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+    }
+
+    .pills {
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    .stat {
+      font-family: var(--font-display), var(--font-sans);
+      font-size: 36px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: var(--weight-bold);
+    }
+
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <!-- REPLACE: Title -->
+      <h1>Database <span class="accent">Scaling</span></h1>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid">
+
+      <!-- HERO: Large left card with diagram -->
+      <div class="card card-hero card--raised delay-1">
+        <!-- REPLACE: Hero card content -->
+        <div class="section-label section-label--accent">The Core Problem</div>
+        <div class="card-title">Vertical vs Horizontal</div>
+        <p class="card-body">Every scaling decision starts here. <strong>Vertical scaling</strong> adds resources to one machine. <strong>Horizontal scaling</strong> adds more machines. Vertical is simpler but has a ceiling. Horizontal is harder but has no limit.</p>
+
+        <!-- REPLACE: Diagram content -->
+        <div class="hero-diagram">
+          <svg viewBox="0 0 520 280" fill="none" style="width: 90%; height: auto;">
+            <!-- Vertical scaling (left) -->
+            <text x="130" y="24" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700">VERTICAL</text>
+            <!-- Small server -->
+            <rect x="90" y="220" width="80" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="130" y="244" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">4 CPU</text>
+            <!-- Medium server -->
+            <rect x="70" y="150" width="120" height="50" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="130" y="180" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">16 CPU</text>
+            <!-- Large server -->
+            <rect x="40" y="60" width="180" height="70" rx="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="130" y="100" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700">128 CPU</text>
+            <!-- Arrow up -->
+            <line x1="130" y1="210" x2="130" y2="140" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Divider -->
+            <line x1="260" y1="40" x2="260" y2="270" style="stroke: var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+
+            <!-- Horizontal scaling (right) -->
+            <text x="390" y="24" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700">HORIZONTAL</text>
+            <!-- Row of servers -->
+            <rect x="300" y="60" width="60" height="40" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="330" y="84" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">S1</text>
+            <rect x="370" y="60" width="60" height="40" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="400" y="84" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">S2</text>
+            <rect x="440" y="60" width="60" height="40" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="470" y="84" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">S3</text>
+            <!-- Second row -->
+            <rect x="300" y="120" width="60" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="330" y="144" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">S4</text>
+            <rect x="370" y="120" width="60" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="400" y="144" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">S5</text>
+            <rect x="440" y="120" width="60" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="470" y="144" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">S6</text>
+            <!-- More appearing -->
+            <rect x="300" y="180" width="60" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1" opacity="0.4"/>
+            <rect x="370" y="180" width="60" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1" opacity="0.4"/>
+            <rect x="440" y="180" width="60" height="40" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1" opacity="0.25"/>
+            <!-- Arrow right showing growth -->
+            <text x="390" y="252" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">+ add more nodes</text>
+          </svg>
+        </div>
+
+        <div class="pills">
+          <span class="pill pill--accent">Start vertical</span>
+          <span class="pill">Go horizontal when you hit the ceiling</span>
+        </div>
+      </div>
+
+      <!-- B: Right side, row 1 -->
+      <div class="card card-b delay-2">
+        <!-- REPLACE: Card B content -->
+        <div class="section-label section-label--accent">Strategy 01</div>
+        <div class="card-title">Read Replicas</div>
+        <p class="card-body"><strong>Most apps are read-heavy.</strong> Route reads to replicas, writes to the primary. Replication lag is the tradeoff you accept.</p>
+        <div class="pills">
+          <span class="pill pill--accent">80/20 rule</span>
+          <span class="pill">PostgreSQL</span>
+        </div>
+      </div>
+
+      <!-- C: Right side, row 2 -->
+      <div class="card card-c card--raised delay-3">
+        <!-- REPLACE: Card C content -->
+        <div class="section-label section-label--accent">Strategy 02</div>
+        <div class="card-title">Sharding</div>
+        <p class="card-body"><strong>Split data across databases by a key.</strong> User ID, region, tenant. Each shard handles a subset. Cross-shard queries become your new problem.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Vitess</span>
+          <span class="pill">Citus</span>
+        </div>
+      </div>
+
+      <!-- D: Right side, row 3 -->
+      <div class="card card-d delay-4">
+        <!-- REPLACE: Card D content -->
+        <div class="section-label section-label--accent">Strategy 03</div>
+        <div class="card-title">Caching Layer</div>
+        <p class="card-body"><strong>Don't hit the database if you don't have to.</strong> Cache hot reads in Redis or Memcached. Invalidation is the hard part.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Redis</span>
+          <span class="pill">Cache-aside</span>
+        </div>
+      </div>
+
+      <!-- E: Bottom left -->
+      <div class="card card-e delay-5">
+        <!-- REPLACE: Card E content — can use stat layout -->
+        <div class="stat">10x</div>
+        <div class="stat-label">Read replica throughput</div>
+        <p class="card-body">A single primary with 3 read replicas can handle 10x the read traffic before you need to shard.</p>
+      </div>
+
+      <!-- F: Bottom right -->
+      <div class="card card-f card--raised delay-6">
+        <!-- REPLACE: Card F content — can use stat layout -->
+        <div class="stat">&lt;5ms</div>
+        <div class="stat-label">Cache hit latency</div>
+        <p class="card-body">Redis cache hits return in under 5ms. The same query hitting PostgreSQL might take 50-200ms.</p>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

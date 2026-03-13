@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Essential Git Commands</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+    }
+
+    .card {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      margin-bottom: 2px;
+    }
+
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+    }
+
+    .cmd {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-2);
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin: 8px 0 6px;
+      display: block;
+      letter-spacing: -0.02em;
+    }
+
+    [data-theme="light"] .cmd {
+      background: rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .card-index {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .pills {
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    .diagram-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 32px;
+      margin: 0;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+    }
+
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 12px;">
+      <h1>Essential Git <span class="accent">Commands</span></h1>
+    </div>
+
+    <!-- Git graph diagram -->
+    <div class="diagram-bar" style="margin-bottom: 12px;">
+      <svg viewBox="0 0 860 80" fill="none" style="width: 100%; max-width: 960px; height: auto;">
+        <!-- Main branch line -->
+        <line x1="30" y1="40" x2="830" y2="40" style="stroke: var(--accent)" stroke-width="2.5" opacity="0.3"/>
+
+        <!-- Commits on main -->
+        <circle cx="60" cy="40" r="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <circle cx="160" cy="40" r="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <circle cx="310" cy="40" r="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <circle cx="460" cy="40" r="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <circle cx="610" cy="40" r="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+        <circle cx="760" cy="40" r="8" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+
+        <!-- Feature branch -->
+        <path d="M 160 40 Q 200 10, 235 14" style="stroke: var(--accent-2); fill: none" stroke-width="2"/>
+        <line x1="235" y1="14" x2="370" y2="14" style="stroke: var(--accent-2)" stroke-width="2"/>
+        <path d="M 370 14 Q 420 14, 460 40" style="stroke: var(--accent-2); fill: none" stroke-width="2"/>
+
+        <!-- Feature branch commits -->
+        <circle cx="270" cy="14" r="6" style="fill: var(--accent-2)" opacity="0.7"/>
+        <circle cx="330" cy="14" r="6" style="fill: var(--accent-2)" opacity="0.7"/>
+
+        <!-- Labels -->
+        <text x="60" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">init</text>
+        <text x="160" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">commit</text>
+        <text x="310" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">stash</text>
+        <text x="460" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">merge</text>
+        <text x="610" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">rebase</text>
+        <text x="760" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">push</text>
+
+        <!-- Branch label -->
+        <text x="300" y="8" text-anchor="middle" style="fill: var(--accent-2)" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600">feature/new</text>
+
+        <!-- HEAD pointer -->
+        <text x="760" y="24" text-anchor="middle" style="fill: var(--accent)" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700">HEAD</text>
+      </svg>
+    </div>
+
+    <!-- Grid — 9 cards in 3x3 -->
+    <div class="grid">
+
+      <!-- 01 git commit -->
+      <div class="card card--raised delay-1">
+        <div class="card-index">01</div>
+        <div class="card-title">git commit</div>
+        <p class="card-body"><strong>Snapshot your staged changes.</strong> Each commit is an immutable record in the project history. Write meaningful messages — your future self will thank you.</p>
+        <code class="cmd">git commit -m "fix: auth redirect"</code>
+        <div class="pills">
+          <span class="pill pill--accent">Core</span>
+          <span class="pill">--amend to fix last</span>
+        </div>
+      </div>
+
+      <!-- 02 git branch -->
+      <div class="card delay-2">
+        <div class="card-index">02</div>
+        <div class="card-title">git branch</div>
+        <p class="card-body"><strong>Create isolated lines of development.</strong> Branches are cheap pointers to commits. Use them for features, fixes, and experiments without touching main.</p>
+        <code class="cmd">git switch -c feature/auth</code>
+        <div class="pills">
+          <span class="pill pill--accent">Branching</span>
+          <span class="pill">switch &gt; checkout</span>
+        </div>
+      </div>
+
+      <!-- 03 git stash -->
+      <div class="card card--raised delay-3">
+        <div class="card-index">03</div>
+        <div class="card-title">git stash</div>
+        <p class="card-body"><strong>Shelve uncommitted work.</strong> Stash saves your working directory and index state so you can switch branches cleanly, then reapply later.</p>
+        <code class="cmd">git stash push -m "wip: sidebar"</code>
+        <div class="pills">
+          <span class="pill pill--accent">Save WIP</span>
+          <span class="pill">pop to restore</span>
+        </div>
+      </div>
+
+      <!-- 04 git rebase -->
+      <div class="card delay-4">
+        <div class="card-index">04</div>
+        <div class="card-title">git rebase</div>
+        <p class="card-body"><strong>Replay commits onto a new base.</strong> Creates a linear history by moving your branch to the tip of main. Interactive mode lets you squash, reorder, and edit commits.</p>
+        <code class="cmd">git rebase -i main</code>
+        <div class="pills">
+          <span class="pill pill--accent">Clean history</span>
+          <span class="pill">-i for interactive</span>
+        </div>
+      </div>
+
+      <!-- 05 git cherry-pick -->
+      <div class="card card--raised delay-5">
+        <div class="card-index">05</div>
+        <div class="card-title">git cherry-pick</div>
+        <p class="card-body"><strong>Apply a specific commit to your current branch.</strong> Grab exactly the changes you need without merging the whole branch. Essential for hotfixes and backports.</p>
+        <code class="cmd">git cherry-pick a1b2c3d</code>
+        <div class="pills">
+          <span class="pill pill--accent">Surgical</span>
+          <span class="pill">Hotfixes</span>
+        </div>
+      </div>
+
+      <!-- 06 git bisect -->
+      <div class="card delay-6">
+        <div class="card-index">06</div>
+        <div class="card-title">git bisect</div>
+        <p class="card-body"><strong>Binary search through commits to find a bug.</strong> Mark commits as good or bad and git narrows the culprit in O(log n) steps. Automate it with a test script.</p>
+        <code class="cmd">git bisect start HEAD v2.0</code>
+        <div class="pills">
+          <span class="pill pill--accent">Debugging</span>
+          <span class="pill">O(log n) search</span>
+        </div>
+      </div>
+
+      <!-- 07 git reflog -->
+      <div class="card card--raised delay-7">
+        <div class="card-index">07</div>
+        <div class="card-title">git reflog</div>
+        <p class="card-body"><strong>Your safety net.</strong> Records every HEAD movement locally — even after reset, rebase, or deleted branches. If you lost a commit, reflog knows where it went.</p>
+        <code class="cmd">git reflog show --date=relative</code>
+        <div class="pills">
+          <span class="pill pill--accent">Recovery</span>
+          <span class="pill">Undo anything</span>
+        </div>
+      </div>
+
+      <!-- 08 git log -->
+      <div class="card delay-8">
+        <div class="card-index">08</div>
+        <div class="card-title">git log</div>
+        <p class="card-body"><strong>Explore project history.</strong> Filter by author, date, file, or message. The <code style="color:var(--accent-2)">--oneline --graph</code> combo gives you a visual branch map in your terminal.</p>
+        <code class="cmd">git log --oneline --graph --all</code>
+        <div class="pills">
+          <span class="pill pill--accent">History</span>
+          <span class="pill">--author filter</span>
+        </div>
+      </div>
+
+      <!-- 09 git reset -->
+      <div class="card card--raised delay-9">
+        <div class="card-index">09</div>
+        <div class="card-title">git reset</div>
+        <p class="card-body"><strong>Move HEAD and optionally rewrite the index.</strong> <code style="color:var(--accent-2)">--soft</code> keeps changes staged. <code style="color:var(--accent-2)">--mixed</code> unstages. <code style="color:var(--accent-2)">--hard</code> discards everything. Handle with care.</p>
+        <code class="cmd">git reset --soft HEAD~1</code>
+        <div class="pills">
+          <span class="pill pill--accent">Undo</span>
+          <span class="pill">--hard is destructive</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

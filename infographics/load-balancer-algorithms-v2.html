@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Load Balancer Algorithms</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-title {
+      margin-bottom: 0;
+    }
+
+    .card-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+    }
+
+    .card-num {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .diagram-box {
+      width: 100%;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+    }
+
+    .pills {
+      padding-top: 4px;
+      margin-top: auto;
+    }
+
+    .card-highlight {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+    }
+
+    [data-theme="light"] .card {
+      background: #ffffff;
+      border-color: #cdd0d8;
+    }
+    [data-theme="dark"] .diagram-box {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="light"] .diagram-box {
+      background: #f4f5f7;
+      border-color: #dde0e6;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG defs for arrow markers -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Load Balancer <span class="accent">Algorithms</span></h1>
+    </div>
+
+    <!-- Grid — clean 3x2 -->
+    <div class="grid">
+
+      <!-- 01 Round Robin (Static) -->
+      <div class="card card--raised">
+        <div class="card-num">01 · Static</div>
+        <div class="card-title">Round Robin</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 140" fill="none" width="200" height="140">
+            <!-- Arrows to servers -->
+            <line x1="10" y1="28" x2="100" y2="28" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <line x1="10" y1="68" x2="100" y2="68" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <line x1="10" y1="108" x2="100" y2="108" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <!-- Servers -->
+            <rect x="104" y="14" width="102" height="28" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="155" y="32" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700">Server A</text>
+            <rect x="104" y="54" width="102" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="155" y="72" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="600">Server B</text>
+            <rect x="104" y="94" width="102" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="155" y="112" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="600">Server C</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>The default you'll inherit.</strong> NGINX ships with it. Requests go A, B, C, repeat. Deals cards evenly, but if one request downloads a file while another returns JSON, "even" still overloads one server.</p>
+        <p class="card-highlight"><strong>Smells wrong when</strong> one server is hot but traffic looks "fair."</p>
+        <div class="pills">
+          <span class="pill pill--accent">NGINX default</span>
+          <span class="pill">Stateless</span>
+        </div>
+      </div>
+
+      <!-- 02 Weighted Round Robin (Static) -->
+      <div class="card">
+        <div class="card-num">02 · Static</div>
+        <div class="card-title">Weighted RR</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 140" fill="none" width="200" height="140">
+            <!-- LB -->
+            <circle cx="30" cy="70" r="18" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="30" y="74" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">LB</text>
+            <!-- Servers — size reflects weight -->
+            <rect x="110" y="4" width="100" height="36" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="160" y="26" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">w=5  ■■■■■</text>
+            <rect x="120" y="52" width="80" height="32" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="160" y="72" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">w=3  ■■■</text>
+            <rect x="136" y="98" width="48" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="160" y="116" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">w=1  ■</text>
+            <!-- Arrows — thickness = traffic volume -->
+            <line x1="48" y1="62" x2="108" y2="22" style="stroke: var(--accent-2)" stroke-width="3.5"/>
+            <line x1="48" y1="70" x2="118" y2="68" style="stroke: var(--accent)" stroke-width="2" opacity="0.5"/>
+            <line x1="48" y1="78" x2="134" y2="112" style="stroke: var(--accent)" stroke-width="1" opacity="0.3"/>
+          </svg>
+        </div>
+        <p class="card-body"><strong>What you switch to when servers aren't identical.</strong> Big instance next to a small one? Set weights. Canary deploy? 90% stable, 10% new build. Same cycle, some servers just show up more often.</p>
+        <p class="card-highlight"><strong>Smells wrong when</strong> you scale but forget to update the weights.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Canary deploys</span>
+          <span class="pill">Mixed hardware</span>
+        </div>
+      </div>
+
+      <!-- 03 Least Connections (Dynamic) -->
+      <div class="card card--raised">
+        <div class="card-num">03 · Dynamic</div>
+        <div class="card-title">Least Connections</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 140" fill="none" width="200" height="140">
+            <!-- LB -->
+            <circle cx="30" cy="70" r="18" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="30" y="74" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">LB</text>
+            <!-- Servers with connection counts inside -->
+            <rect x="110" y="10" width="100" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="160" y="28" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="600">14 conn</text>
+
+            <rect x="110" y="54" width="100" height="28" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="160" y="72" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700">2 conn</text>
+
+            <rect x="110" y="98" width="100" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="160" y="116" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="600">9 conn</text>
+
+            <!-- Arrow to lowest -->
+            <line x1="48" y1="70" x2="108" y2="68" style="stroke: var(--accent-2)" stroke-width="2.5" marker-end="url(#arr-cyan)"/>
+          </svg>
+        </div>
+        <p class="card-body"><strong>First dynamic algorithm most developers reach for.</strong> Watches who's still busy instead of counting dealt cards. A server stuck on a slow query stops getting new work. Handles WebSockets and streaming well.</p>
+        <p class="card-highlight"><strong>Smells wrong when</strong> "5 conn" is fine on one host but killing another.</p>
+        <div class="pills">
+          <span class="pill pill--accent">HAProxy</span>
+          <span class="pill">Adaptive</span>
+        </div>
+      </div>
+
+      <!-- 04 Least Response Time (Dynamic) -->
+      <div class="card">
+        <div class="card-num">04 · Dynamic</div>
+        <div class="card-title">Least Response Time</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 140" fill="none" width="200" height="140">
+            <!-- LB -->
+            <circle cx="30" cy="70" r="18" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="30" y="74" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">LB</text>
+            <!-- Servers with latency inside -->
+            <rect x="110" y="10" width="100" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="160" y="28" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="600">120ms</text>
+
+            <rect x="110" y="54" width="100" height="28" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="160" y="72" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="600">85ms</text>
+
+            <rect x="110" y="98" width="100" height="28" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="160" y="116" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700">12ms</text>
+
+            <!-- Arrow to fastest -->
+            <line x1="48" y1="76" x2="108" y2="112" style="stroke: var(--accent-2)" stroke-width="2.5" marker-end="url(#arr-cyan)"/>
+          </svg>
+        </div>
+        <p class="card-body"><strong>When latency is the metric that matters.</strong> Measures actual response times and sends traffic to whoever answers fastest. Can oscillate: everyone floods the fast host, it slows, traffic shifts, repeat.</p>
+        <p class="card-highlight"><strong>Smells wrong when</strong> latency spikes come in waves.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Latency-aware</span>
+          <span class="pill">AWS ALB</span>
+        </div>
+      </div>
+
+      <!-- 05 P2C (Distributed) -->
+      <div class="card card--raised">
+        <div class="card-num">05 · Distributed</div>
+        <div class="card-title">P2C</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 140" fill="none" width="200" height="140">
+            <!-- LB -->
+            <circle cx="30" cy="70" r="18" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="30" y="74" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">LB</text>
+            <!-- Full pool (dimmed) -->
+            <rect x="110" y="10" width="100" height="22" rx="5" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1" opacity="0.4"/>
+            <text x="160" y="25" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="10">S1</text>
+            <!-- Pick A (sampled) -->
+            <rect x="110" y="40" width="100" height="26" rx="6" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <text x="130" y="57" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="600">S2</text>
+            <text x="195" y="57" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10">8 conn</text>
+            <!-- Pick B (sampled, winner) -->
+            <rect x="110" y="74" width="100" height="26" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="130" y="91" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">S3</text>
+            <text x="195" y="91" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">2 conn</text>
+            <!-- Dimmed remaining -->
+            <rect x="110" y="108" width="100" height="22" rx="5" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1" opacity="0.4"/>
+            <text x="160" y="123" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="10">S4</text>
+            <!-- Arrow to winner -->
+            <line x1="48" y1="70" x2="108" y2="87" style="stroke: var(--accent-2)" stroke-width="2.5" marker-end="url(#arr-cyan)"/>
+            <!-- "pick 2" label -->
+            <text x="80" y="48" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">pick 2</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Quietly routing your K8s traffic right now.</strong> Pick two random servers, send to the less busy one. Nearly as good as checking all of them, zero coordination. No herd stampede.</p>
+        <p class="card-highlight"><strong>Default in</strong> Envoy, Istio, most service meshes.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Envoy / Istio</span>
+          <span class="pill">Near-optimal</span>
+        </div>
+      </div>
+
+      <!-- 06 Consistent Hashing (Affinity) -->
+      <div class="card">
+        <div class="card-num">06 · Affinity</div>
+        <div class="card-title">Consistent Hashing</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 220 140" fill="none" width="200" height="140">
+            <!-- Hash ring -->
+            <circle cx="110" cy="68" r="52" style="stroke: var(--border-medium); fill: none" stroke-width="2"/>
+            <!-- Nodes on ring -->
+            <circle cx="110" cy="16" r="14" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="110" y="21" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">S1</text>
+            <circle cx="155" cy="100" r="14" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="155" y="105" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">S2</text>
+            <circle cx="65" cy="100" r="14" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="65" y="105" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">S3</text>
+            <!-- Key points on ring -->
+            <circle cx="138" cy="24" r="5" style="fill: var(--accent)"/>
+            <circle cx="82" cy="24" r="5" style="fill: var(--accent)"/>
+            <circle cx="162" cy="62" r="5" style="fill: var(--accent)"/>
+            <!-- Clockwise arrow arc -->
+            <path d="M 132 20 A 52 52 0 0 1 160 52" style="stroke: var(--accent-2); fill: none" stroke-width="2"/>
+            <polygon points="162,50 156,56 154,46" style="fill: var(--accent-2)"/>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Not about spreading load. About remembering where things go.</strong> User 42 always hits Server B. Add a server and only its neighbors' keys move.</p>
+        <p class="card-highlight"><strong>Smells wrong when</strong> a hot key pins load to one server.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Envoy ring hash</span>
+          <span class="pill">DynamoDB</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Numbered List Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    /* ── NUMBERED LIST — 7 horizontal rows with number badges ── */
+    .nl-list {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .nl-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nl-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Alternating raised background */
+    .nl-item--raised {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    .nl-badge {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-family: var(--font-sans);
+      font-size: 22px;
+      font-weight: var(--weight-extrabold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nl-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nl-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-card-title);
+      color: var(--text-primary);
+    }
+
+    .nl-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+
+    .nl-body strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <!-- REPLACE: Title -->
+      <h1>7 Habits of Highly<br>Effective Engineers</h1>
+    </div>
+
+    <!-- Numbered list -->
+    <div class="nl-list">
+
+      <!-- REPLACE: Item 1 -->
+      <div class="nl-item">
+        <div class="nl-badge">1</div>
+        <div class="nl-content">
+          <div class="nl-title">They write things down</div>
+          <p class="nl-body"><strong>Document decisions, not just code.</strong> The best engineers leave a trail of context.</p>
+        </div>
+      </div>
+
+      <!-- REPLACE: Item 2 -->
+      <div class="nl-item nl-item--raised">
+        <div class="nl-badge">2</div>
+        <div class="nl-content">
+          <div class="nl-title">They say no more than yes</div>
+          <p class="nl-body"><strong>Protecting focus is a skill.</strong> Every yes to one thing is a no to everything else.</p>
+        </div>
+      </div>
+
+      <!-- REPLACE: Item 3 -->
+      <div class="nl-item">
+        <div class="nl-badge">3</div>
+        <div class="nl-content">
+          <div class="nl-title">They read more code than they write</div>
+          <p class="nl-body"><strong>Understanding existing systems matters more than adding new ones.</strong> Read the PR before you comment.</p>
+        </div>
+      </div>
+
+      <!-- REPLACE: Item 4 -->
+      <div class="nl-item nl-item--raised">
+        <div class="nl-badge">4</div>
+        <div class="nl-content">
+          <div class="nl-title">They automate the boring stuff</div>
+          <p class="nl-body"><strong>If you do it twice, script it.</strong> Time invested in automation compounds.</p>
+        </div>
+      </div>
+
+      <!-- REPLACE: Item 5 -->
+      <div class="nl-item">
+        <div class="nl-badge">5</div>
+        <div class="nl-content">
+          <div class="nl-title">They ask obvious questions</div>
+          <p class="nl-body"><strong>The "dumb" question in the room is usually the most important one.</strong> Senior engineers ask them fearlessly.</p>
+        </div>
+      </div>
+
+      <!-- REPLACE: Item 6 -->
+      <div class="nl-item nl-item--raised">
+        <div class="nl-badge">6</div>
+        <div class="nl-content">
+          <div class="nl-title">They ship small and often</div>
+          <p class="nl-body"><strong>Small PRs get reviewed faster, merged sooner, and break less.</strong> Batch size is the hidden variable.</p>
+        </div>
+      </div>
+
+      <!-- REPLACE: Item 7 -->
+      <div class="nl-item">
+        <div class="nl-badge">7</div>
+        <div class="nl-content">
+          <div class="nl-title">They take breaks seriously</div>
+          <p class="nl-body"><strong>Burnout doesn't announce itself.</strong> The best engineers protect their recovery time.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

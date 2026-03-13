@@ -230,33 +230,33 @@
 
 /* ── LIGHT ────────────────────────────────────────────────── */
 [data-theme="light"] {
-  --bg-canvas:      #eceef2;
+  --bg-canvas:      #dfe2e8;
   --bg-card:        #ffffff;
-  --bg-raised:      #f5f6f8;
-  --bg-warm:        #eef1f8;
+  --bg-raised:      #f0f1f4;
+  --bg-warm:        #e8ecf4;
   --bg-footer:      #0f0f1a;
-  --accent-glow:    rgba(79, 70, 229, 0.08);
-  --accent-2-glow:  rgba(8, 145, 178, 0.08);
+  --accent-glow:    rgba(67, 56, 202, 0.10);
+  --accent-2-glow:  rgba(6, 122, 150, 0.10);
 
-  --border:         #cdd0d8;
-  --border-medium:  #bfc2cc;
-  --border-accent:  rgba(79, 70, 229, 0.30);
-  --border-accent-2: rgba(8, 145, 178, 0.25);
+  --border:         #b8bcc6;
+  --border-medium:  #a8acb8;
+  --border-accent:  rgba(67, 56, 202, 0.40);
+  --border-accent-2: rgba(6, 122, 150, 0.35);
 
-  --text-primary:   #12131A;
-  --text-secondary: #363842;
-  --text-muted:     #636573;
-  --text-dim:       #9c9da8;
+  --text-primary:   #0c0d14;
+  --text-secondary: #2a2c38;
+  --text-muted:     #555766;
+  --text-dim:       #8c8e9a;
 
   --accent:         #4338CA;
-  --accent-2:       #0891B2;
+  --accent-2:       #0779A0;
 
-  --footer-text:    #9c9da8;
+  --footer-text:    #8c8e9a;
   --footer-text-hi: #d6d7de;
   --footer-border:  #2a2a40;
 
-  --card-shadow:    0 1px 3px rgba(0, 0, 0, 0.10),
-                    0 4px 12px rgba(0, 0, 0, 0.07);
+  --card-shadow:    0 1px 3px rgba(0, 0, 0, 0.12),
+                    0 6px 16px rgba(0, 0, 0, 0.10);
   --on-accent:      #ffffff;
 
   --status-success:       #1a7a3a;
@@ -266,14 +266,14 @@
   --status-danger-glow:   rgba(179, 69, 37, 0.06);
   --status-danger-border: rgba(179, 69, 37, 0.15);
 
-  --svg-bg:         #f3f4f7;
-  --svg-border:     #d4d6de;
+  --svg-bg:         #ecedf1;
+  --svg-border:     #b8bcc6;
   --svg-text:       var(--text-primary);
   --svg-line:       var(--accent);
-  --svg-line-dim:   #9c9da8;
-  --svg-line-faint: rgba(0, 0, 0, 0.08);
-  --svg-accent-bg:  rgba(8, 145, 178, 0.06);
-  --svg-accent-border: rgba(8, 145, 178, 0.20);
+  --svg-line-dim:   #8c8e9a;
+  --svg-line-faint: rgba(0, 0, 0, 0.12);
+  --svg-accent-bg:  rgba(6, 122, 150, 0.10);
+  --svg-accent-border: rgba(6, 122, 150, 0.30);
 
   --bg-canvas-gradient: var(--bg-canvas);
 

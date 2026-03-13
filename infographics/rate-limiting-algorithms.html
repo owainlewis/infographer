@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Rate Limiting Algorithms</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .card { padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .card-title { margin-bottom: 0; }
+    .card-body { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+    .card-num {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .diagram-box {
+      width: 100%;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+    }
+    .pills { padding-top: 4px; margin-top: auto; }
+    .card-highlight { font-size: var(--text-meta); line-height: var(--leading-meta); }
+    [data-theme="light"] .card { background: #ffffff; border-color: #cdd0d8; }
+    [data-theme="dark"] .diagram-box { background: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.08); }
+    [data-theme="light"] .diagram-box { background: #f4f5f7; border-color: #dde0e6; }
+  </style>
+</head>
+<body>
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>Rate Limiting <span class="accent">Algorithms</span></h1>
+    </div>
+
+    <div class="grid">
+
+      <!-- 01 Fixed Window -->
+      <div class="card card--raised delay-1">
+        <div class="card-num">01</div>
+        <div class="card-title">Fixed Window</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 280 140" fill="none" width="260" height="140">
+            <!-- Timeline -->
+            <line x1="20" y1="90" x2="260" y2="90" style="stroke: var(--svg-border)" stroke-width="2"/>
+            <!-- Window 1 -->
+            <rect x="30" y="30" width="100" height="60" rx="4" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <!-- Dots in window 1 -->
+            <circle cx="48" cy="55" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="65" cy="48" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="82" cy="62" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="100" cy="50" r="5" style="fill: var(--accent-2)"/>
+            <!-- Label window 1 -->
+            <text x="80" y="80" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">100/100</text>
+            <!-- Boundary line (dashed) -->
+            <line x1="130" y1="22" x2="130" y2="98" style="stroke: var(--accent)" stroke-width="2" stroke-dasharray="4,3"/>
+            <!-- Burst dots at boundary -->
+            <circle cx="124" cy="42" r="4" style="fill: var(--status-danger)"/>
+            <circle cx="136" cy="42" r="4" style="fill: var(--status-danger)"/>
+            <circle cx="124" cy="54" r="4" style="fill: var(--status-danger)"/>
+            <circle cx="136" cy="54" r="4" style="fill: var(--status-danger)"/>
+            <!-- Window 2 -->
+            <rect x="130" y="30" width="110" height="60" rx="4" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <!-- Dot in window 2 -->
+            <circle cx="170" cy="58" r="5" style="fill: var(--text-muted)"/>
+            <!-- Label window 2 -->
+            <text x="185" y="80" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">1/100</text>
+            <!-- Time labels -->
+            <text x="80" y="108" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="10">0:00 — 0:59</text>
+            <text x="185" y="108" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="10">1:00 — 1:59</text>
+            <!-- Burst label -->
+            <text x="130" y="18" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">BURST</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>The simplest counter you can build.</strong> Count requests per fixed time window (e.g., 100/minute). Counter resets at each boundary. Problem: a burst at 0:59 and another at 1:01 doubles your intended rate in a 2-second span.</p>
+        <p class="card-highlight"><strong>Tradeoff</strong> — Simple to implement, but boundary bursts can double throughput.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Redis INCR</span>
+          <span class="pill">Simplest</span>
+          <span class="pill">Boundary burst risk</span>
+        </div>
+      </div>
+
+      <!-- 02 Sliding Window Log -->
+      <div class="card delay-2">
+        <div class="card-num">02</div>
+        <div class="card-title">Sliding Window Log</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 280 140" fill="none" width="260" height="140">
+            <!-- Timeline -->
+            <line x1="20" y1="70" x2="260" y2="70" style="stroke: var(--svg-border)" stroke-width="2"/>
+            <!-- Expired dots (dimmed, crossed out) -->
+            <circle cx="40" cy="70" r="5" style="fill: var(--text-dim)" opacity="0.4"/>
+            <line x1="35" y1="65" x2="45" y2="75" style="stroke: var(--status-danger)" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="58" cy="70" r="5" style="fill: var(--text-dim)" opacity="0.4"/>
+            <line x1="53" y1="65" x2="63" y2="75" style="stroke: var(--status-danger)" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="76" cy="70" r="5" style="fill: var(--text-dim)" opacity="0.4"/>
+            <line x1="71" y1="65" x2="81" y2="75" style="stroke: var(--status-danger)" stroke-width="1.5" opacity="0.6"/>
+            <!-- Sliding window bracket -->
+            <rect x="95" y="40" width="150" height="55" rx="6" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <!-- Active dots inside window -->
+            <circle cx="115" cy="70" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="140" cy="70" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="165" cy="70" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="190" cy="70" r="5" style="fill: var(--accent-2)"/>
+            <circle cx="215" cy="70" r="5" style="fill: var(--accent-2)"/>
+            <!-- Timestamps under active dots -->
+            <text x="115" y="88" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="8">t1</text>
+            <text x="140" y="88" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="8">t2</text>
+            <text x="165" y="88" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="8">t3</text>
+            <text x="190" y="88" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="8">t4</text>
+            <text x="215" y="88" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="8">t5</text>
+            <!-- Sliding arrow -->
+            <line x1="100" y1="105" x2="240" y2="105" style="stroke: var(--accent-2)" stroke-width="1.5" marker-end="url(#arr-cyan)"/>
+            <text x="170" y="118" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">window slides →</text>
+            <!-- Window label -->
+            <text x="170" y="52" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">last 60s: 5 req</text>
+            <!-- Expired label -->
+            <text x="58" y="55" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9">expired</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Fixes the boundary problem by tracking every timestamp.</strong> Keep a sorted log of request timestamps. Count entries within the last N seconds. Perfectly accurate, but storing every timestamp gets expensive at high throughput.</p>
+        <p class="card-highlight"><strong>Tradeoff</strong> — Precise rate limiting, but O(n) memory per user.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Precise</span>
+          <span class="pill">Memory-heavy</span>
+          <span class="pill">Sorted set</span>
+        </div>
+      </div>
+
+      <!-- 03 Token Bucket -->
+      <div class="card card--raised delay-3">
+        <div class="card-num">03</div>
+        <div class="card-title">Token Bucket</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 280 140" fill="none" width="260" height="140">
+            <!-- Bucket shape -->
+            <path d="M 90 40 L 80 120 L 160 120 L 150 40 Z" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <!-- Tokens inside bucket -->
+            <circle cx="105" cy="105" r="6" style="fill: var(--accent-2)"/>
+            <circle cx="120" cy="105" r="6" style="fill: var(--accent-2)"/>
+            <circle cx="135" cy="105" r="6" style="fill: var(--accent-2)"/>
+            <circle cx="112" cy="90" r="6" style="fill: var(--accent-2)"/>
+            <circle cx="128" cy="90" r="6" style="fill: var(--accent-2)"/>
+            <circle cx="120" cy="75" r="6" style="fill: var(--accent-2)" opacity="0.5"/>
+            <!-- Refill arrow from above -->
+            <line x1="120" y1="8" x2="120" y2="35" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <text x="120" y="6" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">refill: 10/sec</text>
+            <!-- Request allowed (taking token) -->
+            <line x1="155" y1="80" x2="195" y2="60" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <rect x="195" y="48" width="70" height="24" rx="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="230" y="64" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">ALLOWED</text>
+            <!-- Request rejected -->
+            <rect x="195" y="90" width="70" height="24" rx="5" style="fill: var(--status-danger-glow); stroke: var(--status-danger-border)" stroke-width="1.5"/>
+            <text x="230" y="106" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">DENIED</text>
+            <!-- X mark for denied -->
+            <line x1="175" y1="96" x2="190" y2="108" style="stroke: var(--status-danger)" stroke-width="2"/>
+            <line x1="190" y1="96" x2="175" y2="108" style="stroke: var(--status-danger)" stroke-width="2"/>
+            <!-- Bucket label -->
+            <text x="40" y="85" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9" transform="rotate(-90, 40, 85)">capacity</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>The algorithm behind AWS and Stripe rate limits.</strong> Bucket holds N tokens, refills at a steady rate. Each request takes a token. Bucket empty? Request denied. Allows controlled bursts up to bucket capacity, then smooths to the refill rate.</p>
+        <p class="card-highlight"><strong>Tradeoff</strong> — Allows bursts (good for real traffic), tunable via bucket size and refill rate.</p>
+        <div class="pills">
+          <span class="pill pill--accent">AWS / Stripe</span>
+          <span class="pill">Burst-friendly</span>
+          <span class="pill">Most popular</span>
+        </div>
+      </div>
+
+      <!-- 04 Leaky Bucket -->
+      <div class="card delay-4">
+        <div class="card-num">04</div>
+        <div class="card-title">Leaky Bucket</div>
+        <div class="diagram-box">
+          <svg viewBox="0 0 280 140" fill="none" width="260" height="140">
+            <!-- Incoming requests (variable rate, arrows from above) -->
+            <line x1="95" y1="5" x2="105" y2="28" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="115" y1="8" x2="115" y2="28" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="130" y1="3" x2="125" y2="28" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="145" y1="10" x2="138" y2="28" style="stroke: var(--accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="120" y="5" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9">variable input</text>
+            <!-- Bucket shape -->
+            <path d="M 85 30 L 75 100 L 165 100 L 155 30 Z" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
+            <!-- Water/requests inside (filled area) -->
+            <path d="M 79 70 L 75 100 L 165 100 L 161 70 Z" style="fill: var(--svg-accent-bg)" opacity="0.6"/>
+            <!-- Overflow request being dropped -->
+            <circle cx="170" cy="35" r="5" style="fill: var(--status-danger)" opacity="0.7"/>
+            <line x1="165" y1="30" x2="175" y2="40" style="stroke: var(--status-danger)" stroke-width="1.5"/>
+            <line x1="175" y1="30" x2="165" y2="40" style="stroke: var(--status-danger)" stroke-width="1.5"/>
+            <text x="200" y="38" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="600">dropped</text>
+            <!-- Steady drip from bottom -->
+            <line x1="120" y1="100" x2="120" y2="130" style="stroke: var(--accent-2)" stroke-width="2" marker-end="url(#arr-cyan)"/>
+            <!-- Drip drops -->
+            <circle cx="120" cy="118" r="3" style="fill: var(--accent-2)"/>
+            <!-- Fixed rate label -->
+            <rect x="145" y="108" width="95" height="22" rx="5" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
+            <text x="192" y="123" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">fixed rate out</text>
+            <!-- Water level label -->
+            <text x="45" y="90" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9" transform="rotate(-90, 45, 90)">queue</text>
+          </svg>
+        </div>
+        <p class="card-body"><strong>Smooths everything to a constant output rate.</strong> Requests enter the bucket at any speed. The bucket drains at a fixed rate. If it overflows, excess requests are dropped. No bursts ever reach your backend — guaranteed constant throughput.</p>
+        <p class="card-highlight"><strong>Tradeoff</strong> — Perfectly smooth output, but legitimate bursts get queued or dropped.</p>
+        <div class="pills">
+          <span class="pill pill--accent">NGINX</span>
+          <span class="pill">Constant rate</span>
+          <span class="pill">No bursts</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

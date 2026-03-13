@@ -6,14 +6,10 @@
   <title>Agentic Engineering Workflow</title>
   <link rel="stylesheet" href="/src/tw/out.css">
   <style>
-    .infographic {
-      background: var(--bg-canvas-gradient, var(--bg-canvas));
-    }
-
     .diagram-section {
       display: flex;
       justify-content: center;
-      padding: 28px 32px;
+      padding: 48px 32px 28px;
       margin: 0;
       border-radius: var(--card-radius);
       border: 1px solid var(--border);
@@ -53,11 +49,6 @@
       text-transform: uppercase;
     }
 
-    /* -- LinkedIn contrast boost -- */
-    [data-theme="dark"] .card {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.14);
-    }
     [data-theme="light"] .card {
       background: #ffffff;
       border-color: #cdd0d8;
@@ -93,7 +84,7 @@
         <!-- 01 Design -->
         <rect x="6" y="24" width="110" height="64" rx="10" style="fill: var(--svg-accent-bg); stroke: var(--svg-accent-border)" stroke-width="1.5"/>
         <text x="61" y="48" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">01</text>
-        <text x="61" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Design</text>
+        <text x="61" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Spec</text>
 
         <!-- Arrow -->
         <line x1="120" y1="56" x2="152" y2="56" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
@@ -101,7 +92,7 @@
         <!-- 02 Plan -->
         <rect x="156" y="24" width="110" height="64" rx="10" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="1.5"/>
         <text x="211" y="48" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="11" font-weight="700">02</text>
-        <text x="211" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Plan</text>
+        <text x="211" y="70" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="16" font-weight="600">Tasks</text>
 
         <!-- Arrow -->
         <line x1="270" y1="56" x2="298" y2="56" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#arr)"/>
@@ -142,8 +133,8 @@
     <div class="grid">
 
       <div class="card card--raised delay-1">
-        <div class="card-step">01 Design</div>
-        <div class="card-title">Write the Spec First</div>
+        <div class="card-step">01 Spec</div>
+        <div class="card-title">Planning</div>
         <p class="card-body"><strong>Start with a PRD.</strong> Define what you're building and why. Then a technical spec: architecture, data models, and constraints. A good spec means the agent gets it right first pass.</p>
         <p class="card-highlight"><strong>Tip:</strong> I spend more time on specs now than I ever spent on code.</p>
         <div class="pills">
@@ -153,8 +144,8 @@
       </div>
 
       <div class="card delay-2">
-        <div class="card-step">02 Plan</div>
-        <div class="card-title">Break into Tickets</div>
+        <div class="card-step">02 Tasks</div>
+        <div class="card-title">Task Breakdown</div>
         <p class="card-body"><strong>Small, well-defined tasks.</strong> Clear inputs, outputs, and acceptance criteria. Write them like you would for a junior engineer — specific file paths, expected behavior, edge cases.</p>
         <p class="card-highlight"><strong>Tip:</strong> If a ticket needs a paragraph to explain, it's too big.</p>
         <div class="pills">
@@ -165,8 +156,8 @@
 
       <div class="card card--raised delay-3">
         <div class="card-step">03 Build</div>
-        <div class="card-title">One Agent per Ticket</div>
-        <p class="card-body"><strong>Isolated context. No bleed.</strong> Each agent sees only the spec, the relevant files, and the acceptance criteria. No shared state between agents.</p>
+        <div class="card-title">Delegate to Agents</div>
+        <p class="card-body"><strong>One task per agent.</strong> Give each agent a clear task with only the files it needs. Isolated context produces better results than dumping your whole codebase.</p>
         <p class="card-highlight"><strong>Tip:</strong> A focused agent with 3 files outperforms a bloated agent with 50.</p>
         <div class="pills">
           <span class="pill pill--accent">Claude Code</span>
@@ -176,8 +167,8 @@
 
       <div class="card delay-4">
         <div class="card-step">04 Review</div>
-        <div class="card-title">Agents Checking Agents</div>
-        <p class="card-body"><strong>Never self-review.</strong> Dedicated review agents check for quality, simplification, and consistency with the spec. This is the self-improving loop.</p>
+        <div class="card-title">Review &amp; Simplify</div>
+        <p class="card-body"><strong>Always review and simplify.</strong> Use a dedicated review pass to check quality, reduce complexity, and ensure consistency with the spec. This is the self-improving loop.</p>
         <p class="card-highlight"><strong>Tip:</strong> "Can this be simpler?" catches over-engineering humans miss.</p>
         <div class="pills">
           <span class="pill pill--accent">Simplification</span>
@@ -187,8 +178,8 @@
 
       <div class="card card--raised delay-5">
         <div class="card-step">05 Ship</div>
-        <div class="card-title">Human Reviews Architecture</div>
-        <p class="card-body"><strong>CI/CD runs. Tests pass.</strong> The human reviews the final diff, not every intermediate step. You approve the what and the why. Agents handle the how.</p>
+        <div class="card-title">Automated Checks</div>
+        <p class="card-body"><strong>Tests, linting, CI gates.</strong> Let automation catch regressions before you look at the code. You review the final diff and the architecture, not every intermediate step.</p>
         <p class="card-highlight"><strong>Tip:</strong> Your job shifts from writing code to reviewing architecture.</p>
         <div class="pills">
           <span class="pill pill--accent">CI/CD</span>
@@ -200,10 +191,10 @@
         <div class="card-step">Common Mistakes</div>
         <div class="card-title">What Not to Do</div>
         <div class="principle-grid" style="gap: 4px;">
-          <div class="principle-pill">Vague prompts, no spec</div>
+          <div class="principle-pill">Delegate thinking to AI</div>
           <div class="principle-pill">One agent, huge task</div>
-          <div class="principle-pill">Skipping review step</div>
-          <div class="principle-pill">Reviewing every line manually</div>
+          <div class="principle-pill">Skip iteration loop</div>
+          <div class="principle-pill">No self-validation loop</div>
         </div>
       </div>
 

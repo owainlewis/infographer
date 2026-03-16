@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Agent Design Patterns</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+      gap: 12px;
+    }
+
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── Bento grid ───────────────────────────────────────────── */
+    .pat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 12px;
+      flex: 1;
+      grid-template-areas:
+        "a a b"
+        "c d e"
+        "f g g";
+    }
+
+    .pat-card {
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pat-card:nth-child(even) { background: var(--bg-raised); border-color: var(--border-medium); }
+    .pat-card--accent { border-color: var(--border-accent); background: var(--accent-glow); }
+    .pat-card--cyan { border-color: var(--border-accent-2); background: var(--accent-2-glow); }
+
+    .pat-card:nth-child(1) { grid-area: a; }
+    .pat-card:nth-child(2) { grid-area: b; }
+    .pat-card:nth-child(3) { grid-area: c; }
+    .pat-card:nth-child(4) { grid-area: d; }
+    .pat-card:nth-child(5) { grid-area: e; }
+    .pat-card:nth-child(6) { grid-area: f; }
+    .pat-card:nth-child(7) { grid-area: g; }
+
+    /* ── Wide cards: text + diagram side by side ──────────────── */
+    .pat-wide {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 12px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .pat-wide-text {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pat-num {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .pat-card--cyan .pat-num { color: var(--accent-2); }
+
+    .pat-title {
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .pat-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+
+    .pat-body strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .pat-use {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    .pat-card--cyan .pat-use { color: var(--accent); }
+
+    /* ── Diagram container ────────────────────────────────────── */
+    .pat-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 0;
+      padding: 8px 4px;
+    }
+
+    .pat-diagram svg {
+      width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+
+    .pat-wide .pat-diagram {
+      padding: 0;
+      height: 100%;
+      background: var(--svg-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 16px;
+    }
+
+    /* Shared SVG node styles */
+    .n-llm { fill: var(--svg-accent-bg); stroke: var(--border-accent); }
+    .n-tool { fill: var(--svg-bg); stroke: var(--svg-border); }
+    .n-out { fill: var(--accent-2-glow); stroke: var(--border-accent-2); }
+    .t-label { fill: var(--text-primary); font-family: 'Libre Franklin',sans-serif; font-weight: 700; }
+    .t-sub { fill: var(--text-muted); font-family: 'Libre Franklin',sans-serif; font-weight: 600; }
+    .l-flow { stroke: var(--accent); stroke-width: 2; }
+    .l-flow-2 { stroke: var(--accent-2); stroke-width: 2; }
+    .l-dim { stroke: var(--svg-border); stroke-width: 1.5; }
+  </style>
+</head>
+<body>
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+      <marker id="arr-dim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--text-muted)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 8px;">
+      <h1>7 AI Agent Design Patterns</h1>
+    </div>
+
+    <!-- Bento grid: 7 cards -->
+    <div class="pat-grid">
+
+      <!-- 01 Augmented LLM (wide) -->
+      <div class="pat-card pat-card--accent">
+        <div class="pat-wide">
+          <div class="pat-wide-text">
+            <span class="pat-num">01 · FOUNDATION</span>
+            <span class="pat-title">Augmented LLM</span>
+            <p class="pat-body">An LLM enhanced with <strong>retrieval, tools, and memory</strong>. This is the base unit — every other pattern is built from this.</p>
+            <p class="pat-use">The building block for all agents</p>
+          </div>
+          <div class="pat-diagram">
+            <svg viewBox="0 0 220 140" fill="none">
+              <!-- Central LLM node -->
+              <rect x="70" y="40" width="80" height="60" rx="12" class="n-llm" stroke-width="2"/>
+              <text x="110" y="68" text-anchor="middle" class="t-label" font-size="13">LLM</text>
+              <text x="110" y="84" text-anchor="middle" class="t-sub" font-size="9">augmented</text>
+              <!-- Retrieval -->
+              <rect x="0" y="0" width="60" height="30" rx="6" class="n-tool" stroke-width="1.5"/>
+              <text x="30" y="19" text-anchor="middle" class="t-sub" font-size="9">Retrieval</text>
+              <line x1="60" y1="20" x2="78" y2="42" class="l-flow" marker-end="url(#arr)"/>
+              <!-- Tools -->
+              <rect x="160" y="0" width="54" height="30" rx="6" class="n-tool" stroke-width="1.5"/>
+              <text x="187" y="19" text-anchor="middle" class="t-sub" font-size="9">Tools</text>
+              <line x1="160" y1="20" x2="142" y2="42" class="l-flow" marker-end="url(#arr)"/>
+              <!-- Memory -->
+              <rect x="80" y="116" width="60" height="24" rx="6" class="n-tool" stroke-width="1.5"/>
+              <text x="110" y="132" text-anchor="middle" class="t-sub" font-size="9">Memory</text>
+              <line x1="110" y1="100" x2="110" y2="116" class="l-flow" marker-end="url(#arr)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Prompt Chaining -->
+      <div class="pat-card">
+        <span class="pat-num">02</span>
+        <span class="pat-title">Prompt Chaining</span>
+        <p class="pat-body">Break a task into <strong>sequential steps</strong>. Each call processes the previous output. Add gates to check quality.</p>
+        <div class="pat-diagram">
+          <svg viewBox="0 0 192 80" fill="none">
+            <text x="8" y="38" class="t-sub" font-size="10">In</text>
+            <line x1="22" y1="34" x2="35" y2="34" class="l-flow" marker-end="url(#arr)"/>
+            <rect x="40" y="18" width="36" height="32" rx="8" class="n-llm" stroke-width="1.5"/>
+            <text x="58" y="38" text-anchor="middle" class="t-label" font-size="9">LLM</text>
+            <line x1="76" y1="34" x2="86" y2="34" class="l-dim" marker-end="url(#arr-dim)"/>
+            <circle cx="96" cy="34" r="10" class="n-tool" stroke-width="1.5"/>
+            <text x="96" y="38" text-anchor="middle" class="t-sub" font-size="7">Gate</text>
+            <line x1="106" y1="34" x2="118" y2="34" class="l-flow" marker-end="url(#arr)"/>
+            <rect x="123" y="18" width="36" height="32" rx="8" class="n-llm" stroke-width="1.5"/>
+            <text x="141" y="38" text-anchor="middle" class="t-label" font-size="9">LLM</text>
+            <line x1="159" y1="34" x2="170" y2="34" class="l-flow-2" marker-end="url(#arr2)"/>
+            <text x="176" y="38" class="t-sub" font-size="10">Out</text>
+            <!-- Fail path -->
+            <line x1="96" y1="44" x2="96" y2="62" style="stroke: var(--status-danger); stroke-width: 1.5" stroke-dasharray="3,2"/>
+            <text x="96" y="74" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">Fail</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 03 Routing -->
+      <div class="pat-card">
+        <span class="pat-num">03</span>
+        <span class="pat-title">Routing</span>
+        <p class="pat-body"><strong>Classify the input</strong>, then dispatch to specialized handlers with optimized prompts.</p>
+        <div class="pat-diagram">
+          <svg viewBox="0 0 192 100" fill="none">
+            <text x="4" y="52" class="t-sub" font-size="10">In</text>
+            <line x1="18" y1="48" x2="32" y2="48" class="l-flow" marker-end="url(#arr)"/>
+            <!-- Router diamond -->
+            <polygon points="58,28 78,48 58,68 38,48" class="n-llm" stroke-width="1.5"/>
+            <text x="58" y="52" text-anchor="middle" class="t-label" font-size="8">Route</text>
+            <!-- Branch 1 -->
+            <line x1="78" y1="38" x2="104" y2="20" class="l-flow-2" marker-end="url(#arr2)"/>
+            <rect x="108" y="8" width="40" height="24" rx="6" class="n-llm" stroke-width="1.5"/>
+            <text x="128" y="24" text-anchor="middle" class="t-label" font-size="8">LLM</text>
+            <line x1="148" y1="20" x2="162" y2="20" class="l-flow-2" marker-end="url(#arr2)"/>
+            <text x="168" y="24" class="t-sub" font-size="9">Out</text>
+            <!-- Branch 2 -->
+            <line x1="78" y1="48" x2="104" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+            <rect x="108" y="36" width="40" height="24" rx="6" class="n-llm" stroke-width="1.5"/>
+            <text x="128" y="52" text-anchor="middle" class="t-label" font-size="8">LLM</text>
+            <line x1="148" y1="48" x2="162" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+            <text x="168" y="52" class="t-sub" font-size="9">Out</text>
+            <!-- Branch 3 -->
+            <line x1="78" y1="58" x2="104" y2="76" class="l-flow-2" marker-end="url(#arr2)"/>
+            <rect x="108" y="64" width="40" height="24" rx="6" class="n-llm" stroke-width="1.5"/>
+            <text x="128" y="80" text-anchor="middle" class="t-label" font-size="8">LLM</text>
+            <line x1="148" y1="76" x2="162" y2="76" class="l-flow-2" marker-end="url(#arr2)"/>
+            <text x="168" y="80" class="t-sub" font-size="9">Out</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 04 Parallelization -->
+      <div class="pat-card">
+        <span class="pat-num">04</span>
+        <span class="pat-title">Parallelization</span>
+        <p class="pat-body"><strong>Sectioning</strong> (split into parallel subtasks) or <strong>voting</strong> (same task N times). Speed or confidence.</p>
+        <div class="pat-diagram">
+          <svg viewBox="0 0 180 100" fill="none">
+            <text x="4" y="52" class="t-sub" font-size="10">In</text>
+            <line x1="18" y1="48" x2="32" y2="48" class="l-flow" marker-end="url(#arr)"/>
+            <!-- Fan out -->
+            <line x1="32" y1="48" x2="48" y2="20" class="l-flow" marker-end="url(#arr)"/>
+            <line x1="32" y1="48" x2="48" y2="48" class="l-flow" marker-end="url(#arr)"/>
+            <line x1="32" y1="48" x2="48" y2="76" class="l-flow" marker-end="url(#arr)"/>
+            <!-- LLM nodes -->
+            <rect x="52" y="8" width="36" height="24" rx="6" class="n-llm" stroke-width="1.5"/>
+            <text x="70" y="24" text-anchor="middle" class="t-label" font-size="8">LLM</text>
+            <rect x="52" y="36" width="36" height="24" rx="6" class="n-llm" stroke-width="1.5"/>
+            <text x="70" y="52" text-anchor="middle" class="t-label" font-size="8">LLM</text>
+            <rect x="52" y="64" width="36" height="24" rx="6" class="n-llm" stroke-width="1.5"/>
+            <text x="70" y="80" text-anchor="middle" class="t-label" font-size="8">LLM</text>
+            <!-- Fan in -->
+            <line x1="88" y1="20" x2="118" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+            <line x1="88" y1="48" x2="118" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+            <line x1="88" y1="76" x2="118" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+            <!-- Aggregator -->
+            <rect x="122" y="34" width="36" height="28" rx="6" class="n-out" stroke-width="1.5"/>
+            <text x="140" y="52" text-anchor="middle" class="t-label" font-size="7">Merge</text>
+            <line x1="158" y1="48" x2="168" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+            <text x="172" y="52" class="t-sub" font-size="10">Out</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 05 Orchestrator-Workers -->
+      <div class="pat-card">
+        <span class="pat-num">05</span>
+        <span class="pat-title">Orchestrator-Workers</span>
+        <p class="pat-body">A central LLM <strong>dynamically decides</strong> subtasks, delegates to workers, synthesizes results.</p>
+        <div class="pat-diagram">
+          <svg viewBox="0 0 180 96" fill="none">
+            <!-- Orchestrator -->
+            <rect x="48" y="4" width="84" height="30" rx="8" class="n-llm" stroke-width="2"/>
+            <text x="90" y="24" text-anchor="middle" class="t-label" font-size="10">Orchestrator</text>
+            <!-- Delegate label -->
+            <text x="22" y="46" text-anchor="middle" class="t-sub" font-size="7">delegate</text>
+            <text x="158" y="46" text-anchor="middle" class="t-sub" font-size="7">delegate</text>
+            <!-- Workers -->
+            <rect x="8" y="58" width="44" height="28" rx="6" class="n-tool" stroke-width="1.5"/>
+            <text x="30" y="76" text-anchor="middle" class="t-sub" font-size="8">Worker</text>
+            <rect x="68" y="58" width="44" height="28" rx="6" class="n-tool" stroke-width="1.5"/>
+            <text x="90" y="76" text-anchor="middle" class="t-sub" font-size="8">Worker</text>
+            <rect x="128" y="58" width="44" height="28" rx="6" class="n-tool" stroke-width="1.5"/>
+            <text x="150" y="76" text-anchor="middle" class="t-sub" font-size="8">Worker</text>
+            <!-- Arrows down (delegate) -->
+            <line x1="72" y1="34" x2="35" y2="56" class="l-flow" marker-end="url(#arr)"/>
+            <line x1="90" y1="34" x2="90" y2="56" class="l-flow" marker-end="url(#arr)"/>
+            <line x1="108" y1="34" x2="145" y2="56" class="l-flow" marker-end="url(#arr)"/>
+            <!-- Results label -->
+            <text x="90" y="96" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="7" font-weight="600">results synthesized</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 06 Evaluator-Optimizer -->
+      <div class="pat-card">
+        <span class="pat-num">06</span>
+        <span class="pat-title">Evaluator-Optimizer</span>
+        <p class="pat-body">One LLM generates, another <strong>evaluates and gives feedback</strong>. Loop until quality criteria met.</p>
+        <div class="pat-diagram">
+          <svg viewBox="0 0 192 96" fill="none">
+            <text x="4" y="38" class="t-sub" font-size="10">In</text>
+            <line x1="18" y1="34" x2="30" y2="34" class="l-flow" marker-end="url(#arr)"/>
+            <!-- Generator -->
+            <rect x="34" y="18" width="50" height="32" rx="8" class="n-llm" stroke-width="1.5"/>
+            <text x="59" y="32" text-anchor="middle" class="t-label" font-size="8">Generate</text>
+            <text x="59" y="44" text-anchor="middle" class="t-sub" font-size="7">LLM</text>
+            <!-- Arrow to evaluator -->
+            <line x1="84" y1="34" x2="96" y2="34" class="l-flow" marker-end="url(#arr)"/>
+            <!-- Evaluator -->
+            <rect x="100" y="18" width="54" height="32" rx="8" class="n-out" stroke-width="1.5"/>
+            <text x="127" y="32" text-anchor="middle" class="t-label" font-size="8">Evaluate</text>
+            <text x="127" y="44" text-anchor="middle" class="t-sub" font-size="7">LLM</text>
+            <!-- Out -->
+            <line x1="154" y1="34" x2="170" y2="34" class="l-flow-2" marker-end="url(#arr2)"/>
+            <text x="178" y="38" class="t-sub" font-size="10">Out</text>
+            <!-- Feedback loop -->
+            <path d="M 127 50 C 127 82, 59 82, 59 50" class="l-flow" fill="none" stroke-dasharray="4,2" marker-end="url(#arr)"/>
+            <text x="93" y="86" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">feedback loop</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 07 Autonomous Agent (wide) -->
+      <div class="pat-card pat-card--cyan">
+        <div class="pat-wide">
+          <div class="pat-wide-text">
+            <span class="pat-num">07 · AUTONOMOUS</span>
+            <span class="pat-title">Autonomous Agent</span>
+            <p class="pat-body">The LLM <strong>dynamically directs its own process</strong> — choosing tools, planning steps, and reacting to feedback in a loop. Most flexible, hardest to control.</p>
+            <p class="pat-use">Only use when you can't predict the steps needed</p>
+          </div>
+          <div class="pat-diagram">
+            <svg viewBox="0 0 210 122" fill="none">
+              <text x="4" y="50" class="t-sub" font-size="11">In</text>
+              <line x1="20" y1="46" x2="36" y2="46" class="l-flow" marker-end="url(#arr)"/>
+              <!-- LLM -->
+              <rect x="40" y="26" width="60" height="44" rx="10" class="n-llm" stroke-width="2"/>
+              <text x="70" y="46" text-anchor="middle" class="t-label" font-size="13">LLM</text>
+              <text x="70" y="62" text-anchor="middle" class="t-sub" font-size="9">decides</text>
+              <!-- Arrow to tools -->
+              <line x1="100" y1="48" x2="118" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+              <!-- Tools -->
+              <rect x="122" y="26" width="60" height="44" rx="10" class="n-out" stroke-width="2"/>
+              <text x="152" y="46" text-anchor="middle" class="t-label" font-size="12">Tools</text>
+              <text x="152" y="62" text-anchor="middle" class="t-sub" font-size="9">execute</text>
+              <!-- Feedback loop -->
+              <path d="M 152 70 C 152 106, 70 106, 70 70" class="l-flow-2" fill="none" stroke-width="2" marker-end="url(#arr2)"/>
+              <text x="111" y="114" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">feedback</text>
+              <!-- Out -->
+              <line x1="182" y1="48" x2="196" y2="48" class="l-flow-2" marker-end="url(#arr2)"/>
+              <text x="202" y="52" class="t-sub" font-size="11">Out</text>
+              <!-- Loop label above -->
+              <text x="111" y="16" text-anchor="middle" style="fill: var(--accent)" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700">while not done</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How to Build Software That Doesn't Break</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    /* ── Header ────────────────────────────────────────────────── */
+    .hd--glossary {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .hd--glossary h1 {
+      font-family: var(--font-display);
+      font-size: 62px;
+      line-height: 70px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    /* ── Callout banner ─────────────────────────────────────────── */
+    .gl-callout {
+      padding: 22px 28px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .gl-callout-icon {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+    }
+
+    .gl-callout-body {
+      flex: 1;
+    }
+
+    .gl-callout-title {
+      font-size: 20px;
+      line-height: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .gl-callout-text {
+      font-size: 15px;
+      line-height: 22px;
+      color: var(--text-secondary);
+    }
+
+    .gl-callout-text strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .gl-callout-stat {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .gl-callout-stat-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .gl-callout-stat-label {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    /* ── Grid wrapper ───────────────────────────────────────────── */
+    .gl-grid-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      display: flex;
+      flex: 1;
+    }
+
+    /* ── Grid — 12 cards, 3×4 ───────────────────────────────────── */
+    .gl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      flex: 1;
+    }
+
+    .gl-card {
+      padding: 20px 22px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--bg-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Remove right border on last column */
+    .gl-card:nth-child(3n) { border-right: none; }
+
+    /* Remove bottom border on last row */
+    .gl-card:nth-child(n+10) { border-bottom: none; }
+
+    /* Checkerboard subtle highlight */
+    .gl-card:nth-child(even) { background: var(--bg-raised); }
+
+    /* Accent stripe on top of each card */
+    .gl-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 22px;
+      right: 22px;
+      height: 2px;
+      background: var(--border-medium);
+      opacity: 0.5;
+    }
+    .gl-card:nth-child(-n+3)::before { display: none; }
+
+    /* ── Large watermark number ─────────────────────────────────── */
+    .gl-watermark {
+      position: absolute;
+      top: -8px;
+      right: -4px;
+      font-family: var(--font-sans);
+      font-size: 96px;
+      line-height: 1;
+      font-weight: 900;
+      color: var(--accent);
+      opacity: 0.06;
+      pointer-events: none;
+      letter-spacing: -0.04em;
+    }
+
+    .gl-num {
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      font-family: var(--font-sans);
+    }
+
+    .gl-term {
+      font-size: var(--text-sub);
+      line-height: var(--leading-sub);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .gl-def {
+      font-size: 16px;
+      line-height: 23px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      flex: 1;
+    }
+
+    .gl-def strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ── Color-coded tags ─────────────────────────────────────── */
+    .gl-tag {
+      display: inline-block;
+      margin-top: auto;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--border-medium);
+      color: var(--text-muted);
+      align-self: flex-start;
+    }
+
+    .gl-tag--defense {
+      border-color: var(--border-accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .gl-tag--recovery {
+      border-color: var(--border-accent-2);
+      color: var(--accent-2);
+      background: var(--accent-2-glow);
+    }
+
+    .gl-tag--ops {
+      border-color: var(--status-success-border);
+      color: var(--status-success);
+      background: var(--status-success-glow);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd--glossary">
+      <h1>Build Software That Doesn't <span class="accent">Break</span></h1>
+    </div>
+
+    <!-- Callout banner -->
+    <div class="gl-callout">
+      <svg class="gl-callout-icon" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" style="fill: var(--accent-glow); stroke: var(--border-accent)" stroke-width="1.5"/>
+        <path d="M20 32 L28 40 L44 24" style="stroke: var(--accent-2)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="gl-callout-body">
+        <div class="gl-callout-title">Downtime is expensive</div>
+        <p class="gl-callout-text">Meta's 2024 outage cost nearly <strong>$100M in revenue</strong>. A one-hour Amazon outage cost an estimated <strong>$34M in sales</strong>.</p>
+      </div>
+      <div class="gl-callout-stat">
+        <div class="gl-callout-stat-num">$34M</div>
+        <div class="gl-callout-stat-label">per hour<br>of downtime</div>
+      </div>
+    </div>
+
+    <!-- Grid wrapper with outer border -->
+    <div class="gl-grid-wrap">
+      <div class="gl-grid">
+
+        <!-- 01 Timeout -->
+        <div class="gl-card">
+          <span class="gl-watermark">01</span>
+          <span class="gl-num">01</span>
+          <span class="gl-term">Timeout</span>
+          <p class="gl-def">Every outbound call needs a deadline. Without one, a slow dependency holds your threads hostage until the whole service dies.</p>
+          <span class="gl-tag gl-tag--defense">Defense</span>
+        </div>
+
+        <!-- 02 Exponential Backoff -->
+        <div class="gl-card">
+          <span class="gl-watermark">02</span>
+          <span class="gl-num">02</span>
+          <span class="gl-term">Exponential Backoff</span>
+          <p class="gl-def">Wait 1s, 2s, 4s, 8s between retries. <strong>Add jitter</strong> — without it, clients retry in sync and create thundering herds.</p>
+          <span class="gl-tag gl-tag--defense">Defense</span>
+        </div>
+
+        <!-- 03 Circuit Breaker -->
+        <div class="gl-card">
+          <span class="gl-watermark">03</span>
+          <span class="gl-num">03</span>
+          <span class="gl-term">Circuit Breaker</span>
+          <p class="gl-def">Track failure rate. Cross a threshold? All calls fail instantly. Three states: <strong>closed → open → half-open</strong>.</p>
+          <span class="gl-tag gl-tag--defense">Defense</span>
+        </div>
+
+        <!-- 04 Bulkhead -->
+        <div class="gl-card">
+          <span class="gl-watermark">04</span>
+          <span class="gl-num">04</span>
+          <span class="gl-term">Bulkhead</span>
+          <p class="gl-def">Give each dependency its own resource pool. Like watertight ship compartments — <strong>one floods, the rest stay dry</strong>.</p>
+          <span class="gl-tag gl-tag--defense">Defense</span>
+        </div>
+
+        <!-- 05 Fallback -->
+        <div class="gl-card">
+          <span class="gl-watermark">05</span>
+          <span class="gl-num">05</span>
+          <span class="gl-term">Fallback</span>
+          <p class="gl-def">When the primary path fails, return cached data, a default, or a simplified result. <strong>Degraded beats broken.</strong></p>
+          <span class="gl-tag gl-tag--recovery">Recovery</span>
+        </div>
+
+        <!-- 06 Safe Retries -->
+        <div class="gl-card">
+          <span class="gl-watermark">06</span>
+          <span class="gl-num">06</span>
+          <span class="gl-term">Safe Retries</span>
+          <p class="gl-def">Use <strong>idempotency keys</strong> so duplicates produce the same result. Without this, a retried payment charges twice.</p>
+          <span class="gl-tag gl-tag--recovery">Recovery</span>
+        </div>
+
+        <!-- 07 Health Checks -->
+        <div class="gl-card">
+          <span class="gl-watermark">07</span>
+          <span class="gl-num">07</span>
+          <span class="gl-term">Health Checks</span>
+          <p class="gl-def">Expose <strong>liveness</strong> (restart me) and <strong>readiness</strong> (stop sending traffic) endpoints. Kubernetes uses both natively.</p>
+          <span class="gl-tag gl-tag--ops">Operations</span>
+        </div>
+
+        <!-- 08 Dead Letter Queue -->
+        <div class="gl-card">
+          <span class="gl-watermark">08</span>
+          <span class="gl-num">08</span>
+          <span class="gl-term">Dead Letter Queue</span>
+          <p class="gl-def">Messages that always fail go to a DLQ after exhausting retries. <strong>Quarantines poison pills</strong> so healthy messages flow.</p>
+          <span class="gl-tag gl-tag--recovery">Recovery</span>
+        </div>
+
+        <!-- 09 Rate Limiting -->
+        <div class="gl-card">
+          <span class="gl-watermark">09</span>
+          <span class="gl-num">09</span>
+          <span class="gl-term">Rate Limiting</span>
+          <p class="gl-def">Cap requests per client per window. Return <strong>HTTP 429</strong> with Retry-After. Protects you as a provider, not a caller.</p>
+          <span class="gl-tag gl-tag--defense">Defense</span>
+        </div>
+
+        <!-- 10 Observability -->
+        <div class="gl-card">
+          <span class="gl-watermark">10</span>
+          <span class="gl-num">10</span>
+          <span class="gl-term">Observability</span>
+          <p class="gl-def">Three pillars: <strong>logs</strong> (what), <strong>metrics</strong> (how much), <strong>traces</strong> (where). Without all three, you're guessing.</p>
+          <span class="gl-tag gl-tag--ops">Operations</span>
+        </div>
+
+        <!-- 11 Graceful Shutdown -->
+        <div class="gl-card">
+          <span class="gl-watermark">11</span>
+          <span class="gl-num">11</span>
+          <span class="gl-term">Graceful Shutdown</span>
+          <p class="gl-def">On SIGTERM: stop accepting connections, finish in-flight work, exit. <strong>Every deploy is a shutdown</strong> — do it cleanly.</p>
+          <span class="gl-tag gl-tag--ops">Operations</span>
+        </div>
+
+        <!-- 12 Load Shedding -->
+        <div class="gl-card">
+          <span class="gl-watermark">12</span>
+          <span class="gl-num">12</span>
+          <span class="gl-term">Load Shedding</span>
+          <p class="gl-def">When overwhelmed, <strong>drop low-priority requests</strong> to keep serving critical ones. Better to reject 10% than fail 100%.</p>
+          <span class="gl-tag gl-tag--defense">Defense</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

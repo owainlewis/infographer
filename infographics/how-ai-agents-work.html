@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How AI Agents Actually Work</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+    }
+
+    .card {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-title { margin-bottom: 0; }
+
+    .card-body {
+      font-size: 15px;
+      line-height: 21px;
+    }
+
+    .card-body code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent-2);
+    }
+
+    .card-index {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .pills {
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    /* ── Loop diagram bar ─────────────────────────────────────── */
+    .diagram-bar {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 28px 32px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background: var(--accent-glow);
+      box-shadow: var(--card-shadow);
+    }
+
+    .diagram-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    /* ── Bottom callout ───────────────────────────────────────── */
+    .bottom-callout {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 24px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background: var(--accent-glow);
+    }
+
+    .bottom-callout-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: var(--on-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .bottom-callout-title {
+      font-size: var(--text-body);
+      line-height: var(--leading-body-sm);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .bottom-callout-text {
+      font-size: 15px;
+      line-height: 21px;
+      color: var(--text-secondary);
+    }
+
+    .bottom-callout-text strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG arrow markers -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd" style="margin-bottom: 12px;">
+      <h1>How AI Agents <span style="color: var(--accent)">Actually</span> Work</h1>
+    </div>
+
+    <!-- Loop Diagram -->
+    <div class="diagram-bar" style="margin-bottom: 12px;">
+      <div class="diagram-label">The Agent Loop — that's all there is</div>
+      <svg viewBox="0 0 880 120" fill="none" style="width: 100%; height: auto;">
+        <!-- Flow line -->
+        <line x1="30" y1="65" x2="850" y2="65" style="stroke: var(--border-medium)" stroke-width="2" stroke-dasharray="6,4"/>
+
+        <!-- Step 1: Prompt -->
+        <rect x="10" y="32" width="150" height="66" rx="12" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="2"/>
+        <text x="85" y="58" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="700">Prompt</text>
+        <text x="85" y="78" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11">system + history</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="165" y1="65" x2="198" y2="65" style="stroke: var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+
+        <!-- Step 2: LLM -->
+        <rect x="203" y="26" width="155" height="78" rx="14" style="fill: var(--svg-accent-bg); stroke: var(--border-accent)" stroke-width="2"/>
+        <text x="280" y="58" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="17" font-weight="800">LLM Call</text>
+        <text x="280" y="78" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11">stateless every time</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="363" y1="65" x2="394" y2="65" style="stroke: var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+
+        <!-- Step 3: Decision diamond -->
+        <polygon points="470,18 545,65 470,112 395,65" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="2"/>
+        <text x="470" y="62" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="14" font-weight="700">Tool call?</text>
+        <text x="470" y="78" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11">or done</text>
+
+        <!-- Arrow 3→4 (yes) -->
+        <line x1="545" y1="65" x2="578" y2="65" style="stroke: var(--accent-2)" stroke-width="2.5" marker-end="url(#arr-cyan)"/>
+        <text x="562" y="55" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="700">YES</text>
+
+        <!-- Step 4: Execute -->
+        <rect x="583" y="32" width="155" height="66" rx="12" style="fill: var(--svg-accent-bg); stroke: var(--border-accent-2)" stroke-width="2"/>
+        <text x="660" y="58" text-anchor="middle" style="fill: var(--accent-2)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="700">Execute Tool</text>
+        <text x="660" y="78" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11">your code runs it</text>
+
+        <!-- Arrow 4→5 -->
+        <line x1="743" y1="65" x2="773" y2="65" style="stroke: var(--accent-2)" stroke-width="2.5" marker-end="url(#arr-cyan)"/>
+
+        <!-- Step 5: Append -->
+        <rect x="778" y="32" width="100" height="66" rx="12" style="fill: var(--svg-bg); stroke: var(--svg-border)" stroke-width="2"/>
+        <text x="828" y="58" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="700">Append</text>
+        <text x="828" y="78" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="11">result → history</text>
+
+        <!-- Loop-back arrow (curved, goes above) -->
+        <path d="M 828 28 C 828 2, 280 2, 280 22" style="stroke: var(--accent); fill: none" stroke-width="2.5" marker-end="url(#arr)" stroke-dasharray="6,3"/>
+        <text x="554" y="10" text-anchor="middle" style="fill: var(--accent)" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">while not done</text>
+      </svg>
+    </div>
+
+    <!-- 3×3 Grid -->
+    <div class="grid" style="margin-bottom: 12px;">
+
+      <!-- 01 It's Stateless -->
+      <div class="card card--raised">
+        <div class="card-index">01</div>
+        <div class="card-title">It's Stateless</div>
+        <p class="card-body"><strong>Every LLM call starts from zero.</strong> There's no persistent thread. The "conversation" is the full message history re-sent every single time.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Key insight</span>
+          <span class="pill">No hidden state</span>
+        </div>
+      </div>
+
+      <!-- 02 Tool Calls -->
+      <div class="card">
+        <div class="card-index">02</div>
+        <div class="card-title">Tool Calls</div>
+        <p class="card-body">The LLM doesn't "run" anything. It outputs <strong>structured JSON</strong> — function name + arguments. Your code executes it and feeds the result back.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Core mechanic</span>
+          <span class="pill">JSON in, result out</span>
+        </div>
+      </div>
+
+      <!-- 03 Context Window -->
+      <div class="card card--raised">
+        <div class="card-index">03</div>
+        <div class="card-title">Context Window</div>
+        <p class="card-body">Everything the model knows must fit here: <strong>system prompt + history + tools + response</strong>. Overflow it and it silently forgets the beginning.</p>
+        <div class="pills">
+          <span class="pill pill--accent">The bottleneck</span>
+          <span class="pill">128K–1M tokens</span>
+        </div>
+      </div>
+
+      <!-- 04 System Prompt -->
+      <div class="card">
+        <div class="card-index">04</div>
+        <div class="card-title">System Prompt</div>
+        <p class="card-body">The "personality" is just a <strong>string prepended to every call</strong>. Not magic — it's the first message in the array. Change it any time.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Just a string</span>
+          <span class="pill">First message</span>
+        </div>
+      </div>
+
+      <!-- 05 Memory -->
+      <div class="card card--raised">
+        <div class="card-index">05</div>
+        <div class="card-title">Memory</div>
+        <p class="card-body">Agents don't "remember." Memory is <strong>text saved to a file or database</strong>, then injected into the next prompt. Persistence with extra steps.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Not magic</span>
+          <span class="pill">Read → inject</span>
+        </div>
+      </div>
+
+      <!-- 06 RAG -->
+      <div class="card">
+        <div class="card-index">06</div>
+        <div class="card-title">RAG</div>
+        <p class="card-body"><strong>Search first, then answer.</strong> Embed docs as vectors, find relevant chunks, paste them into the prompt. The LLM reads your data — it doesn't know it.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Retrieval</span>
+          <span class="pill">Search → paste</span>
+        </div>
+      </div>
+
+      <!-- 07 Planning -->
+      <div class="card card--raised">
+        <div class="card-index">07</div>
+        <div class="card-title">Planning</div>
+        <p class="card-body">When an agent "thinks step by step" it's <strong>generating text it reads back</strong> on the next loop. Planning is the model talking to its future self.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Self-prompting</span>
+          <span class="pill">Think → read</span>
+        </div>
+      </div>
+
+      <!-- 08 Multi-Agent -->
+      <div class="card">
+        <div class="card-index">08</div>
+        <div class="card-title">Multi-Agent</div>
+        <p class="card-body">Not a new architecture. It's <strong>agents calling other agents</strong> — one loop spawning another with a different system prompt and tool set. Nested while loops.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Nested loops</span>
+          <span class="pill">Same pattern</span>
+        </div>
+      </div>
+
+      <!-- 09 Tokens -->
+      <div class="card card--raised">
+        <div class="card-index">09</div>
+        <div class="card-title">Tokens</div>
+        <p class="card-body">LLMs don't see words — they see <strong>chunks of ~4 characters</strong>. "unhappiness" is 3 tokens. You pay per token in, per token out. This is why context matters.</p>
+        <div class="pills">
+          <span class="pill pill--accent">The unit</span>
+          <span class="pill">~4 chars each</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom callout: Guardrails -->
+    <div class="bottom-callout">
+      <div class="bottom-callout-icon">!</div>
+      <div>
+        <div class="bottom-callout-title">Guardrails are your code's job, not the model's</div>
+        <p class="bottom-callout-text">The agent will happily delete your database if you give it a tool that can. <strong>Never trust the LLM to self-limit.</strong> Constraints live in the code that executes the tool calls.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

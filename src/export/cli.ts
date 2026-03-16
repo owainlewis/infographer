@@ -12,6 +12,7 @@ function printUsage() {
   Options:
     --png          Export as 2x PNG (default)
     --output <dir> Output directory (default: output)
+    --theme <name> Theme override (default: dark-minimal)
     --help         Show this help
 
   Examples:
@@ -38,8 +39,13 @@ async function main() {
       args[args.indexOf("--output") + 1] :
       "output";
 
+  const theme =
+    args.includes("--theme") ?
+      args[args.indexOf("--theme") + 1] :
+      "dark-minimal";
+
   try {
-    await exportPng(htmlPath, outputDir);
+    await exportPng(htmlPath, outputDir, theme);
   } catch (error) {
     console.error("Export failed:", error);
     process.exit(1);

@@ -1,6 +1,6 @@
 import { watch } from "fs";
 import { resolve, join, extname, basename, dirname } from "path";
-import { readdir, rename, mkdir } from "fs/promises";
+import { readdir, rename, mkdir, unlink } from "fs/promises";
 import { exportPng } from "./png";
 
 const PROJECT_ROOT = resolve(import.meta.dir, "../..");
@@ -25,8 +25,9 @@ const MIME_TYPES: Record<string, string> = {
 // Track connected WebSocket clients for live reload
 const clients = new Set<any>();
 
-// Inject live-reload script into HTML
+// Inject live-reload script and Ember theme CSS into HTML
 function injectLiveReload(html: string): string {
+  const emberLink = `<link rel="stylesheet" href="/src/tw/themes-ember.css">`;
   const script = `
 <script>
 (function() {
@@ -39,15 +40,19 @@ function injectLiveReload(html: string): string {
   };
 })();
 </script>`;
+  // Inject Ember themes after the main stylesheet
+  html = html.replace("</head>", `${emberLink}\n</head>`);
   return html.replace("</body>", `${script}\n</body>`);
 }
 
 // ── Data helpers ─────────────────────────────────────────────
 
 const LAYOUT_INFO: Record<string, { name: string; desc: string; grid: string }> = {
-  bento:     { name: "Bento",      desc: "9 cards, asymmetric 3\u00d74 grid",    grid: "3\u00d74" },
-  catalog:   { name: "Catalog",    desc: "6 equal cards, 3\u00d72 grid",         grid: "3\u00d72" },
-  stack:     { name: "Stack",      desc: "5 full-width horizontal bands",    grid: "1\u00d75" },
+  bento:     { name: "Bento",      desc: "9 cards, asymmetric 3×4 grid",        grid: "3×4" },
+  catalog:   { name: "Catalog",    desc: "6 equal cards, 3×2 grid",             grid: "3×2" },
+  stack:     { name: "Stack",      desc: "5 full-width horizontal bands",        grid: "1×5" },
+  pipeline:  { name: "Pipeline",   desc: "Hero, SVG flow diagram, stage cards", grid: "1×4" },
+  lessons:   { name: "Lessons",    desc: "Central image with surrounding cards", grid: "3×5" },
 };
 
 async function getInfographicFiles(): Promise<string[]> {
@@ -588,6 +593,25 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       border-top: 1px solid var(--border-subtle);
     }
 
+    .tpl-delete {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .tpl-delete:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
     /* ── Home page ───────────────────────────────── */
     .home-hero {
       margin-bottom: 40px;
@@ -950,10 +974,15 @@ async function buildTemplatesPage(): Promise<string> {
   const templateCards = templates.map(({ layout, file }) => {
     const info = LAYOUT_INFO[layout] || { name: layout, desc: "", grid: "" };
     return `
-      <div class="tpl-card">
+      <div class="tpl-card" id="tpl-${layout}">
         <div class="tpl-header">
           <span class="tpl-name">${info.name}</span>
-          <span class="tpl-badge">${info.grid}</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="tpl-badge">${info.grid}</span>
+            <button class="tpl-delete" onclick="deleteTemplate('${file}', 'tpl-${layout}')" title="Delete template">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
         </div>
         <p class="tpl-desc">${info.desc}</p>
         <a class="tpl-thumb" href="/preview-template/${file}">
@@ -963,7 +992,33 @@ async function buildTemplatesPage(): Promise<string> {
   }).join("\n");
 
   const content = `
-    <div class="template-grid">${templateCards}</div>`;
+    <div class="template-grid">${templateCards}</div>
+    <script>
+      async function deleteTemplate(file, cardId) {
+        if (!confirm('Delete template "' + file.replace('template-','').replace('.html','') + '"? This cannot be undone.')) return;
+        try {
+          const res = await fetch('/__api/delete-template', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            const card = document.getElementById(cardId);
+            if (card) {
+              card.style.transition = 'opacity 0.3s, transform 0.3s';
+              card.style.opacity = '0';
+              card.style.transform = 'scale(0.95)';
+              setTimeout(() => card.remove(), 300);
+            }
+          } else {
+            alert('Failed to delete: ' + (data.error || 'Unknown error'));
+          }
+        } catch (e) {
+          alert('Failed to delete template');
+        }
+      }
+    </script>`;
 
   return shell("templates", "Templates", content, counts, "Starting points for your next infographic");
 }
@@ -981,8 +1036,9 @@ function generatePreview(filename: string, dir: string = "infographics"): string
   <title>${filename.replace(".html", "").replace(/-/g, " ")} \u2014 Preview</title>
   <script>
     (function() {
-      var mode = localStorage.getItem('ig-mode') || 'light';
-      document.documentElement.setAttribute('data-mode', mode);
+      var stored = localStorage.getItem('ig-mode') || 'dark';
+      var shell = (stored === 'dark' || stored === 'dark-minimal') ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-mode', shell);
     })();
   </script>
   <style>
@@ -1067,25 +1123,44 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace;
     }
     .toolbar-center { display: flex; align-items: center; gap: 14px; }
-    .zoom-controls, .theme-toggle {
+    .zoom-controls {
       display: flex; gap: 2px;
       background: var(--control-bg);
       border-radius: 10px; padding: 3px;
       border: 1px solid var(--control-border);
     }
-    .zoom-btn, .theme-btn {
+    .zoom-btn {
       padding: 5px 14px; border: none; border-radius: 8px;
       background: transparent; color: var(--text-muted); font-family: inherit;
       font-size: 12px; font-weight: 600; cursor: pointer;
       transition: all 0.2s;
     }
-    .zoom-btn:hover, .theme-btn:hover { color: var(--text-secondary); }
-    .zoom-btn.active, .theme-btn.active {
+    .zoom-btn:hover { color: var(--text-secondary); }
+    .zoom-btn.active {
       color: var(--text-primary);
       background: var(--control-active-bg);
       box-shadow: var(--control-active-shadow);
     }
-    .theme-btn svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px; }
+    .theme-select-wrap { position: relative; }
+    .theme-select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 6px 32px 6px 14px;
+      border: 1px solid var(--control-border);
+      border-radius: 10px;
+      background: var(--control-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A766D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 130px;
+    }
+    .theme-select:hover { color: var(--text-primary); border-color: var(--border-hover, var(--control-border)); }
+    .theme-select:focus { outline: none; border-color: var(--accent); }
+    .theme-select option { background: var(--toolbar-bg, #fff); color: var(--text-primary); }
+    .theme-select optgroup { color: var(--text-muted); font-weight: 600; }
     .toolbar-right { display: flex; align-items: center; gap: 14px; }
     .raw-link {
       font-size: 13px; color: var(--text-muted); text-decoration: none; font-weight: 500;
@@ -1181,9 +1256,17 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       <span class="filename">${filename}</span>
     </div>
     <div class="toolbar-center">
-      <div class="theme-toggle">
-        <button class="theme-btn" data-theme="dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Dark</button>
-        <button class="theme-btn" data-theme="light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>Light</button>
+      <div class="theme-select-wrap">
+        <select class="theme-select" id="themeSelect">
+          <optgroup label="Indigo &amp; Cyan">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </optgroup>
+          <optgroup label="Navy &amp; Orange">
+            <option value="dark-minimal">Navy Dark</option>
+            <option value="light-minimal">Navy Light</option>
+          </optgroup>
+        </select>
       </div>
       <div class="zoom-controls">
         <button class="zoom-btn" data-zoom="0.5">50%</button>
@@ -1253,8 +1336,8 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       if (document.querySelector('[data-zoom="fit"]').classList.contains('active')) setZoom('fit');
     });
 
-    // Theme toggle — controls the infographic theme inside the iframe
-    var themeBtns = document.querySelectorAll('.theme-btn');
+    // Theme select — controls the infographic theme inside the iframe
+    var themeSelect = document.getElementById('themeSelect');
     var iframe = document.querySelector('iframe');
     var dlBtn = document.getElementById('downloadBtn');
 
@@ -1262,14 +1345,12 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       try {
         var ig = iframe.contentDocument.querySelector('.infographic');
         return ig ? ig.getAttribute('data-theme') || 'dark' : 'dark';
-      } catch(e) { return 'dark'; }
+      } catch(e) { return localStorage.getItem('ig-mode') || 'dark'; }
     }
 
-    function syncThemeButtons() {
+    function syncThemeSelect() {
       var current = getInfographicTheme();
-      themeBtns.forEach(function(b) {
-        b.classList.toggle('active', b.dataset.theme === current);
-      });
+      themeSelect.value = current;
     }
 
     function updateDownloadTheme(theme) {
@@ -1278,32 +1359,32 @@ function generatePreview(filename: string, dir: string = "infographics"): string
       }
     }
 
-    // On iframe load, set infographic theme to match the app mode
+    function shellModeForTheme(theme) {
+      return (theme === 'dark' || theme === 'dark-minimal') ? 'dark' : 'light';
+    }
+
+    // On iframe load, set infographic theme to the stored theme
     iframe.addEventListener('load', function() {
-      var appMode = document.documentElement.getAttribute('data-mode') || 'light';
+      var storedTheme = localStorage.getItem('ig-mode') || 'dark';
       try {
         var ig = iframe.contentDocument.querySelector('.infographic');
-        if (ig) ig.setAttribute('data-theme', appMode);
+        if (ig) ig.setAttribute('data-theme', storedTheme);
       } catch(e) {}
-      syncThemeButtons();
+      syncThemeSelect();
       updateDownloadTheme(getInfographicTheme());
     });
 
-    themeBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var theme = btn.dataset.theme;
-        try {
-          var ig = iframe.contentDocument.querySelector('.infographic');
-          if (ig) ig.setAttribute('data-theme', theme);
-        } catch(e) {}
-        themeBtns.forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        updateDownloadTheme(theme);
+    themeSelect.addEventListener('change', function() {
+      var theme = themeSelect.value;
+      try {
+        var ig = iframe.contentDocument.querySelector('.infographic');
+        if (ig) ig.setAttribute('data-theme', theme);
+      } catch(e) {}
+      updateDownloadTheme(theme);
 
-        // Also switch the preview page shell to match
-        document.documentElement.setAttribute('data-mode', theme);
-        localStorage.setItem('ig-mode', theme);
-      });
+      var shellMode = shellModeForTheme(theme);
+      document.documentElement.setAttribute('data-mode', shellMode);
+      localStorage.setItem('ig-mode', theme);
     });
 
     if (dlBtn) {
@@ -1445,6 +1526,24 @@ const server = Bun.serve({
         await rename(absSource, absDest);
         const newPath = isRoot ? fname : `${folder}/${fname}`;
         return new Response(JSON.stringify({ ok: true, newPath }), { headers: { "Content-Type": "application/json" } });
+      } catch (err: any) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+      }
+    }
+
+    if (pathname === "/__api/delete-template" && req.method === "POST") {
+      try {
+        const body = await req.json() as { file: string };
+        const { file } = body;
+        if (!file || !file.startsWith("template-") || !file.endsWith(".html")) {
+          return new Response(JSON.stringify({ error: "Invalid template file" }), { status: 400, headers: { "Content-Type": "application/json" } });
+        }
+        const absPath = join(PROJECT_ROOT, "templates", file);
+        if (!await Bun.file(absPath).exists()) {
+          return new Response(JSON.stringify({ error: "Template not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
+        }
+        await unlink(absPath);
+        return new Response(JSON.stringify({ ok: true }), { headers: { "Content-Type": "application/json" } });
       } catch (err: any) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
       }

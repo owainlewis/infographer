@@ -1,0 +1,110 @@
+/* ══════════════════════════════════════════════════════════
+   EMBER THEMES — "Navy & Signal Orange"
+   Deep slate-navy canvas, clean type, orange pop accent.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── DARK MINIMAL ────────────────────────────────────────── */
+[data-theme="dark-minimal"] {
+  --bg-canvas:      #05070C;
+  --bg-card:        #0C0F18;
+  --bg-raised:      #141822;
+  --bg-warm:        #10131C;
+  --bg-footer:      transparent;
+  --accent-glow:    rgba(242, 122, 58, 0.08);
+  --accent-2-glow:  rgba(148, 163, 184, 0.06);
+
+  --border:         #222838;
+  --border-medium:  #2C3448;
+  --border-accent:  rgba(242, 122, 58, 0.45);
+  --border-accent-2: rgba(148, 163, 184, 0.25);
+
+  --text-primary:   #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted:     #4E5A6E;
+  --text-dim:       #303A4A;
+
+  --accent:         #F27A3A;
+  --accent-2:       #94A3B8;
+
+  --footer-text:    #4E5A6E;
+  --footer-text-hi: #94A3B8;
+  --footer-border:  #222838;
+
+  --card-shadow:    0 2px 8px rgba(0, 0, 0, 0.35),
+                    0 0 0 1px rgba(255, 255, 255, 0.03);
+  --on-accent:      #05070C;
+
+  --status-success:       #4ADE80;
+  --status-success-glow:  rgba(74, 222, 128, 0.04);
+  --status-success-border: rgba(74, 222, 128, 0.12);
+  --status-danger:        #EF4444;
+  --status-danger-glow:   rgba(239, 68, 68, 0.04);
+  --status-danger-border: rgba(239, 68, 68, 0.12);
+
+  --svg-bg:         #080B14;
+  --svg-border:     #222838;
+  --svg-text:       var(--text-primary);
+  --svg-line:       var(--accent);
+  --svg-line-dim:   #4E5A6E;
+  --svg-line-faint: rgba(255, 255, 255, 0.08);
+  --svg-accent-bg:  rgba(242, 122, 58, 0.06);
+  --svg-accent-border: rgba(242, 122, 58, 0.18);
+
+  --bg-canvas-gradient: var(--bg-canvas);
+
+  --divider-color: var(--border);
+  --divider-accent: var(--border-accent);
+}
+
+/* ── LIGHT MINIMAL ───────────────────────────────────────── */
+[data-theme="light-minimal"] {
+  --bg-canvas:      #EAEBEF;
+  --bg-card:        #FFFFFF;
+  --bg-raised:      #F3F4F8;
+  --bg-warm:        #ECEDE8;
+  --bg-footer:      #111827;
+  --accent-glow:    rgba(220, 90, 30, 0.07);
+  --accent-2-glow:  rgba(30, 41, 59, 0.05);
+
+  --border:         #C8CDD6;
+  --border-medium:  #B4BAC6;
+  --border-accent:  rgba(220, 90, 30, 0.40);
+  --border-accent-2: rgba(30, 41, 59, 0.20);
+
+  --text-primary:   #111827;
+  --text-secondary: #334155;
+  --text-muted:     #64748B;
+  --text-dim:       #94A3B8;
+
+  --accent:         #DC5A1E;
+  --accent-2:       #475569;
+
+  --footer-text:    #94A3B8;
+  --footer-text-hi: #C8CDD6;
+  --footer-border:  #1E293B;
+
+  --card-shadow:    0 1px 3px rgba(0, 0, 0, 0.08),
+                    0 4px 14px rgba(0, 0, 0, 0.06);
+  --on-accent:      #FFFFFF;
+
+  --status-success:       #15803D;
+  --status-success-glow:  rgba(21, 128, 61, 0.05);
+  --status-success-border: rgba(21, 128, 61, 0.15);
+  --status-danger:        #DC2626;
+  --status-danger-glow:   rgba(220, 38, 38, 0.05);
+  --status-danger-border: rgba(220, 38, 38, 0.15);
+
+  --svg-bg:         #F0F1F5;
+  --svg-border:     #C8CDD6;
+  --svg-text:       var(--text-primary);
+  --svg-line:       var(--accent);
+  --svg-line-dim:   #94A3B8;
+  --svg-line-faint: rgba(0, 0, 0, 0.08);
+  --svg-accent-bg:  rgba(220, 90, 30, 0.06);
+  --svg-accent-border: rgba(220, 90, 30, 0.22);
+
+  --bg-canvas-gradient: var(--bg-canvas);
+
+  --divider-color: var(--border);
+  --divider-accent: var(--border-accent);
+}

@@ -286,6 +286,9 @@
   --divider-accent: var(--border-accent);
 }
 
+/* Ember themes are in themes-ember.css (loaded separately to avoid Tailwind tree-shaking) */
+
+
 
 /* ══════════════════════════════════════════════════════════
    BASE OVERRIDES — Tailwind preflight handles the reset.

@@ -33,6 +33,17 @@ export async function startLocalServer(port = 0): Promise<{
       if (await file.exists()) {
         const ext = extname(url.pathname);
         const contentType = MIME_TYPES[ext] || "application/octet-stream";
+
+        // Inject Ember theme CSS into HTML files so exports match dev preview
+        if (ext === ".html") {
+          let html = await file.text();
+          const emberLink = `<link rel="stylesheet" href="/src/tw/themes-ember.css">`;
+          html = html.replace("</head>", `${emberLink}\n</head>`);
+          return new Response(html, {
+            headers: { "Content-Type": contentType },
+          });
+        }
+
         return new Response(file, {
           headers: { "Content-Type": contentType },
         });

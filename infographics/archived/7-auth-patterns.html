@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>How to Secure Your API</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .diagram-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 28px 32px;
+      margin-bottom: 12px;
+    }
+
+    .grid--auth {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: var(--gap-card);
+      flex: 1;
+    }
+    /* D spans rows 1-2 in col 3 */
+    .card-d { grid-column: 3; grid-row: 1 / 3; }
+    /* G spans cols 1-2 in row 3 */
+    .card-g { grid-column: 1 / 3; grid-row: 3; }
+
+    .card { padding: 16px 18px; gap: 6px; display: flex; flex-direction: column; }
+    .card-title { margin-bottom: 4px; font-size: 22px; }
+    .card-body {
+      font-size: 16px;
+      line-height: 23px;
+    }
+    .card-tag {
+      font-size: 15px;
+      line-height: 20px;
+      font-weight: var(--weight-bold);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .pills { margin-top: auto; padding-top: 4px; }
+
+    .card-warn {
+      font-size: 15px;
+      line-height: 21px;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-medium);
+      margin-top: 6px;
+    }
+
+    .card-tip {
+      font-size: 15px;
+      line-height: 21px;
+      color: var(--accent);
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG arrow defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr-dim" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,1 L7,4 L0,7z" style="fill: var(--text-dim)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd" style="margin-bottom: 16px;">
+      <h1>How to Secure Your API</h1>
+    </div>
+
+    <!-- Full-width decision tree diagram -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 920 230" fill="none" style="width: 100%; display: block;" font-family="Libre Franklin,sans-serif">
+
+        <!-- Row 0: Root question -->
+        <rect x="310" y="0" width="300" height="48" rx="10" style="fill: var(--bg-raised); stroke: var(--border-medium)" stroke-width="1.5"/>
+        <text x="460" y="31" text-anchor="middle" font-size="20" font-weight="700" style="fill: var(--text-primary)">Who is calling your API?</text>
+
+        <!-- Connector lines from root -->
+        <line x1="370" y1="48" x2="155" y2="90" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+        <line x1="460" y1="48" x2="460" y2="90" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+        <line x1="550" y1="48" x2="765" y2="90" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+
+        <!-- Branch labels.positioned clear of arrow lines -->
+        <text x="218" y="60" text-anchor="end" font-size="15" font-weight="600" style="fill: var(--text-muted)">Server</text>
+        <text x="478" y="76" font-size="15" font-weight="600" style="fill: var(--text-muted)">User</text>
+        <text x="702" y="60" font-size="15" font-weight="600" style="fill: var(--text-muted)">Enterprise</text>
+
+        <!-- Row 1: Three main paths -->
+        <rect x="15" y="94" width="280" height="48" rx="10" style="fill: var(--accent-2-glow); stroke: var(--border-accent-2)" stroke-width="1.5"/>
+        <text x="155" y="125" text-anchor="middle" font-size="19" font-weight="700" style="fill: var(--accent-2)">API Keys</text>
+
+        <rect x="320" y="94" width="280" height="48" rx="10" style="fill: var(--accent-glow); stroke: var(--border-accent)" stroke-width="1.5"/>
+        <text x="460" y="125" text-anchor="middle" font-size="19" font-weight="700" style="fill: var(--text-primary)">OAuth 2.0 + OIDC</text>
+
+        <rect x="625" y="94" width="280" height="48" rx="10" style="fill: var(--status-danger-glow); stroke: var(--status-danger-border)" stroke-width="1.5"/>
+        <text x="765" y="125" text-anchor="middle" font-size="19" font-weight="700" style="fill: var(--status-danger)">SAML 2.0</text>
+
+        <!-- Row 2 connectors -->
+        <line x1="155" y1="142" x2="155" y2="178" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+        <line x1="410" y1="142" x2="410" y2="178" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+        <line x1="510" y1="142" x2="580" y2="178" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+        <line x1="765" y1="142" x2="765" y2="178" style="stroke: var(--text-dim)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+
+        <!-- Row 2 boxes -->
+        <rect x="15" y="182" width="280" height="48" rx="10" style="fill: var(--accent-2-glow); stroke: var(--border-accent-2)" stroke-width="1.5"/>
+        <text x="155" y="213" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--accent-2)">mTLS</text>
+
+        <rect x="320" y="182" width="140" height="48" rx="10" style="fill: var(--accent-glow); stroke: var(--border-accent)" stroke-width="1.5"/>
+        <text x="390" y="213" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary)">Sessions</text>
+
+        <rect x="475" y="182" width="130" height="48" rx="10" style="fill: var(--status-danger-glow); stroke: var(--status-danger-border)" stroke-width="1.5"/>
+        <text x="540" y="213" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--status-danger)">JWTs</text>
+
+        <rect x="625" y="182" width="280" height="48" rx="10" style="fill: var(--status-danger-glow); stroke: var(--status-danger-border)" stroke-width="1.5"/>
+        <text x="765" y="213" text-anchor="middle" font-size="18" font-weight="600" style="fill: var(--status-danger)">Use Auth0 or WorkOS</text>
+
+      </svg>
+    </div>
+
+    <!-- 3×3 card grid -->
+    <div class="grid--auth">
+
+      <!-- Sessions -->
+      <div class="card card--raised">
+        <div class="card-tag">01</div>
+        <div class="card-title">Sessions</div>
+        <p class="card-body">Server stores a session, cookie carries the ID. <strong>Easy to revoke</strong>.just delete the row.</p>
+        <div class="card-tip">Best default for most web apps.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Server-side state</span>
+          <span class="pill">Revocable</span>
+        </div>
+      </div>
+
+      <!-- OAuth 2.0 -->
+      <div class="card">
+        <div class="card-tag">02</div>
+        <div class="card-title">OAuth 2.0</div>
+        <p class="card-body">Lets users grant apps limited access.without sharing their password. Handles <strong>permissions only</strong>, not identity. Add OIDC for that.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Delegated access</span>
+          <span class="pill">PKCE required</span>
+        </div>
+      </div>
+
+      <!-- OpenID Connect (tall.spans 2 rows) -->
+      <div class="card card-d card--raised">
+        <div class="card-tag">05</div>
+        <div class="card-title">OpenID Connect</div>
+        <p class="card-body"><strong>What:</strong> "Sign in with Google/GitHub." A user proves who they are using an account they already have.</p>
+        <p class="card-body"><strong>Why:</strong> Your app never stores passwords. A trusted provider (Google, Okta) vouches for the user and sends you their verified identity.</p>
+        <p class="card-body"><strong>How it relates:</strong> Built on OAuth 2.0. OAuth asks "what can this app do?".OIDC adds "who is this person?"</p>
+        <div class="card-warn">Always use a trusted library for token verification. Rolling your own is where most security holes come from.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Social login</span>
+          <span class="pill">SSO</span>
+          <span class="pill">Identity layer</span>
+        </div>
+      </div>
+
+      <!-- API Keys -->
+      <div class="card">
+        <div class="card-tag">03</div>
+        <div class="card-title">API Keys</div>
+        <p class="card-body">A secret string that identifies your <strong>application</strong>, not a person. If it leaks, anyone can use it.</p>
+        <div class="card-warn">Never put API keys in frontend code.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Server-to-server only</span>
+        </div>
+      </div>
+
+      <!-- JWT -->
+      <div class="card card--raised">
+        <div class="card-tag">04</div>
+        <div class="card-title">JWT</div>
+        <p class="card-body"><strong>Can't be revoked</strong> until expiry. Keep to <strong>15–60 min</strong> and always pair with a refresh token.</p>
+        <div class="card-warn">Never verify JWTs yourself.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Stateless</span>
+          <span class="pill">Short-lived only</span>
+        </div>
+      </div>
+
+      <!-- mTLS (wide.spans 2 cols) -->
+      <div class="card card-g">
+        <div class="card-tag">06</div>
+        <div class="card-title">mTLS</div>
+        <p class="card-body">Both sides prove identity with certificates. For service-to-service auth in high-security environments.finance, healthcare, zero-trust. Use a service mesh to manage cert rotation.</p>
+        <div class="card-warn">Certificate rotation is real operational work. Use Istio or Linkerd.</div>
+        <div class="pills">
+          <span class="pill pill--accent">Zero trust</span>
+          <span class="pill">Service meshes</span>
+          <span class="pill">Don't build it yourself</span>
+        </div>
+      </div>
+
+      <!-- SAML 2.0 -->
+      <div class="card card--accent">
+        <div class="card-tag">07</div>
+        <div class="card-title">SAML 2.0</div>
+        <p class="card-body">Enterprise SSO. Same job as OIDC but older and XML-based. <strong>Required by large companies.</strong> Use Auth0 or WorkOS.</p>
+        <div class="pills">
+          <span class="pill pill--accent">B2B required</span>
+          <span class="pill">Don't DIY</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

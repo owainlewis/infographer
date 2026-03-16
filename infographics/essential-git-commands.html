@@ -12,30 +12,30 @@
     }
 
     .card {
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       flex-direction: column;
     }
 
     .card-title {
-      margin-bottom: 2px;
+      margin-bottom: 0;
     }
 
     .card-body {
-      font-size: var(--text-body-sm);
-      line-height: var(--leading-body-sm);
+      font-size: 15px;
+      line-height: 21px;
     }
 
     .cmd {
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--accent-2);
       background: rgba(0, 0, 0, 0.25);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 6px;
-      padding: 6px 10px;
-      margin: 8px 0 6px;
+      padding: 5px 10px;
+      margin: 6px 0 4px;
       display: block;
       letter-spacing: -0.02em;
     }
@@ -96,7 +96,7 @@
 
     <!-- Header -->
     <div class="hd" style="margin-bottom: 12px;">
-      <h1>Essential Git <span class="accent">Commands</span></h1>
+      <h1>How to Master Git in 15 Minutes</h1>
     </div>
 
     <!-- Git graph diagram -->
@@ -141,11 +141,23 @@
     <!-- Grid — 9 cards in 3x3 -->
     <div class="grid">
 
-      <!-- 01 git commit -->
+      <!-- 01 git add -->
       <div class="card card--raised delay-1">
         <div class="card-index">01</div>
+        <div class="card-title">git add</div>
+        <p class="card-body"><strong>Stage changes for your next commit.</strong> Use <code style="color:var(--accent-2)">-p</code> to stage individual hunks — commit only what matters.</p>
+        <code class="cmd">git add -p src/</code>
+        <div class="pills">
+          <span class="pill pill--accent">Core</span>
+          <span class="pill">-p for precision</span>
+        </div>
+      </div>
+
+      <!-- 02 git commit -->
+      <div class="card delay-2">
+        <div class="card-index">02</div>
         <div class="card-title">git commit</div>
-        <p class="card-body"><strong>Snapshot your staged changes.</strong> Each commit is an immutable record in the project history. Write meaningful messages — your future self will thank you.</p>
+        <p class="card-body"><strong>Save a snapshot of staged changes.</strong> Each commit is permanent history. Write meaningful messages — your future self will thank you.</p>
         <code class="cmd">git commit -m "fix: auth redirect"</code>
         <div class="pills">
           <span class="pill pill--accent">Core</span>
@@ -153,11 +165,11 @@
         </div>
       </div>
 
-      <!-- 02 git branch -->
-      <div class="card delay-2">
-        <div class="card-index">02</div>
+      <!-- 03 git branch -->
+      <div class="card card--raised delay-3">
+        <div class="card-index">03</div>
         <div class="card-title">git branch</div>
-        <p class="card-body"><strong>Create isolated lines of development.</strong> Branches are cheap pointers to commits. Use them for features, fixes, and experiments without touching main.</p>
+        <p class="card-body"><strong>Create isolated lines of development.</strong> Branches are cheap pointers to commits. Use them for features, fixes, and experiments.</p>
         <code class="cmd">git switch -c feature/auth</code>
         <div class="pills">
           <span class="pill pill--accent">Branching</span>
@@ -165,23 +177,23 @@
         </div>
       </div>
 
-      <!-- 03 git stash -->
-      <div class="card card--raised delay-3">
-        <div class="card-index">03</div>
-        <div class="card-title">git stash</div>
-        <p class="card-body"><strong>Shelve uncommitted work.</strong> Stash saves your working directory and index state so you can switch branches cleanly, then reapply later.</p>
-        <code class="cmd">git stash push -m "wip: sidebar"</code>
+      <!-- 04 git merge -->
+      <div class="card delay-4">
+        <div class="card-index">04</div>
+        <div class="card-title">git merge</div>
+        <p class="card-body"><strong>Combine two branches together.</strong> Creates a merge commit that preserves both histories. The standard way to integrate changes.</p>
+        <code class="cmd">git merge feature/auth</code>
         <div class="pills">
-          <span class="pill pill--accent">Save WIP</span>
-          <span class="pill">pop to restore</span>
+          <span class="pill pill--accent">Integration</span>
+          <span class="pill">--no-ff for clarity</span>
         </div>
       </div>
 
-      <!-- 04 git rebase -->
-      <div class="card delay-4">
-        <div class="card-index">04</div>
+      <!-- 05 git rebase -->
+      <div class="card card--raised delay-5">
+        <div class="card-index">05</div>
         <div class="card-title">git rebase</div>
-        <p class="card-body"><strong>Replay commits onto a new base.</strong> Creates a linear history by moving your branch to the tip of main. Interactive mode lets you squash, reorder, and edit commits.</p>
+        <p class="card-body"><strong>Replay commits onto a new base.</strong> Creates linear history by moving your branch to the tip of main. Squash, reorder, and edit.</p>
         <code class="cmd">git rebase -i main</code>
         <div class="pills">
           <span class="pill pill--accent">Clean history</span>
@@ -189,11 +201,23 @@
         </div>
       </div>
 
-      <!-- 05 git cherry-pick -->
-      <div class="card card--raised delay-5">
-        <div class="card-index">05</div>
+      <!-- 06 git stash -->
+      <div class="card delay-6">
+        <div class="card-index">06</div>
+        <div class="card-title">git stash</div>
+        <p class="card-body"><strong>Shelve uncommitted work.</strong> Save changes to switch branches cleanly, then reapply later. A clipboard for your working directory.</p>
+        <code class="cmd">git stash push -m "wip: sidebar"</code>
+        <div class="pills">
+          <span class="pill pill--accent">Save WIP</span>
+          <span class="pill">pop to restore</span>
+        </div>
+      </div>
+
+      <!-- 07 git cherry-pick -->
+      <div class="card card--raised delay-7">
+        <div class="card-index">07</div>
         <div class="card-title">git cherry-pick</div>
-        <p class="card-body"><strong>Apply a specific commit to your current branch.</strong> Grab exactly the changes you need without merging the whole branch. Essential for hotfixes and backports.</p>
+        <p class="card-body"><strong>Apply a specific commit to your branch.</strong> Grab exactly the changes you need without merging everything. Essential for hotfixes.</p>
         <code class="cmd">git cherry-pick a1b2c3d</code>
         <div class="pills">
           <span class="pill pill--accent">Surgical</span>
@@ -201,51 +225,27 @@
         </div>
       </div>
 
-      <!-- 06 git bisect -->
-      <div class="card delay-6">
-        <div class="card-index">06</div>
-        <div class="card-title">git bisect</div>
-        <p class="card-body"><strong>Binary search through commits to find a bug.</strong> Mark commits as good or bad and git narrows the culprit in O(log n) steps. Automate it with a test script.</p>
-        <code class="cmd">git bisect start HEAD v2.0</code>
-        <div class="pills">
-          <span class="pill pill--accent">Debugging</span>
-          <span class="pill">O(log n) search</span>
-        </div>
-      </div>
-
-      <!-- 07 git reflog -->
-      <div class="card card--raised delay-7">
-        <div class="card-index">07</div>
-        <div class="card-title">git reflog</div>
-        <p class="card-body"><strong>Your safety net.</strong> Records every HEAD movement locally — even after reset, rebase, or deleted branches. If you lost a commit, reflog knows where it went.</p>
-        <code class="cmd">git reflog show --date=relative</code>
-        <div class="pills">
-          <span class="pill pill--accent">Recovery</span>
-          <span class="pill">Undo anything</span>
-        </div>
-      </div>
-
-      <!-- 08 git log -->
+      <!-- 08 git reset -->
       <div class="card delay-8">
         <div class="card-index">08</div>
-        <div class="card-title">git log</div>
-        <p class="card-body"><strong>Explore project history.</strong> Filter by author, date, file, or message. The <code style="color:var(--accent-2)">--oneline --graph</code> combo gives you a visual branch map in your terminal.</p>
-        <code class="cmd">git log --oneline --graph --all</code>
-        <div class="pills">
-          <span class="pill pill--accent">History</span>
-          <span class="pill">--author filter</span>
-        </div>
-      </div>
-
-      <!-- 09 git reset -->
-      <div class="card card--raised delay-9">
-        <div class="card-index">09</div>
         <div class="card-title">git reset</div>
-        <p class="card-body"><strong>Move HEAD and optionally rewrite the index.</strong> <code style="color:var(--accent-2)">--soft</code> keeps changes staged. <code style="color:var(--accent-2)">--mixed</code> unstages. <code style="color:var(--accent-2)">--hard</code> discards everything. Handle with care.</p>
+        <p class="card-body"><strong>Undo commits or unstage files.</strong> <code style="color:var(--accent-2)">--soft</code> keeps staged. <code style="color:var(--accent-2)">--mixed</code> unstages. <code style="color:var(--accent-2)">--hard</code> discards everything.</p>
         <code class="cmd">git reset --soft HEAD~1</code>
         <div class="pills">
           <span class="pill pill--accent">Undo</span>
           <span class="pill">--hard is destructive</span>
+        </div>
+      </div>
+
+      <!-- 09 git reflog -->
+      <div class="card card--raised delay-9">
+        <div class="card-index">09</div>
+        <div class="card-title">git reflog</div>
+        <p class="card-body"><strong>Your safety net.</strong> Records every HEAD movement — even after reset, rebase, or deleted branches. Lost a commit? Reflog knows where it went.</p>
+        <code class="cmd">git reflog show --date=relative</code>
+        <div class="pills">
+          <span class="pill pill--accent">Recovery</span>
+          <span class="pill">Undo anything</span>
         </div>
       </div>
 

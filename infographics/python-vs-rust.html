@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Python vs Rust: Developer Experience</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic { gap: 12px; }
+
+    /* ── Hero radar container ──────────────────────────────── */
+    .dv-hero {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 16px 24px 8px;
+      overflow: hidden;
+    }
+
+    .dv-hero svg { width: 100%; height: 100%; display: block; }
+
+    /* ── Stat strip ────────────────────────────────────────── */
+    .dv-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gap-card);
+    }
+
+    .dv-stat {
+      padding: 18px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dv-stat:nth-child(2) {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    .dv-stat-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: 0.01em;
+    }
+
+    .dv-stat:nth-child(2) .dv-stat-num { color: var(--accent-2); }
+
+    .dv-stat-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-label);
+      margin-top: 4px;
+    }
+
+    .dv-stat-desc {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+
+    /* ── Bottom insight ────────────────────────────────────── */
+    .dv-insight {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background: linear-gradient(to right, var(--accent-glow), transparent);
+    }
+
+    .dv-insight-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dv-insight-text {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+
+    .dv-insight-text strong {
+      color: var(--text-primary);
+      font-weight: var(--weight-bold);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd hd--compact">
+      <h1 style="font-size: var(--text-display-sm); line-height: var(--leading-display-sm);">Python vs Rust</h1>
+      <p style="font-size: var(--text-sub); line-height: var(--leading-sub); color: var(--text-muted); font-weight: 500; margin-top: 4px;">Developer Experience Compared Across 6 Dimensions</p>
+    </div>
+
+    <!-- Hero: Radar Chart -->
+    <div class="dv-hero">
+      <svg viewBox="0 0 984 640" fill="none" font-family="'Libre Franklin', sans-serif">
+
+        <!-- Concentric hexagonal grid rings -->
+        <polygon points="492,260 535,285 535,335 492,360 449,335 449,285"
+                 style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,210 579,260 579,360 492,410 405,360 405,260"
+                 style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,160 622,235 622,385 492,460 362,385 362,235"
+                 style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,110 665,210 665,410 492,510 319,410 319,210"
+                 style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,60 709,185 709,435 492,560 275,435 275,185"
+                 style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+
+        <!-- Axis spokes -->
+        <line x1="492" y1="310" x2="492" y2="60"  style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="310" x2="709" y2="185" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="310" x2="709" y2="435" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="310" x2="492" y2="560" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="310" x2="275" y2="435" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="310" x2="275" y2="185" style="stroke: var(--border); stroke-width: 1;"/>
+
+        <!-- Ring scale labels (decorative, on axis 1 spoke) -->
+        <text x="543" y="279" font-size="11" font-weight="500" style="fill: var(--text-dim);">20</text>
+        <text x="587" y="254" font-size="11" font-weight="500" style="fill: var(--text-dim);">40</text>
+        <text x="630" y="229" font-size="11" font-weight="500" style="fill: var(--text-dim);">60</text>
+        <text x="673" y="204" font-size="11" font-weight="500" style="fill: var(--text-dim);">80</text>
+        <text x="717" y="179" font-size="11" font-weight="500" style="fill: var(--text-dim);">100</text>
+
+        <!-- ═══ DATA: Python polygon ═══ -->
+        <polygon points="492,72 557,272 687,422 492,410 308,416 340,222"
+                 style="fill: var(--accent); fill-opacity: 0.12; stroke: var(--accent); stroke-width: 2.5;"/>
+
+        <!-- Python data dots -->
+        <circle cx="492" cy="72"  r="9" style="fill: var(--accent); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="492" cy="72"  r="4.5" style="fill: var(--accent);"/>
+        <circle cx="557" cy="272" r="9" style="fill: var(--accent); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="557" cy="272" r="4.5" style="fill: var(--accent);"/>
+        <circle cx="687" cy="422" r="9" style="fill: var(--accent); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="687" cy="422" r="4.5" style="fill: var(--accent);"/>
+        <circle cx="492" cy="410" r="9" style="fill: var(--accent); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="492" cy="410" r="4.5" style="fill: var(--accent);"/>
+        <circle cx="308" cy="416" r="9" style="fill: var(--accent); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="308" cy="416" r="4.5" style="fill: var(--accent);"/>
+        <circle cx="340" cy="222" r="9" style="fill: var(--accent); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="340" cy="222" r="4.5" style="fill: var(--accent);"/>
+
+        <!-- ═══ DATA: Rust polygon ═══ -->
+        <polygon points="492,222 698,191 611,379 492,555 438,341 319,210"
+                 style="fill: var(--accent-2); fill-opacity: 0.10; stroke: var(--accent-2); stroke-width: 2.5; stroke-dasharray: 8,4;"/>
+
+        <!-- Rust data dots -->
+        <circle cx="492" cy="222" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="492" cy="222" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="698" cy="191" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="698" cy="191" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="611" cy="379" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="611" cy="379" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="492" cy="555" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="492" cy="555" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="438" cy="341" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="438" cy="341" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="319" cy="210" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: none;"/>
+        <circle cx="319" cy="210" r="4" style="fill: var(--accent-2);"/>
+
+        <!-- Axis labels -->
+        <text x="492" y="32" text-anchor="middle" font-size="16" font-weight="700" style="fill: var(--text-primary);">Learning Curve</text>
+        <text x="492" y="48" text-anchor="middle" font-size="13" font-weight="500" style="fill: var(--text-muted);">Time to productivity</text>
+
+        <text x="740" y="182" text-anchor="start" font-size="16" font-weight="700" style="fill: var(--text-primary);">Runtime</text>
+        <text x="740" y="198" text-anchor="start" font-size="13" font-weight="500" style="fill: var(--text-muted);">Execution speed</text>
+
+        <text x="740" y="442" text-anchor="start" font-size="16" font-weight="700" style="fill: var(--text-primary);">Ecosystem</text>
+        <text x="740" y="458" text-anchor="start" font-size="13" font-weight="500" style="fill: var(--text-muted);">Libraries &amp; packages</text>
+
+        <text x="492" y="592" text-anchor="middle" font-size="16" font-weight="700" style="fill: var(--text-primary);">Memory Safety</text>
+        <text x="492" y="608" text-anchor="middle" font-size="13" font-weight="500" style="fill: var(--text-muted);">Compile-time guarantees</text>
+
+        <text x="244" y="442" text-anchor="end" font-size="16" font-weight="700" style="fill: var(--text-primary);">Hiring Pool</text>
+        <text x="244" y="458" text-anchor="end" font-size="13" font-weight="500" style="fill: var(--text-muted);">Available developers</text>
+
+        <text x="244" y="182" text-anchor="end" font-size="16" font-weight="700" style="fill: var(--text-primary);">Tooling</text>
+        <text x="244" y="198" text-anchor="end" font-size="13" font-weight="500" style="fill: var(--text-muted);">IDE &amp; build tools</text>
+
+        <!-- Legend -->
+        <line x1="360" y1="632" x2="392" y2="632" style="stroke: var(--accent); stroke-width: 3;"/>
+        <text x="400" y="636" font-size="15" font-weight="600" style="fill: var(--text-secondary);">Python</text>
+
+        <line x1="510" y1="632" x2="542" y2="632" style="stroke: var(--accent-2); stroke-width: 3; stroke-dasharray: 8,4;"/>
+        <text x="550" y="636" font-size="15" font-weight="600" style="fill: var(--text-secondary);">Rust</text>
+
+      </svg>
+    </div>
+
+    <!-- Stat strip -->
+    <div class="dv-stats">
+      <div class="dv-stat">
+        <div class="dv-stat-num">72%</div>
+        <div class="dv-stat-label">Want to learn</div>
+        <div class="dv-stat-desc">Developers who want to learn Rust next</div>
+      </div>
+      <div class="dv-stat">
+        <div class="dv-stat-num">3.2x</div>
+        <div class="dv-stat-label">Faster</div>
+        <div class="dv-stat-desc">Average speedup rewriting Python hot paths</div>
+      </div>
+      <div class="dv-stat">
+        <div class="dv-stat-num">48%</div>
+        <div class="dv-stat-label">Smaller</div>
+        <div class="dv-stat-desc">Binary size reduction vs Python + runtime</div>
+      </div>
+    </div>
+
+    <!-- Bottom insight -->
+    <div class="dv-insight">
+      <div class="dv-insight-icon">&harr;</div>
+      <p class="dv-insight-text"><strong>They solve different problems.</strong> Python dominates data science, scripting, and prototyping. Rust dominates systems, embedded, and performance-critical paths. The best teams use both.</p>
+    </div>
+
+  </div>
+</body>
+</html>

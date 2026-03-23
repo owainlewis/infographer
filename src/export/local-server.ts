@@ -38,7 +38,8 @@ export async function startLocalServer(port = 0): Promise<{
         if (ext === ".html") {
           let html = await file.text();
           const emberLink = `<link rel="stylesheet" href="/src/tw/themes-ember.css">`;
-          html = html.replace("</head>", `${emberLink}\n</head>`);
+          const unifiedLink = `<link rel="stylesheet" href="/src/tw/themes-unified.css">`;
+          html = html.replace("</head>", `${emberLink}\n${unifiedLink}\n</head>`);
           return new Response(html, {
             headers: { "Content-Type": contentType },
           });

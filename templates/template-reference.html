@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Reference Sheet Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic { gap: 0; }
+
+    .hd { margin-bottom: 20px; }
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── 3×3 reference grid ────────────────────────── */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* ── Reference card ────────────────────────────── */
+    .ref-card {
+      padding: 22px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .ref-card:nth-child(even) {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    /* Subtle top accent on first row */
+    .ref-card:nth-child(-n+3) {
+      border-top: 2px solid var(--accent);
+    }
+
+    /* ── Card header: number badge + title ─────────── */
+    .ref-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .ref-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-size: var(--text-meta);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ref-title {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Description ───────────────────────────────── */
+    .ref-body {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .ref-body strong {
+      color: var(--text-primary);
+      font-weight: var(--weight-semibold);
+    }
+
+    /* ── Divider between sections ──────────────────── */
+    .ref-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 14px 0;
+    }
+
+    /* ── Use-case (italic, muted) ──────────────────── */
+    .ref-use {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .ref-use strong {
+      color: var(--accent);
+      font-weight: var(--weight-semibold);
+      font-style: normal;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>9 Resilience Patterns</h1>
+    </div>
+
+    <div class="ref-grid">
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">1</div>
+          <div class="ref-title">Circuit Breaker</div>
+        </div>
+        <p class="ref-body">Stops cascading failures by wrapping calls in a monitor that <strong>trips open</strong> after repeated errors, then slowly recovers.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Remote calls</strong> — APIs, databases, any external dependency that can hang or fail under load.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">2</div>
+          <div class="ref-title">Retry with Backoff</div>
+        </div>
+        <p class="ref-body">Automatically retries failed operations with <strong>increasing delays</strong> to avoid overwhelming the target service.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Transient failures</strong> — network blips, rate limits, temporary unavailability, queue contention.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">3</div>
+          <div class="ref-title">Bulkhead</div>
+        </div>
+        <p class="ref-body">Isolates components into <strong>independent pools</strong> so one failure doesn't sink the entire system. Like watertight compartments.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Shared resources</strong> — thread pools, connection pools, multi-tenant systems, critical path isolation.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">4</div>
+          <div class="ref-title">CQRS</div>
+        </div>
+        <p class="ref-body">Separates <strong>read and write models</strong> so each can be optimized, scaled, and evolved independently.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>High-read systems</strong> — dashboards, search, analytics where reads vastly outnumber writes.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">5</div>
+          <div class="ref-title">Event Sourcing</div>
+        </div>
+        <p class="ref-body">Stores every state change as an <strong>immutable event</strong>. Replay the log to reconstruct any point in time.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Audit trails</strong> — finance, compliance, any domain where "why" matters as much as "what."</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">6</div>
+          <div class="ref-title">Saga Pattern</div>
+        </div>
+        <p class="ref-body">Manages distributed transactions as a <strong>chain of local transactions</strong> with compensating rollbacks on failure.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Microservices</strong> — order flows, payments, multi-service processes that need eventual consistency.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">7</div>
+          <div class="ref-title">Sidecar</div>
+        </div>
+        <p class="ref-body">Attaches <strong>cross-cutting concerns</strong> (logging, auth, networking) as a separate process alongside your main service.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Service mesh</strong> — Envoy, Istio, any polyglot system needing uniform observability.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">8</div>
+          <div class="ref-title">Strangler Fig</div>
+        </div>
+        <p class="ref-body">Gradually replaces a legacy system by <strong>routing traffic</strong> to new components one piece at a time. No big-bang cutover.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Migrations</strong> — monolith to microservices, platform rewrites, incremental modernization.</p>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-header">
+          <div class="ref-num">9</div>
+          <div class="ref-title">Rate Limiter</div>
+        </div>
+        <p class="ref-body">Controls throughput by <strong>capping requests</strong> per time window. Protects services from abuse, overload, and runaway clients.</p>
+        <div class="ref-divider"></div>
+        <p class="ref-use"><strong>Public APIs</strong> — auth endpoints, webhooks, any shared resource under unpredictable load.</p>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

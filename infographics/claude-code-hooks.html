@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Claude Code Hooks</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      justify-content: space-between;
+      background: var(--bg-canvas-gradient, var(--bg-canvas));
+    }
+
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── VS comparison strip ─────────────────────── */
+    .vs-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-card);
+    }
+
+    .vs-card {
+      padding: 18px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+
+    .vs-card--hooks {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
+    }
+
+    .vs-tag {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-label);
+    }
+
+    .vs-tag--rules { color: var(--text-muted); }
+    .vs-tag--hooks { color: var(--accent); }
+
+    .vs-pct {
+      font-family: var(--font-display);
+      font-size: 40px;
+      line-height: 40px;
+      font-weight: var(--weight-regular);
+      position: absolute;
+      top: 16px;
+      right: 20px;
+    }
+
+    .vs-pct--rules { color: var(--text-dim); font-size: 32px; line-height: 32px; }
+    .vs-pct--hooks { color: var(--accent); font-size: 48px; line-height: 48px; }
+
+    .vs-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-card-title);
+      color: var(--text-primary);
+    }
+
+    .vs-body {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+    .vs-body strong { color: var(--text-primary); font-weight: var(--weight-semibold); }
+
+    /* ── Flow section ────────────────────────────── */
+    .flow-section { }
+
+    /* ── Two-column layout ───────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-card);
+    }
+
+    .col-card {
+      padding: 18px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .col-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-label);
+      color: var(--accent);
+    }
+
+    .col-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-card-title);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    /* ── Handler rows ────────────────────────────── */
+    .h-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .h-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+    }
+
+    .h-row-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: var(--weight-extrabold);
+    }
+
+    .h-row-icon--cmd {
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      color: var(--accent);
+    }
+
+    .h-row-icon--http {
+      background: var(--bg-raised);
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+    }
+
+    .h-row-icon--prompt {
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      color: var(--accent);
+    }
+
+    .h-row-icon--agent {
+      background: var(--bg-raised);
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+    }
+
+    .h-row-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      min-width: 68px;
+    }
+
+    .h-row-desc {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      color: var(--text-secondary);
+    }
+
+    /* ── Exit code rows ──────────────────────────── */
+    .exit-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .exit-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+    }
+
+    .exit-row--block {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
+    }
+
+    .exit-code {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: var(--weight-extrabold);
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .exit-code--0 { color: var(--status-success); }
+    .exit-code--1 { color: var(--status-danger); }
+    .exit-code--2 { color: var(--accent); }
+
+    .exit-label {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+    }
+
+    .exit-desc {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-secondary);
+    }
+
+    .exit-warn {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    /* ── Events + Use cases side by side ──────────── */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-card);
+    }
+
+    .event-group {
+      padding: 18px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .event-group-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-label);
+      color: var(--accent);
+    }
+
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-sm);
+    }
+
+    .event-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      min-width: 145px;
+      flex-shrink: 0;
+    }
+
+    .event-desc {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .event-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    /* ── Use case list ───────────────────────────── */
+    .use-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .use-item {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-md);
+    }
+
+    .use-name {
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body-sm);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+
+    .use-desc {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-secondary);
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- ═══ HEADER ═══ -->
+    <div class="hd">
+      <h1>Claude Code Hooks</h1>
+    </div>
+
+    <!-- ═══ WHY: RULES vs HOOKS ═══ -->
+    <div class="vs-strip">
+      <div class="vs-card">
+        <span class="vs-pct vs-pct--rules">~70%</span>
+        <div class="vs-tag vs-tag--rules">Without hooks</div>
+        <div class="vs-title">CLAUDE.md Rules</div>
+        <p class="vs-body">Prompt-based instructions Claude follows <strong>most of the time</strong> but can ignore. Suggestions, not enforcement.</p>
+      </div>
+      <div class="vs-card vs-card--hooks">
+        <span class="vs-pct vs-pct--hooks">100%</span>
+        <div class="vs-tag vs-tag--hooks">With hooks</div>
+        <div class="vs-title">Deterministic Hooks</div>
+        <p class="vs-body">Shell commands, HTTP calls, or LLM prompts that <strong>physically block or modify actions</strong>. Zero token overhead.</p>
+      </div>
+    </div>
+
+    <!-- ═══ HOW: THE FLOW ═══ -->
+    <div class="flow-section">
+      <div class="diagram-bar diagram-bar--accent" style="padding: 18px 32px 14px;">
+        <div class="diagram-label">How a hook fires</div>
+        <svg viewBox="0 0 880 76" fill="none" style="width: 100%; height: auto;">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+            </marker>
+          </defs>
+
+          <!-- Flow line -->
+          <line x1="30" y1="38" x2="850" y2="38" style="stroke: var(--border-medium)" stroke-width="2" stroke-dasharray="6,4"/>
+
+          <!-- Step 1: Event -->
+          <rect x="20" y="10" width="170" height="56" rx="12" style="fill: var(--svg-bg, rgba(255,255,255,0.03)); stroke: var(--svg-border, var(--border-medium))" stroke-width="2"/>
+          <text x="105" y="33" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="700">Event</text>
+          <text x="105" y="52" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="14">when to trigger</text>
+
+          <line x1="195" y1="38" x2="248" y2="38" style="stroke: var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+
+          <!-- Step 2: Matcher -->
+          <rect x="253" y="10" width="170" height="56" rx="12" style="fill: var(--svg-bg, rgba(255,255,255,0.03)); stroke: var(--svg-border, var(--border-medium))" stroke-width="2"/>
+          <text x="338" y="33" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="700">Matcher</text>
+          <text x="338" y="52" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="14">which tool to filter</text>
+
+          <line x1="428" y1="38" x2="478" y2="38" style="stroke: var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+
+          <!-- Step 3: Handler (highlighted) -->
+          <rect x="483" y="4" width="180" height="68" rx="14" style="fill: var(--accent-glow); stroke: var(--border-accent)" stroke-width="2"/>
+          <text x="573" y="33" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="17" font-weight="800">Handler</text>
+          <text x="573" y="52" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="14">what to execute</text>
+
+          <line x1="668" y1="38" x2="718" y2="38" style="stroke: var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+
+          <!-- Step 4: Exit Code -->
+          <rect x="723" y="10" width="150" height="56" rx="12" style="fill: var(--svg-bg, rgba(255,255,255,0.03)); stroke: var(--svg-border, var(--border-medium))" stroke-width="2"/>
+          <text x="798" y="33" text-anchor="middle" style="fill: var(--text-primary)" font-family="Libre Franklin,sans-serif" font-size="15" font-weight="700">Exit Code</text>
+          <text x="798" y="52" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="14">allow, warn, or block</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ═══ HANDLERS + EXIT CODES ═══ -->
+    <div class="two-col">
+      <div class="col-card">
+        <div class="col-label">Handlers</div>
+        <div class="col-title">4 Ways to React</div>
+        <div class="h-list">
+          <div class="h-row">
+            <div class="h-row-icon h-row-icon--cmd">&#x276F;</div>
+            <span class="h-row-name">command</span>
+            <span class="h-row-desc">Shell command &mdash; linting, git, backups</span>
+          </div>
+          <div class="h-row">
+            <div class="h-row-icon h-row-icon--http">&#x21C5;</div>
+            <span class="h-row-name">http</span>
+            <span class="h-row-desc">POST event data to an endpoint</span>
+          </div>
+          <div class="h-row">
+            <div class="h-row-icon h-row-icon--prompt">&#x2727;</div>
+            <span class="h-row-name">prompt</span>
+            <span class="h-row-desc">Single-turn LLM eval for allow/deny</span>
+          </div>
+          <div class="h-row">
+            <div class="h-row-icon h-row-icon--agent">&#x29D6;</div>
+            <span class="h-row-name">agent</span>
+            <span class="h-row-desc">Multi-turn agent with codebase access</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-label">Critical</div>
+        <div class="col-title">Exit Codes</div>
+        <div class="exit-list">
+          <div class="exit-row">
+            <div class="exit-code exit-code--0">0</div>
+            <div>
+              <div class="exit-label">Allow</div>
+              <div class="exit-desc">Action proceeds normally</div>
+            </div>
+          </div>
+          <div class="exit-row">
+            <div class="exit-code exit-code--1">1</div>
+            <div>
+              <div class="exit-label">Warn (does NOT block)</div>
+              <div class="exit-desc">Stderr shown, execution continues</div>
+            </div>
+          </div>
+          <div class="exit-row exit-row--block">
+            <div class="exit-code exit-code--2">2</div>
+            <div>
+              <div class="exit-label">Block</div>
+              <div class="exit-desc">Stops the action entirely</div>
+            </div>
+          </div>
+        </div>
+        <p class="exit-warn">Security hooks must use exit 2. Exit 1 is the #1 mistake.</p>
+      </div>
+    </div>
+
+    <!-- ═══ EVENTS + USE CASES ═══ -->
+    <div class="bottom-grid">
+      <div class="event-group">
+        <div class="event-group-label">Key events (21 total)</div>
+        <div class="event-list">
+          <div class="event-item">
+            <span class="event-name">PreToolUse</span>
+            <span class="event-desc">Block or modify before execution</span>
+          </div>
+          <div class="event-item">
+            <span class="event-name">PostToolUse</span>
+            <span class="event-desc">Cleanup, format, log after</span>
+          </div>
+          <div class="event-item">
+            <span class="event-name">PermissionRequest</span>
+            <span class="event-desc">Auto-allow or deny permissions</span>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-item">
+            <span class="event-name">SessionStart</span>
+            <span class="event-desc">Inject context at startup</span>
+          </div>
+          <div class="event-item">
+            <span class="event-name">UserPromptSubmit</span>
+            <span class="event-desc">Validate or reject prompts</span>
+          </div>
+          <div class="event-item">
+            <span class="event-name">Stop</span>
+            <span class="event-desc">Quality gate before finishing</span>
+          </div>
+          <div class="event-item">
+            <span class="event-name">Notification</span>
+            <span class="event-desc">Desktop or Slack alerts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-group">
+        <div class="event-group-label">What to build</div>
+        <div class="use-list">
+          <div class="use-item">
+            <span class="use-name">Security</span>
+            <span class="use-desc">Block dangerous commands</span>
+          </div>
+          <div class="use-item">
+            <span class="use-name">Auto-format</span>
+            <span class="use-desc">Prettier/ESLint on every edit</span>
+          </div>
+          <div class="use-item">
+            <span class="use-name">Audit trail</span>
+            <span class="use-desc">Log commands for compliance</span>
+          </div>
+          <div class="use-item">
+            <span class="use-name">Quality gate</span>
+            <span class="use-desc">Force tests to pass before stop</span>
+          </div>
+          <div class="use-item">
+            <span class="use-name">Notifications</span>
+            <span class="use-desc">Slack/desktop when idle</span>
+          </div>
+          <div class="use-item">
+            <span class="use-name">Enforce tools</span>
+            <span class="use-desc">Block npm when pnpm required</span>
+          </div>
+          <div class="use-item">
+            <span class="use-name">Context inject</span>
+            <span class="use-desc">Branch + env at session start</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ BOTTOM CALLOUT ═══ -->
+    <div class="bottom-callout" style="padding: 20px 28px;">
+      <div class="bottom-callout-icon" style="width: 44px; height: 44px; font-size: var(--text-h2);">!</div>
+      <div>
+        <div class="bottom-callout-title" style="font-size: var(--text-body); margin-bottom: 4px;">Stop hook infinite loop</div>
+        <p class="bottom-callout-text">When a Stop hook blocks (exit 2), Claude continues and fires Stop again forever. <strong>Always check <code style="font-family:var(--font-mono);font-size:var(--text-meta);">stop_hook_active</code> and exit 0 if true.</strong></p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

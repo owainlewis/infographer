@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Datavis Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic { gap: 16px; }
+
+    .hd { margin-bottom: 4px; }
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── Diagram container (compact) ───────────────── */
+    .dv-hero {
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 20px 24px 12px;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .dv-hero svg {
+      width: 100%;
+      max-height: 460px;
+      display: block;
+    }
+
+    /* ── Three-column detail cards ──────────────────── */
+    .dv-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      flex: 1;
+    }
+
+    .dv-col {
+      padding: 22px 20px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dv-col:nth-child(2) {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    /* ── Column header: stat + label ───────────────── */
+    .dv-col-stat {
+      font-family: var(--font-display);
+      font-size: 44px; /* decorative number */
+      line-height: 48px;
+      color: var(--accent);
+      letter-spacing: 0.01em;
+    }
+
+    .dv-col:nth-child(2) .dv-col-stat { color: var(--accent-2); }
+    .dv-col:nth-child(3) .dv-col-stat { color: var(--accent); }
+
+    .dv-col-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .dv-col-body {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .dv-col-body strong {
+      color: var(--text-primary);
+      font-weight: var(--weight-semibold);
+    }
+
+    /* ── List inside columns ────────────────────────── */
+    .dv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .dv-list-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-muted);
+    }
+
+    .dv-list-item::before {
+      content: "▸";
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .dv-col:nth-child(2) .dv-list-item::before {
+      color: var(--accent-2);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <!-- REPLACE: Title -->
+      <h1>Your Title Here</h1>
+    </div>
+
+    <!-- Diagram (radar chart) — compact -->
+    <!-- REPLACE: SVG diagram — adjust polygon points for your data -->
+    <div class="dv-hero">
+      <svg viewBox="0 0 984 500" fill="none" font-family="'Libre Franklin', sans-serif">
+
+        <!-- Concentric hexagonal grid rings (scaled down, centered at 492,250) -->
+        <polygon points="492,210 522,230 522,270 492,290 462,270 462,230" style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,170 553,210 553,290 492,330 431,290 431,210" style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,130 583,190 583,310 492,370 401,310 401,190" style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,90  614,170 614,330 492,410 370,330 370,170" style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+        <polygon points="492,50  644,150 644,350 492,450 340,350 340,150" style="fill: none; stroke: var(--border); stroke-width: 1;"/>
+
+        <!-- Axis spokes -->
+        <line x1="492" y1="250" x2="492" y2="50"  style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="250" x2="644" y2="150" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="250" x2="644" y2="350" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="250" x2="492" y2="450" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="250" x2="340" y2="350" style="stroke: var(--border); stroke-width: 1;"/>
+        <line x1="492" y1="250" x2="340" y2="150" style="stroke: var(--border); stroke-width: 1;"/>
+
+        <!-- REPLACE: Data polygon A (solid) -->
+        <polygon points="492,62 610,210 630,340 492,350 355,335 370,175"
+                 style="fill: var(--accent); fill-opacity: 0.12; stroke: var(--accent); stroke-width: 2.5;"/>
+
+        <!-- REPLACE: Data polygon B (dashed) -->
+        <polygon points="492,175 638,155 560,310 492,445 410,280 350,165"
+                 style="fill: var(--accent-2); fill-opacity: 0.10; stroke: var(--accent-2); stroke-width: 2.5; stroke-dasharray: 8,4;"/>
+
+        <!-- Vertex dots — polygon A -->
+        <circle cx="492" cy="62"  r="4" style="fill: var(--accent);"/>
+        <circle cx="610" cy="210" r="4" style="fill: var(--accent);"/>
+        <circle cx="630" cy="340" r="4" style="fill: var(--accent);"/>
+        <circle cx="492" cy="350" r="4" style="fill: var(--accent);"/>
+        <circle cx="355" cy="335" r="4" style="fill: var(--accent);"/>
+        <circle cx="370" cy="175" r="4" style="fill: var(--accent);"/>
+
+        <!-- Vertex dots — polygon B -->
+        <circle cx="492" cy="175" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="638" cy="155" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="560" cy="310" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="492" cy="445" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="410" cy="280" r="4" style="fill: var(--accent-2);"/>
+        <circle cx="350" cy="165" r="4" style="fill: var(--accent-2);"/>
+
+        <!-- REPLACE: Axis labels -->
+        <text x="492" y="30"  text-anchor="middle" font-size="16" font-weight="700" style="fill: var(--text-primary);">Axis 1</text>
+        <text x="670" y="147" text-anchor="start"  font-size="16" font-weight="700" style="fill: var(--text-primary);">Axis 2</text>
+        <text x="670" y="357" text-anchor="start"  font-size="16" font-weight="700" style="fill: var(--text-primary);">Axis 3</text>
+        <text x="492" y="480" text-anchor="middle" font-size="16" font-weight="700" style="fill: var(--text-primary);">Axis 4</text>
+        <text x="314" y="357" text-anchor="end"    font-size="16" font-weight="700" style="fill: var(--text-primary);">Axis 5</text>
+        <text x="314" y="147" text-anchor="end"    font-size="16" font-weight="700" style="fill: var(--text-primary);">Axis 6</text>
+
+        <!-- REPLACE: Legend -->
+        <line x1="360" y1="492" x2="392" y2="492" style="stroke: var(--accent); stroke-width: 3;"/>
+        <text x="400" y="496" font-size="14" font-weight="600" style="fill: var(--text-secondary);">Subject A</text>
+        <line x1="510" y1="492" x2="542" y2="492" style="stroke: var(--accent-2); stroke-width: 3; stroke-dasharray: 8,4;"/>
+        <text x="550" y="496" font-size="14" font-weight="600" style="fill: var(--text-secondary);">Subject B</text>
+
+      </svg>
+    </div>
+
+    <!-- Three detail columns -->
+    <div class="dv-cols">
+
+      <!-- REPLACE: Column 1 -->
+      <div class="dv-col">
+        <div class="dv-col-stat">47%</div>
+        <div class="dv-col-label">Metric One</div>
+        <p class="dv-col-body"><strong>Context for the number.</strong> One or two sentences explaining what this metric means and why it matters.</p>
+        <div class="dv-list">
+          <div class="dv-list-item">Supporting detail one</div>
+          <div class="dv-list-item">Supporting detail two</div>
+          <div class="dv-list-item">Supporting detail three</div>
+        </div>
+      </div>
+
+      <!-- REPLACE: Column 2 -->
+      <div class="dv-col">
+        <div class="dv-col-stat">3.2x</div>
+        <div class="dv-col-label">Metric Two</div>
+        <p class="dv-col-body"><strong>Context for the number.</strong> One or two sentences explaining what this metric means and why it matters.</p>
+        <div class="dv-list">
+          <div class="dv-list-item">Supporting detail one</div>
+          <div class="dv-list-item">Supporting detail two</div>
+          <div class="dv-list-item">Supporting detail three</div>
+        </div>
+      </div>
+
+      <!-- REPLACE: Column 3 -->
+      <div class="dv-col">
+        <div class="dv-col-stat">92%</div>
+        <div class="dv-col-label">Metric Three</div>
+        <p class="dv-col-body"><strong>Context for the number.</strong> One or two sentences explaining what this metric means and why it matters.</p>
+        <div class="dv-list">
+          <div class="dv-list-item">Supporting detail one</div>
+          <div class="dv-list-item">Supporting detail two</div>
+          <div class="dv-list-item">Supporting detail three</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

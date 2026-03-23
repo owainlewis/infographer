@@ -11,9 +11,21 @@
       grid-template-rows: repeat(2, 1fr);
       gap: 12px;
     }
-    .card { padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+
+    .card {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .card-title { margin-bottom: 0; }
-    .card-body { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+
+    .card-body {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+    }
+
     .card-num {
       font-size: var(--text-meta);
       line-height: var(--leading-meta);
@@ -22,21 +34,57 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
+
+    /* ── Diagram container ───────────────────────── */
     .diagram-box {
       width: 100%;
-      height: 160px;
+      height: 156px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 8px;
       background: var(--bg-canvas);
       border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
-    .pills { padding-top: 4px; margin-top: auto; }
-    .card-highlight { font-size: var(--text-meta); line-height: var(--leading-meta); }
-    [data-theme="light"] .card { background: #ffffff; border-color: #cdd0d8; }
-    [data-theme="dark"] .diagram-box { background: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.08); }
-    [data-theme="light"] .diagram-box { background: #f4f5f7; border-color: #dde0e6; }
+
+    /* Subtle diagonal hatch pattern inside diagrams */
+    .diagram-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        135deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.01) 10px,
+        rgba(255, 255, 255, 0.01) 11px
+      );
+      pointer-events: none;
+    }
+
+    /* ── Tradeoff callout ────────────────────────── */
+    .card-tradeoff {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      border-left: 2px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+      background: var(--bg-raised);
+      margin-top: auto;
+    }
+
+    .card-tradeoff strong {
+      color: var(--text-primary);
+    }
+
+    .pills { padding-top: 2px; }
+
+    [data-theme="light"] .card { background: var(--bg-card); border-color: var(--border); }
+    [data-theme="dark"] .diagram-box { background: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.06); }
+    [data-theme="light"] .diagram-box { background: var(--bg-raised); border-color: var(--border-medium); }
   </style>
 </head>
 <body>
@@ -95,8 +143,8 @@
             <text x="130" y="18" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="9" font-weight="700">BURST</text>
           </svg>
         </div>
-        <p class="card-body"><strong>The simplest counter you can build.</strong> Count requests per fixed time window (e.g., 100/minute). Counter resets at each boundary. Problem: a burst at 0:59 and another at 1:01 doubles your intended rate in a 2-second span.</p>
-        <p class="card-highlight"><strong>Tradeoff</strong> — Simple to implement, but boundary bursts can double throughput.</p>
+        <p class="card-body"><strong>The simplest counter.</strong> Count requests per fixed window. Counter resets at each boundary. A burst at 0:59 and 1:01 doubles your intended rate.</p>
+        <div class="card-tradeoff">Simple to implement, but boundary bursts can double throughput</div>
         <div class="pills">
           <span class="pill pill--accent">Redis INCR</span>
           <span class="pill">Simplest</span>
@@ -142,8 +190,8 @@
             <text x="58" y="55" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9">expired</text>
           </svg>
         </div>
-        <p class="card-body"><strong>Fixes the boundary problem by tracking every timestamp.</strong> Keep a sorted log of request timestamps. Count entries within the last N seconds. Perfectly accurate, but storing every timestamp gets expensive at high throughput.</p>
-        <p class="card-highlight"><strong>Tradeoff</strong> — Precise rate limiting, but O(n) memory per user.</p>
+        <p class="card-body"><strong>Fixes the boundary problem.</strong> Track every request timestamp. Count entries within the last N seconds. Perfectly accurate, but storing every timestamp gets expensive at scale.</p>
+        <div class="card-tradeoff">Precise rate limiting, but O(n) memory per user</div>
         <div class="pills">
           <span class="pill pill--accent">Precise</span>
           <span class="pill">Memory-heavy</span>
@@ -183,8 +231,8 @@
             <text x="40" y="85" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9" transform="rotate(-90, 40, 85)">capacity</text>
           </svg>
         </div>
-        <p class="card-body"><strong>The algorithm behind AWS and Stripe rate limits.</strong> Bucket holds N tokens, refills at a steady rate. Each request takes a token. Bucket empty? Request denied. Allows controlled bursts up to bucket capacity, then smooths to the refill rate.</p>
-        <p class="card-highlight"><strong>Tradeoff</strong> — Allows bursts (good for real traffic), tunable via bucket size and refill rate.</p>
+        <p class="card-body"><strong>The algorithm behind AWS and Stripe.</strong> Bucket holds N tokens, refills steadily. Each request takes a token. Empty bucket? Request denied. Allows controlled bursts up to capacity.</p>
+        <div class="card-tradeoff">Allows bursts (good for real traffic), tunable via bucket size and refill rate</div>
         <div class="pills">
           <span class="pill pill--accent">AWS / Stripe</span>
           <span class="pill">Burst-friendly</span>
@@ -224,8 +272,8 @@
             <text x="45" y="90" text-anchor="middle" style="fill: var(--text-dim)" font-family="Libre Franklin,sans-serif" font-size="9" transform="rotate(-90, 45, 90)">queue</text>
           </svg>
         </div>
-        <p class="card-body"><strong>Smooths everything to a constant output rate.</strong> Requests enter the bucket at any speed. The bucket drains at a fixed rate. If it overflows, excess requests are dropped. No bursts ever reach your backend — guaranteed constant throughput.</p>
-        <p class="card-highlight"><strong>Tradeoff</strong> — Perfectly smooth output, but legitimate bursts get queued or dropped.</p>
+        <p class="card-body"><strong>Smooths everything to a constant rate.</strong> Requests enter at any speed. Bucket drains at a fixed rate. Overflow is dropped. No bursts ever reach your backend.</p>
+        <div class="card-tradeoff">Perfectly smooth output, but legitimate bursts get queued or dropped</div>
         <div class="pills">
           <span class="pill pill--accent">NGINX</span>
           <span class="pill">Constant rate</span>

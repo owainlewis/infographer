@@ -1,36 +1,44 @@
 /* ══════════════════════════════════════════════════════════
-   EMBER THEMES — "Navy & Signal Orange"
-   Deep slate-navy canvas, clean type, orange pop accent.
+   UNIFIED THEMES — "Deep Navy, Cobalt & Signal"
+   Deep navy canvas, cobalt structural accent, signal orange
+   as a sparse warm punctuation. Opaque cards, warm whites.
+
+   Brand palette:
+     Deep Navy     #05070C  (canvas)
+     Card          #0C0F18  (opaque, not glass)
+     Cobalt        #3B6CE8  (structural accent — 90% of accent work)
+     Signal Orange #F27A3A  (warm punctuation — used sparingly)
+     Frost         #F1F5F9  (warm white text)
    ══════════════════════════════════════════════════════════ */
 
-/* ── DARK MINIMAL ────────────────────────────────────────── */
-[data-theme="dark-minimal"] {
+/* ── DARK UNIFIED ──────────────────────────────────────── */
+[data-theme="dark-unified"] {
   --bg-canvas:      #05070C;
   --bg-card:        #0C0F18;
-  --bg-raised:      #141822;
-  --bg-warm:        #10131C;
+  --bg-raised:      #121620;
+  --bg-warm:        #0E1118;
   --bg-footer:      transparent;
-  --accent-glow:    rgba(242, 122, 58, 0.08);
-  --accent-2-glow:  rgba(142, 157, 178, 0.06);
+  --accent-glow:    rgba(59, 108, 232, 0.10);
+  --accent-2-glow:  rgba(242, 122, 58, 0.06);
 
-  --border:         #222838;
-  --border-medium:  #2C3448;
-  --border-accent:  rgba(242, 122, 58, 0.45);
-  --border-accent-2: rgba(142, 157, 178, 0.25);
+  --border:         #1C2234;
+  --border-medium:  #262E42;
+  --border-accent:  rgba(59, 108, 232, 0.38);
+  --border-accent-2: rgba(242, 122, 58, 0.35);
 
   --text-primary:   #F1F5F9;
   --text-secondary: #94A3B8;
   --text-muted:     #4E5A6E;
   --text-dim:       #303A4A;
 
-  --accent:         #F27A3A;
-  --accent-2:       #8E9DB2;
+  --accent:         #3B6CE8;
+  --accent-2:       #F27A3A;
 
   --footer-text:    #4E5A6E;
   --footer-text-hi: #94A3B8;
-  --footer-border:  #222838;
+  --footer-border:  #1C2234;
 
-  --card-shadow:    0 2px 8px rgba(0, 0, 0, 0.35),
+  --card-shadow:    0 2px 8px rgba(0, 0, 0, 0.40),
                     0 0 0 1px rgba(255, 255, 255, 0.03);
   --on-accent:      #FFFFFF;
 
@@ -42,42 +50,42 @@
   --status-danger-border: rgba(212, 101, 74, 0.12);
 
   --svg-bg:         #080B14;
-  --svg-border:     #222838;
+  --svg-border:     #1C2234;
   --svg-text:       var(--text-primary);
   --svg-line:       var(--accent);
   --svg-line-dim:   #4E5A6E;
-  --svg-line-faint: rgba(255, 255, 255, 0.08);
-  --svg-accent-bg:  rgba(242, 122, 58, 0.06);
-  --svg-accent-border: rgba(242, 122, 58, 0.18);
+  --svg-line-faint: rgba(100, 140, 220, 0.08);
+  --svg-accent-bg:  rgba(59, 108, 232, 0.06);
+  --svg-accent-border: rgba(59, 108, 232, 0.18);
 
-  --bg-canvas-gradient: var(--bg-canvas);
+  --bg-canvas-gradient: radial-gradient(ellipse at 50% 0%, #0A0F1C 0%, #05070C 65%);
 
   --divider-color: var(--border);
   --divider-accent: var(--border-accent);
 }
 
-/* ── LIGHT MINIMAL ───────────────────────────────────────── */
-[data-theme="light-minimal"] {
+/* ── LIGHT UNIFIED ─────────────────────────────────────── */
+[data-theme="light-unified"] {
   --bg-canvas:      #EAEBEF;
   --bg-card:        #FFFFFF;
   --bg-raised:      #F3F4F8;
-  --bg-warm:        #ECEDE8;
-  --bg-footer:      #111827;
-  --accent-glow:    rgba(220, 90, 30, 0.07);
-  --accent-2-glow:  rgba(68, 80, 100, 0.05);
+  --bg-warm:        #EEF0F5;
+  --bg-footer:      #05070C;
+  --accent-glow:    rgba(40, 75, 200, 0.08);
+  --accent-2-glow:  rgba(220, 90, 30, 0.05);
 
   --border:         #C8CDD6;
   --border-medium:  #B4BAC6;
-  --border-accent:  rgba(220, 90, 30, 0.40);
-  --border-accent-2: rgba(68, 80, 100, 0.20);
+  --border-accent:  rgba(40, 75, 200, 0.40);
+  --border-accent-2: rgba(220, 90, 30, 0.35);
 
   --text-primary:   #111827;
   --text-secondary: #334155;
   --text-muted:     #64748B;
   --text-dim:       #94A3B8;
 
-  --accent:         #DC5A1E;
-  --accent-2:       #445064;
+  --accent:         #2850B8;
+  --accent-2:       #DC5A1E;
 
   --footer-text:    #94A3B8;
   --footer-text-hi: #C8CDD6;
@@ -100,10 +108,10 @@
   --svg-line:       var(--accent);
   --svg-line-dim:   #94A3B8;
   --svg-line-faint: rgba(0, 0, 0, 0.08);
-  --svg-accent-bg:  rgba(220, 90, 30, 0.06);
-  --svg-accent-border: rgba(220, 90, 30, 0.22);
+  --svg-accent-bg:  rgba(40, 75, 200, 0.05);
+  --svg-accent-border: rgba(40, 75, 200, 0.18);
 
-  --bg-canvas-gradient: var(--bg-canvas);
+  --bg-canvas-gradient: radial-gradient(ellipse at 50% 0%, #F2F3F7 0%, #EAEBEF 65%);
 
   --divider-color: var(--border);
   --divider-accent: var(--border-accent);

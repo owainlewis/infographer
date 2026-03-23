@@ -8,497 +8,480 @@
   <style>
     .infographic {
       background: var(--bg-canvas-gradient, var(--bg-canvas));
-      gap: 0;
+      gap: 16px;
     }
 
-    /* ── Three columns ─────────────────────────── */
+    /* ── 3-column layout ─────────────────────────────────── */
     .columns {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
+      gap: 12px;
       flex: 1;
-      min-height: 0;
     }
 
-    .columns {
-      grid-template-rows: auto auto auto auto;
-    }
     .col {
-      display: grid;
-      grid-template-rows: subgrid;
-      grid-row: span 4;
-      gap: 10px;
-    }
-
-    /* ── Column header ─────────────────────────── */
-    .col-head {
-      padding: 20px;
-      border-radius: var(--card-radius);
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      flex-shrink: 0;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+      padding: 20px 16px;
+      overflow: hidden;
     }
-    .col-head--claude {
-      background: rgba(99, 102, 241, 0.08);
-      border: 1.5px solid var(--border-accent);
+
+    .col--highlight {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
     }
-    .col-head--code {
-      background: rgba(34, 211, 238, 0.08);
-      border: 1.5px solid var(--border-accent-2);
-    }
-    .col-head--cowork {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.5px solid rgba(255, 255, 255, 0.14);
+
+    /* ── Column header ───────────────────────────────────── */
+    .col-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border-accent);
     }
 
     .col-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: 800;
       flex-shrink: 0;
     }
-    .col-icon--claude { background: var(--accent); }
-    .col-icon--code { background: var(--accent-2); }
-    .col-icon--cowork { background: var(--text-muted); }
 
-    .col-head-label {
-      font-size: var(--text-meta);
-      line-height: var(--leading-meta);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-label);
-      text-transform: uppercase;
+    .col-icon--chat {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #fff;
+      font-size: 18px;
     }
-    .col-head--claude .col-head-label { color: var(--accent); }
-    .col-head--code .col-head-label { color: var(--accent-2); }
-    .col-head--cowork .col-head-label { color: var(--text-secondary); }
 
-    .col-head-name {
+    .col-icon--cowork {
+      background: linear-gradient(135deg, var(--accent-2), #06b6d4);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .col-icon--code {
+      background: var(--accent);
+      color: var(--on-accent);
+      font-family: var(--font-mono);
+      font-size: 16px;
+    }
+
+    .col-name {
+      font-family: var(--font-display);
       font-size: var(--text-h2);
       line-height: var(--leading-h2);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-card-title);
       color: var(--text-primary);
     }
 
-    .col-head-desc {
-      font-size: var(--text-body-sm);
-      line-height: var(--leading-body-sm);
+    /* ── Section labels ──────────────────────────────────── */
+    .sec-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta-tight);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .sec-label:first-of-type { margin-top: 0; }
+
+    /* ── Text ────────────────────────────────────────────── */
+    .col-desc {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
       color: var(--text-secondary);
     }
-    .col-head-desc strong {
+
+    .col-desc strong {
       font-weight: var(--weight-semibold);
       color: var(--text-primary);
     }
 
-    /* ── Feature card ──────────────────────────── */
-    .feat-card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--card-radius);
-      padding: 0;
+    /* ── Bullet lists ────────────────────────────────────── */
+    .use-list {
       display: flex;
       flex-direction: column;
-      flex: 1;
-      overflow: hidden;
+      gap: 4px;
     }
 
-    .feat-card-header {
-      padding: 14px 18px 12px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .feat-card-header-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .col--claude .feat-card-header-icon { background: var(--accent); }
-    .col--code .feat-card-header-icon { background: var(--accent-2); }
-    .col--cowork .feat-card-header-icon { background: var(--text-muted); }
-
-    .feat-card-title {
+    .use-list li {
       font-size: var(--text-meta);
       line-height: var(--leading-meta);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-label);
-      text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--text-secondary);
+      padding-left: 14px;
+      position: relative;
     }
 
-    .feat-card-body {
-      padding: 12px 18px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      flex: 1;
-    }
-
-    /* ── Feature rows (pill + desc) ────────────── */
-    .feat-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .feat-row:last-child {
-      border-bottom: none;
-    }
-
-    .feat-pill {
-      font-size: var(--text-meta);
-      line-height: 1;
-      font-weight: var(--weight-bold);
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .col--claude .feat-pill {
-      background: var(--accent-glow);
+    .use-list li::before {
+      content: '\25C6';
+      position: absolute;
+      left: 0;
       color: var(--accent);
-      border: 1px solid var(--border-accent);
-    }
-    .col--code .feat-pill {
-      background: var(--accent-2-glow);
-      color: var(--accent-2);
-      border: 1px solid var(--border-accent-2);
-    }
-    .col--cowork .feat-pill {
-      background: var(--bg-raised);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-medium);
+      font-size: 7px; /* decorative bullet glyph */
+      top: 5px;
     }
 
-    .feat-desc {
-      font-size: var(--text-meta);
-      line-height: var(--leading-meta);
-      color: var(--text-muted);
-    }
-
-    /* ── How-it-works rows (simpler, no pills) ── */
-    .how-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .how-row:last-child { border-bottom: none; }
-
-    .how-check {
-      width: 18px;
-      height: 18px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .col--claude .how-check { background: var(--accent-glow); border: 1px solid var(--border-accent); }
-    .col--code .how-check { background: var(--accent-2-glow); border: 1px solid var(--border-accent-2); }
-    .col--cowork .how-check { background: var(--bg-raised); border: 1px solid var(--border-medium); }
-
-    .how-text {
-      font-size: var(--text-meta);
-      line-height: var(--leading-meta);
-      color: var(--text-secondary);
-    }
-
-    /* ── Best-for box ──────────────────────────── */
-    .best-for {
-      border-radius: var(--card-radius);
-      padding: 16px 18px;
-      border: 1px solid;
-      flex-shrink: 0;
-    }
-    .col--claude .best-for {
-      background: rgba(99, 102, 241, 0.06);
-      border-color: var(--border-accent);
-    }
-    .col--code .best-for {
-      background: rgba(34, 211, 238, 0.06);
-      border-color: var(--border-accent-2);
-    }
-    .col--cowork .best-for {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-
-    .best-for-label {
-      font-size: var(--text-meta);
-      line-height: var(--leading-meta);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-label);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .col--claude .best-for-label { color: var(--accent); }
-    .col--code .best-for-label { color: var(--accent-2); }
-    .col--cowork .best-for-label { color: var(--text-secondary); }
-
-    .best-for-text {
-      font-size: var(--text-meta);
-      line-height: var(--leading-meta);
-      color: var(--text-muted);
-    }
-
-    /* ── Decision guide ───────────────────────── */
-    .decision-section {
-      margin-top: 14px;
-      flex-shrink: 0;
+    /* ── Pros/Cons ───────────────────────────────────────── */
+    .pc-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
     }
 
-    .decision-card {
-      border-radius: var(--card-radius);
-      padding: 16px 18px;
+    .pc-col {
       display: flex;
-      align-items: center;
-      gap: 14px;
-      border: 1px solid;
-    }
-    .decision-card--claude {
-      background: rgba(99, 102, 241, 0.06);
-      border-color: var(--border-accent);
-    }
-    .decision-card--code {
-      background: rgba(34, 211, 238, 0.06);
-      border-color: var(--border-accent-2);
-    }
-    .decision-card--cowork {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.12);
+      flex-direction: column;
+      gap: 3px;
     }
 
-    .decision-arrow {
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .decision-card--claude .decision-arrow { background: var(--accent); }
-    .decision-card--code .decision-arrow { background: var(--accent-2); }
-    .decision-card--cowork .decision-arrow { background: var(--text-muted); }
-
-    .decision-prompt {
+    .pc-item {
       font-size: var(--text-meta);
       line-height: var(--leading-meta);
-      color: var(--text-muted);
+      color: var(--text-secondary);
+      padding-left: 14px;
+      position: relative;
     }
-    .decision-prompt strong {
-      display: block;
-      font-weight: var(--weight-bold);
-      color: var(--text-primary);
-      font-size: var(--text-body-sm);
-      line-height: var(--leading-body-sm);
+
+    .pc-item--pro::before {
+      content: '+';
+      position: absolute;
+      left: 1px;
+      color: var(--status-success);
+      font-weight: 800;
+      font-size: 14px;
+      top: 0;
     }
+
+    .pc-item--con::before {
+      content: '\2212';
+      position: absolute;
+      left: 1px;
+      color: var(--status-danger);
+      font-weight: 800;
+      font-size: 14px;
+      top: 0;
+    }
+
+    /* ── Workflow section ─────────────────────────────────── */
+    .wf-section {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .wf-section .sec-label {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    /* ── Diagram node styles ─────────────────────────────── */
+    .d-node {
+      fill: var(--svg-bg);
+      stroke: var(--svg-border);
+      stroke-width: 1.5;
+    }
+    .d-node--accent {
+      fill: var(--svg-accent-bg);
+      stroke: var(--border-accent);
+    }
+    .d-node--cyan {
+      fill: var(--svg-accent-bg);
+      stroke: var(--border-accent-2);
+    }
+    .d-node--prompt {
+      fill: var(--svg-bg);
+      stroke: var(--accent);
+      stroke-width: 2;
+    }
+    .d-text {
+      fill: var(--text-primary);
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .d-text--accent { fill: var(--accent); }
+    .d-text--cyan { fill: var(--accent-2); }
+    .d-text--muted {
+      fill: var(--text-muted);
+      font-size: 9px;
+      font-weight: 500;
+    }
+    .d-text--dim {
+      fill: var(--text-dim);
+      font-size: 9px;
+      font-weight: 600;
+    }
+    .d-arrow { stroke: var(--accent); stroke-width: 1.5; }
+    .d-arrow--cyan { stroke: var(--accent-2); stroke-width: 1.5; }
+    .d-arrow--muted { stroke: var(--text-muted); stroke-width: 1.5; stroke-dasharray: 4,3; }
   </style>
 </head>
 <body>
+  <!-- SVG markers (shared) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0 1L9 5L0 9z" style="fill:var(--accent)"/>
+      </marker>
+      <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0 1L9 5L0 9z" style="fill:var(--accent-2)"/>
+      </marker>
+      <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0 1L9 5L0 9z" style="fill:var(--text-muted)"/>
+      </marker>
+    </defs>
+  </svg>
+
   <div class="infographic" id="infographic" data-theme="dark">
 
     <!-- Header -->
-    <div class="hd" style="margin-bottom: 24px;">
-      <h1>Claude vs Cowork vs Code</h1>
+    <div class="hd" style="margin-bottom: 0;">
+      <h1 style="font-size: var(--text-display-sm); line-height: var(--leading-display-sm);">
+        Claude <span style="color: var(--accent)">vs</span> Code <span style="color: var(--accent)">vs</span> Cowork
+      </h1>
+      <p style="font-size: var(--text-sub); line-height: var(--leading-sub); color: var(--text-muted); margin-top: 2px;">
+        Three interfaces, one model — pick the right tool for the job
+      </p>
     </div>
 
-    <!-- Three columns -->
+    <!-- 3-Column Comparison: Claude → Cowork → Code -->
     <div class="columns">
 
-      <!-- ════ Claude ════ -->
-      <div class="col col--claude">
-        <div class="col-head col-head--claude">
-          <div class="col-icon col-icon--claude">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <div class="col-head-label">Web, Mobile & Desktop</div>
-          <div class="col-head-name">Claude</div>
-          <p class="col-head-desc"><strong>Think together.</strong> Research, brainstorm, analyze. The conversational hub.</p>
+      <!-- ═══ COLUMN 1: Claude AI ═══ -->
+      <div class="col">
+        <div class="col-header">
+          <div class="col-icon col-icon--chat">AI</div>
+          <div class="col-name">Claude AI</div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-card-header">
-            <div class="feat-card-header-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div class="feat-card-title">Capabilities</div>
-          </div>
-          <div class="feat-card-body">
-            <div class="feat-row"><span class="feat-pill">Research</span><span class="feat-desc">Deep multi-step web research</span></div>
-            <div class="feat-row"><span class="feat-pill">Artifacts</span><span class="feat-desc">Interactive apps & visualizations</span></div>
-            <div class="feat-row"><span class="feat-pill">Memory</span><span class="feat-desc">Learns across conversations</span></div>
-            <div class="feat-row"><span class="feat-pill">Voice</span><span class="feat-desc">Spoken conversation on mobile</span></div>
-            <div class="feat-row"><span class="feat-pill">Writing</span><span class="feat-desc">Drafts, edits & analysis</span></div>
-          </div>
-        </div>
+        <div class="sec-label">What it is</div>
+        <p class="col-desc">A conversational AI assistant at <strong>claude.ai</strong>. Designed for everyday thinking, writing, and analysis.</p>
 
-        <div class="feat-card">
-          <div class="feat-card-header">
-            <div class="feat-card-header-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <div class="feat-card-title">How It Works</div>
+        <div class="sec-label">Where to use</div>
+        <ul class="use-list">
+          <li>Draft emails, essays, reports, and long-form content</li>
+          <li>Brainstorm and explore ideas conversationally</li>
+          <li>Research, summarize, and explain complex topics</li>
+          <li>Analyze documents and images</li>
+        </ul>
+
+        <div class="sec-label">Pros &amp; Cons</div>
+        <div class="pc-row">
+          <div class="pc-col">
+            <div class="pc-item pc-item--pro">Zero setup</div>
+            <div class="pc-item pc-item--pro">Versatile &amp; general</div>
           </div>
-          <div class="feat-card-body">
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Reactive: you ask, it responds</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Free tier available for anyone</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Upload files, images & docs</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">MCP connectors to your tools</span></div>
+          <div class="pc-col">
+            <div class="pc-item pc-item--con">No system access</div>
+            <div class="pc-item pc-item--con">Manual follow-up</div>
           </div>
         </div>
 
-        <div class="best-for">
-          <div class="best-for-label">Best For</div>
-          <p class="best-for-text">Everyone. Free tier for exploration, Pro for daily use. The gateway to Claude.</p>
+        <!-- Workflow -->
+        <div class="wf-section">
+          <div class="sec-label">Workflow</div>
+          <svg viewBox="0 0 280 230" fill="none" style="width:100%;height:auto;">
+            <!-- Prompt -->
+            <rect x="90" y="8" width="100" height="30" rx="8" class="d-node--prompt"/>
+            <text x="140" y="28" text-anchor="middle" class="d-text d-text--accent">Prompt</text>
+            <!-- ↓ -->
+            <line x1="140" y1="38" x2="140" y2="56" class="d-arrow" marker-end="url(#a1)"/>
+
+            <!-- Chat UI -->
+            <rect x="65" y="60" width="150" height="34" rx="8" class="d-node--accent"/>
+            <text x="140" y="82" text-anchor="middle" class="d-text d-text--accent">Chat UI</text>
+            <!-- ↓ -->
+            <line x1="140" y1="94" x2="140" y2="116" class="d-arrow" marker-end="url(#a1)"/>
+
+            <!-- Claude Models -->
+            <rect x="55" y="120" width="170" height="34" rx="8" class="d-node"/>
+            <text x="140" y="142" text-anchor="middle" class="d-text">Claude Models</text>
+            <!-- ↓ -->
+            <line x1="140" y1="154" x2="140" y2="176" class="d-arrow" marker-end="url(#a1)"/>
+
+            <!-- Output -->
+            <rect x="90" y="180" width="100" height="30" rx="8" class="d-node"/>
+            <text x="140" y="200" text-anchor="middle" class="d-text">Text Output</text>
+
+            <!-- Feedback loop (left side) -->
+            <path d="M65 77 C20 77,20 24,130 24" class="d-arrow--muted" fill="none" marker-end="url(#a3)"/>
+            <text x="12" y="58" text-anchor="middle" class="d-text--dim">Feedback</text>
+
+            <!-- Annotation: Limited Memory -->
+            <text x="224" y="78" text-anchor="start" class="d-text--dim">Limited</text>
+            <text x="224" y="88" text-anchor="start" class="d-text--dim">Memory</text>
+
+            <!-- Annotation: Limited Tools -->
+            <text x="232" y="138" text-anchor="start" class="d-text--dim">Limited</text>
+            <text x="232" y="148" text-anchor="start" class="d-text--dim">Tools</text>
+          </svg>
         </div>
       </div>
 
-      <!-- ════ Cowork ════ -->
-      <div class="col col--cowork">
-        <div class="col-head col-head--cowork">
-          <div class="col-icon col-icon--cowork">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div class="col-head-label">Desktop App</div>
-          <div class="col-head-name">Cowork</div>
-          <p class="col-head-desc"><strong>Work together.</strong> Agentic automation without a terminal.</p>
+      <!-- ═══ COLUMN 2: Cowork (center, highlighted) ═══ -->
+      <div class="col col--highlight">
+        <div class="col-header">
+          <div class="col-icon col-icon--cowork">Co</div>
+          <div class="col-name">Cowork</div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-card-header">
-            <div class="feat-card-header-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div class="feat-card-title">Capabilities</div>
-          </div>
-          <div class="feat-card-body">
-            <div class="feat-row"><span class="feat-pill">Files</span><span class="feat-desc">xlsx, pptx, docx, pdf output</span></div>
-            <div class="feat-row"><span class="feat-pill">Plugins</span><span class="feat-desc">Role-specific marketplace</span></div>
-            <div class="feat-row"><span class="feat-pill">Schedule</span><span class="feat-desc">Recurring automated tasks</span></div>
-            <div class="feat-row"><span class="feat-pill">Office</span><span class="feat-desc">Excel & PowerPoint workflows</span></div>
-            <div class="feat-row"><span class="feat-pill">Flows</span><span class="feat-desc">Multi-step parallel agents</span></div>
-          </div>
-        </div>
+        <div class="sec-label">What it is</div>
+        <p class="col-desc">A <strong>desktop application</strong> for non-developers that automates file management and repetitive tasks.</p>
 
-        <div class="feat-card">
-          <div class="feat-card-header">
-            <div class="feat-card-header-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <div class="feat-card-title">How It Works</div>
+        <div class="sec-label">Where to use</div>
+        <ul class="use-list">
+          <li>Organize, rename, and sort files across folders in bulk</li>
+          <li>Extract data from PDFs and fill spreadsheets</li>
+          <li>Automate copy-paste workflows between apps</li>
+          <li>Process documents and media at scale</li>
+        </ul>
+
+        <div class="sec-label">Pros &amp; Cons</div>
+        <div class="pc-row">
+          <div class="pc-col">
+            <div class="pc-item pc-item--pro">No coding needed</div>
+            <div class="pc-item pc-item--pro">Cross-app workflows</div>
           </div>
-          <div class="feat-card-body">
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Proactive: describe a goal, it executes</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Sandboxed Linux VM on your machine</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Data stays local, never on servers</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">MCP connectors for enterprise tools</span></div>
+          <div class="pc-col">
+            <div class="pc-item pc-item--con">Early stage</div>
+            <div class="pc-item pc-item--con">Less control/config</div>
           </div>
         </div>
 
-        <div class="best-for">
-          <div class="best-for-label">Best For</div>
-          <p class="best-for-text">PMs, finance, HR, legal, sales &mdash; knowledge workers who never touch a terminal.</p>
+        <!-- Workflow -->
+        <div class="wf-section">
+          <div class="sec-label">Workflow</div>
+          <svg viewBox="0 0 280 230" fill="none" style="width:100%;height:auto;">
+            <!-- Prompt -->
+            <rect x="90" y="8" width="100" height="30" rx="8" class="d-node--prompt"/>
+            <text x="140" y="28" text-anchor="middle" class="d-text d-text--accent">Prompt</text>
+            <!-- ↓ -->
+            <line x1="140" y1="38" x2="140" y2="56" class="d-arrow" marker-end="url(#a1)"/>
+
+            <!-- Chat UI + Claude Models row -->
+            <rect x="10" y="60" width="120" height="34" rx="8" class="d-node"/>
+            <text x="70" y="82" text-anchor="middle" class="d-text">Chat UI</text>
+
+            <rect x="150" y="60" width="120" height="34" rx="8" class="d-node"/>
+            <text x="210" y="82" text-anchor="middle" class="d-text">Claude</text>
+
+            <!-- Bidirectional arrows -->
+            <line x1="130" y1="73" x2="150" y2="73" class="d-arrow" marker-end="url(#a1)"/>
+            <line x1="150" y1="83" x2="130" y2="83" class="d-arrow" marker-end="url(#a1)"/>
+
+            <!-- ↓ from both -->
+            <line x1="70" y1="94" x2="70" y2="116" class="d-arrow--cyan" marker-end="url(#a2)"/>
+            <line x1="210" y1="94" x2="210" y2="116" class="d-arrow--cyan" marker-end="url(#a2)"/>
+
+            <!-- Action boxes row -->
+            <rect x="10" y="120" width="120" height="38" rx="8" class="d-node--cyan"/>
+            <text x="70" y="138" text-anchor="middle" class="d-text d-text--cyan" font-size="10">Organize Files</text>
+            <text x="70" y="150" text-anchor="middle" class="d-text--muted">Rename &amp; sort</text>
+
+            <rect x="150" y="120" width="120" height="38" rx="8" class="d-node--cyan"/>
+            <text x="210" y="138" text-anchor="middle" class="d-text d-text--cyan" font-size="10">Edit &amp; Update</text>
+            <text x="210" y="150" text-anchor="middle" class="d-text--muted">Cross-app tasks</text>
+
+            <!-- Merge arrows down -->
+            <line x1="70" y1="158" x2="110" y2="176" class="d-arrow--cyan" marker-end="url(#a2)"/>
+            <line x1="210" y1="158" x2="170" y2="176" class="d-arrow--cyan" marker-end="url(#a2)"/>
+
+            <!-- Output -->
+            <rect x="90" y="180" width="100" height="30" rx="8" class="d-node"/>
+            <text x="140" y="200" text-anchor="middle" class="d-text">Output</text>
+
+            <!-- Feedback loop -->
+            <path d="M10 77 C-25 77,-25 24,130 24" class="d-arrow--muted" fill="none" marker-end="url(#a3)"/>
+            <text x="-8" y="58" text-anchor="middle" class="d-text--dim">Feedback</text>
+          </svg>
         </div>
       </div>
 
-      <!-- ════ Claude Code ════ -->
-      <div class="col col--code">
-        <div class="col-head col-head--code">
-          <div class="col-icon col-icon--code">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          </div>
-          <div class="col-head-label">Terminal, IDE, Web & Mobile</div>
-          <div class="col-head-name">Claude Code</div>
-          <p class="col-head-desc"><strong>Build together.</strong> Agentic coding from terminal to PR. $2.5B+ in revenue.</p>
+      <!-- ═══ COLUMN 3: Claude Code ═══ -->
+      <div class="col">
+        <div class="col-header">
+          <div class="col-icon col-icon--code">&gt;_</div>
+          <div class="col-name">Claude Code</div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-card-header">
-            <div class="feat-card-header-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div class="feat-card-title">Capabilities</div>
-          </div>
-          <div class="feat-card-body">
-            <div class="feat-row"><span class="feat-pill">Git</span><span class="feat-desc">Commits, PRs & code review</span></div>
-            <div class="feat-row"><span class="feat-pill">Agents</span><span class="feat-desc">Parallel sub-agent teams</span></div>
-            <div class="feat-row"><span class="feat-pill">Security</span><span class="feat-desc">500+ zero-days found in OSS</span></div>
-            <div class="feat-row"><span class="feat-pill">Remote</span><span class="feat-desc">Control from phone or browser</span></div>
-            <div class="feat-row"><span class="feat-pill">MCP</span><span class="feat-desc">50+ server integrations</span></div>
-          </div>
-        </div>
+        <div class="sec-label">What it is</div>
+        <p class="col-desc">A <strong>CLI tool</strong> that runs Claude as an autonomous coding agent directly in your terminal.</p>
 
-        <div class="feat-card">
-          <div class="feat-card-header">
-            <div class="feat-card-header-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <div class="feat-card-title">How It Works</div>
+        <div class="sec-label">Where to use</div>
+        <ul class="use-list">
+          <li>Build or debug entire features across multiple files</li>
+          <li>Refactor legacy codebases at scale autonomously</li>
+          <li>Write and run tests, fixing failures automatically</li>
+          <li>Git workflows, PR reviews, and CI/CD tasks</li>
+        </ul>
+
+        <div class="sec-label">Pros &amp; Cons</div>
+        <div class="pc-row">
+          <div class="pc-col">
+            <div class="pc-item pc-item--pro">Fully autonomous</div>
+            <div class="pc-item pc-item--pro">Deep codebase context</div>
           </div>
-          <div class="feat-card-body">
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Proactive: describe a goal, it ships</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Full filesystem + shell access</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">Checkpoints for instant rollback</span></div>
-            <div class="how-row"><div class="how-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="how-text">VS Code & JetBrains extensions</span></div>
+          <div class="pc-col">
+            <div class="pc-item pc-item--con">Needs code review</div>
+            <div class="pc-item pc-item--con">Usage costs apply</div>
           </div>
         </div>
 
-        <div class="best-for">
-          <div class="best-for-label">Best For</div>
-          <p class="best-for-text">Engineers & DevOps. Used by Microsoft, Google, NASA, Spotify, Stripe.</p>
-        </div>
-      </div>
+        <!-- Workflow -->
+        <div class="wf-section">
+          <div class="sec-label">Workflow</div>
+          <svg viewBox="0 0 280 230" fill="none" style="width:100%;height:auto;">
+            <!-- Prompt -->
+            <rect x="90" y="8" width="100" height="30" rx="8" class="d-node--prompt"/>
+            <text x="140" y="28" text-anchor="middle" class="d-text d-text--accent">Prompt</text>
+            <!-- ↓ -->
+            <line x1="140" y1="38" x2="140" y2="56" class="d-arrow" marker-end="url(#a1)"/>
 
-    </div>
+            <!-- CLI UI + Claude Models row -->
+            <rect x="10" y="60" width="120" height="34" rx="8" class="d-node--accent"/>
+            <text x="70" y="82" text-anchor="middle" class="d-text d-text--accent">CLI UI</text>
 
-    <!-- ── Decision Guide ── -->
-    <div class="decision-section">
+            <rect x="150" y="60" width="120" height="34" rx="8" class="d-node"/>
+            <text x="210" y="82" text-anchor="middle" class="d-text">Claude</text>
 
-      <div class="decision-card decision-card--claude">
-        <div class="decision-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-        <div class="decision-prompt">
-          <strong>Think together</strong>
-          Reactive &mdash; you ask, it responds
-        </div>
-      </div>
+            <!-- Bidirectional arrows -->
+            <line x1="130" y1="73" x2="150" y2="73" class="d-arrow" marker-end="url(#a1)"/>
+            <line x1="150" y1="83" x2="130" y2="83" class="d-arrow" marker-end="url(#a1)"/>
 
-      <div class="decision-card decision-card--cowork">
-        <div class="decision-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-        <div class="decision-prompt">
-          <strong>Work together</strong>
-          Proactive &mdash; describe a goal, it delivers
-        </div>
-      </div>
+            <!-- ↓ from CLI -->
+            <line x1="70" y1="94" x2="70" y2="116" class="d-arrow--cyan" marker-end="url(#a2)"/>
 
-      <div class="decision-card decision-card--code">
-        <div class="decision-arrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-        <div class="decision-prompt">
-          <strong>Build together</strong>
-          Proactive &mdash; describe a goal, it ships code
+            <!-- File-system Memory (full width) -->
+            <rect x="10" y="120" width="260" height="38" rx="8" class="d-node--cyan"/>
+            <text x="140" y="136" text-anchor="middle" class="d-text d-text--cyan">File-system Access</text>
+            <text x="140" y="150" text-anchor="middle" class="d-text--muted">Read, write, edit across entire codebase</text>
+
+            <!-- ↓ -->
+            <line x1="140" y1="158" x2="140" y2="176" class="d-arrow--cyan" marker-end="url(#a2)"/>
+
+            <!-- Write/Build -->
+            <rect x="70" y="180" width="140" height="30" rx="8" class="d-node--accent"/>
+            <text x="140" y="200" text-anchor="middle" class="d-text d-text--accent">Write / Build</text>
+
+            <!-- Feedback loop -->
+            <path d="M10 77 C-25 77,-25 24,130 24" class="d-arrow--muted" fill="none" marker-end="url(#a3)"/>
+            <text x="-8" y="58" text-anchor="middle" class="d-text--dim">Feedback</text>
+
+            <!-- Agentic loop annotation -->
+            <path d="M270 82 C280 82,280 135,270 135" class="d-arrow--muted" fill="none"/>
+            <text x="268" y="112" text-anchor="end" class="d-text--dim" transform="rotate(-90,268,112)">Agentic loop</text>
+          </svg>
         </div>
       </div>
 

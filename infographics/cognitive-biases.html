@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>10 Cognitive Biases</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic { gap: 10px; }
+
+    .hd { margin-bottom: 0; }
+    .hd { margin-bottom: 16px; }
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── 3-col grid with center diagram spanning 2 rows ── */
+    .bias-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      grid-template-areas:
+        "c1  c2  c3"
+        "c4  dia c5"
+        "c6  dia c7"
+        "c8  c9  c10";
+      gap: 10px;
+      flex: 1;
+    }
+
+    /* Center diagram */
+    .bias-center {
+      grid-area: dia;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background:
+        radial-gradient(circle at 50% 60%, var(--accent-2-glow), transparent 70%),
+        linear-gradient(to bottom, var(--accent-glow), transparent);
+      padding: 16px;
+      gap: 8px;
+    }
+
+    .bias-center svg {
+      width: 80%;
+      max-width: 240px;
+      height: auto;
+      display: block;
+    }
+
+    .bias-center-text {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .bias-center-text strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ── Bias card ─────────────────────────────────────── */
+    .b-card {
+      padding: 20px 18px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow: hidden;
+    }
+
+    .bias-grid > :nth-child(even) {
+      background: var(--bg-raised);
+      border-color: var(--border-medium);
+    }
+
+    .b-num {
+      font-size: var(--text-meta);
+      line-height: 1;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .b-title {
+      font-size: var(--text-sub);
+      line-height: var(--leading-sub);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
+    }
+
+    .b-desc {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .b-desc strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .b-counter {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-top: auto;
+    }
+
+    .b-counter-label {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>10 Cognitive Biases</h1>
+    </div>
+
+    <div class="bias-grid">
+      <!-- Row 1 -->
+      <div class="b-card">
+        <span class="b-num">01</span>
+        <span class="b-title">Overconfidence</span>
+        <p class="b-desc">Believing you know more than you do.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Start with a pilot before going all in.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-num">02</span>
+        <span class="b-title">Confirmation Bias</span>
+        <p class="b-desc">Only seeing what supports your beliefs.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Appoint a devil's advocate in key meetings.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-num">03</span>
+        <span class="b-title">Groupthink</span>
+        <p class="b-desc">Avoiding conflict to keep the peace.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Use anonymous input to surface real opinions.</p>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="b-card">
+        <span class="b-num">04</span>
+        <span class="b-title">Authority Bias</span>
+        <p class="b-desc">Overweighting opinions from "experts."</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Require evidence, no matter who's speaking.</p>
+      </div>
+
+      <!-- Center diagram -->
+      <div class="bias-center">
+        <svg viewBox="0 0 200 200" fill="none" font-family="'Libre Franklin', sans-serif">
+          <circle cx="100" cy="100" r="34" style="fill: var(--accent); fill-opacity: 0.12; stroke: var(--accent); stroke-width: 2;"/>
+          <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="700" style="fill: var(--accent);">DECISION</text>
+          <text x="100" y="110" text-anchor="middle" font-size="11" font-weight="700" style="fill: var(--accent);">ENGINE</text>
+          <circle cx="100" cy="18" r="14" style="fill: var(--accent-2); fill-opacity: 0.06; stroke: var(--accent-2); stroke-opacity: 0.35; stroke-width: 1.5;"/>
+          <line x1="100" y1="32" x2="100" y2="66" style="stroke: var(--border-medium); stroke-width: 1; stroke-dasharray: 3,2;"/>
+          <circle cx="29" cy="60" r="14" style="fill: var(--accent-2); fill-opacity: 0.06; stroke: var(--accent-2); stroke-opacity: 0.35; stroke-width: 1.5;"/>
+          <line x1="40" y1="70" x2="72" y2="84" style="stroke: var(--border-medium); stroke-width: 1; stroke-dasharray: 3,2;"/>
+          <circle cx="171" cy="60" r="14" style="fill: var(--accent-2); fill-opacity: 0.06; stroke: var(--accent-2); stroke-opacity: 0.35; stroke-width: 1.5;"/>
+          <line x1="160" y1="70" x2="128" y2="84" style="stroke: var(--border-medium); stroke-width: 1; stroke-dasharray: 3,2;"/>
+          <circle cx="29" cy="140" r="14" style="fill: var(--accent-2); fill-opacity: 0.06; stroke: var(--accent-2); stroke-opacity: 0.35; stroke-width: 1.5;"/>
+          <line x1="40" y1="130" x2="72" y2="116" style="stroke: var(--border-medium); stroke-width: 1; stroke-dasharray: 3,2;"/>
+          <circle cx="171" cy="140" r="14" style="fill: var(--accent-2); fill-opacity: 0.06; stroke: var(--accent-2); stroke-opacity: 0.35; stroke-width: 1.5;"/>
+          <line x1="160" y1="130" x2="128" y2="116" style="stroke: var(--border-medium); stroke-width: 1; stroke-dasharray: 3,2;"/>
+          <circle cx="100" cy="182" r="14" style="fill: var(--accent-2); fill-opacity: 0.06; stroke: var(--accent-2); stroke-opacity: 0.35; stroke-width: 1.5;"/>
+          <line x1="100" y1="168" x2="100" y2="134" style="stroke: var(--border-medium); stroke-width: 1; stroke-dasharray: 3,2;"/>
+          <circle cx="100" cy="100" r="52" style="fill: none; stroke: var(--accent); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+          <circle cx="100" cy="100" r="75" style="fill: none; stroke: var(--accent); stroke-width: 0.5; stroke-opacity: 0.1;"/>
+        </svg>
+      </div>
+
+      <div class="b-card">
+        <span class="b-num">05</span>
+        <span class="b-title">Anchoring Bias</span>
+        <p class="b-desc">Fixating on the first number you hear.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Compare at least three independent options.</p>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="b-card">
+        <span class="b-num">06</span>
+        <span class="b-title">Availability Bias</span>
+        <p class="b-desc">Overreacting to what's memorable.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Focus on trends, not outliers.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-num">07</span>
+        <span class="b-title">Recency Bias</span>
+        <p class="b-desc">Overvaluing the latest data.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Use rolling averages to spot real patterns.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-num">08</span>
+        <span class="b-title">Status Quo Bias</span>
+        <p class="b-desc">Favoring the familiar over the better.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Ask "would we choose this today?"</p>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="b-card">
+        <span class="b-num">09</span>
+        <span class="b-title">Sunk Cost Fallacy</span>
+        <p class="b-desc">Throwing good money after bad.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Define a kill switch in advance.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-num">10</span>
+        <span class="b-title">Survivorship Bias</span>
+        <p class="b-desc">Only studying the winners.</p>
+        <p class="b-counter"><span class="b-counter-label">Fix:</span> Study failures too before deciding.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

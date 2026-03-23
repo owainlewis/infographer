@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>AI Fluency Index</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    /* ── Custom stacked layout ───────────────────────── */
+    .content {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ── Hero stat ────────────────────────────────────── */
+    .hero-stat {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 20px 24px;
+    }
+
+    .hero-number { flex-shrink: 0; text-align: center; }
+
+    .hero-pct {
+      font-family: var(--font-display);
+      font-size: 64px;
+      line-height: 1;
+      color: var(--text-primary);
+    }
+
+    .hero-pct-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .hero-body { flex: 1; }
+
+    .hero-title {
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .hero-desc {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    /* ── Iteration loop ──────────────────────────────── */
+    .loop-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+    }
+
+    .loop-node {
+      font-size: var(--text-meta);
+      line-height: 1;
+      font-weight: var(--weight-semibold);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .loop-node--active {
+      border-color: var(--border-accent);
+      background: var(--accent-glow);
+      color: var(--accent);
+      font-weight: var(--weight-bold);
+    }
+
+    .loop-arrow {
+      font-size: var(--text-meta);
+      color: var(--text-dim);
+    }
+
+    .loop-return {
+      font-size: var(--text-meta);
+      line-height: 1;
+      font-weight: var(--weight-bold);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--status-success-border);
+      background: var(--status-success-glow);
+      color: var(--status-success);
+      white-space: nowrap;
+    }
+
+    /* ── Two-up row ──────────────────────────────────── */
+    .two-up {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ── Multiplier cards ────────────────────────────── */
+    .mult-card { padding: 16px 20px; }
+
+    .mult-val {
+      font-family: var(--font-display);
+      font-size: 44px;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .mult-label {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .mult-label strong {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+
+    .mult-sub {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── Inline bar chart ────────────────────────────── */
+    .chart-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 24px;
+    }
+
+    .chart-row .section-label {
+      flex-shrink: 0;
+      width: 140px;
+    }
+
+    .chart-pair {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .chart-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .chart-item-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .chart-num {
+      font-size: var(--text-h2);
+      line-height: 1;
+      font-weight: var(--weight-extrabold);
+      color: var(--text-primary);
+    }
+
+    .chart-num--dim { color: var(--text-muted); }
+
+    .chart-item-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-medium);
+      color: var(--text-muted);
+    }
+
+    .chart-track {
+      height: 6px;
+      background: var(--bg-raised);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .chart-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .chart-fill--primary { background: var(--accent); }
+    .chart-fill--secondary { background: var(--border-medium); }
+
+    /* ── Behavior bars ───────────────────────────────── */
+    .behav-card { padding: 16px 20px; }
+    .behav-group { display: flex; flex-direction: column; gap: 0; }
+
+    .behav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .behav-name {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+    }
+
+    .behav-val {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .behav-val--pos { color: var(--status-success); }
+    .behav-val--neg { color: var(--status-danger); }
+
+    .behav-track {
+      height: 4px;
+      background: var(--bg-raised);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .behav-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .behav-fill--pos { background: var(--status-success); }
+    .behav-fill--neg { background: var(--status-danger); }
+
+    /* ── Improve card ────────────────────────────────── */
+    .improve-card { padding: 16px 20px; }
+
+    .improve-card .pr-grid { gap: 8px; }
+
+    .improve-card .pr-item { gap: 6px; }
+
+    .improve-card .card-body {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd hd--compact">
+      <h1>The AI Fluency <span class="accent">Index</span></h1>
+    </div>
+
+    <div class="content">
+
+      <!-- Hero Stat -->
+      <div class="card card--accent hero-stat delay-1">
+        <div class="hero-number">
+          <div class="hero-pct">85.7%</div>
+          <div class="hero-pct-label">of conversations</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-title">Iteration is the #1 predictor of AI fluency</div>
+          <p class="hero-desc">The single strongest correlate of all other fluency behaviors. Users who iterate show <strong>2x more fluency signals</strong> than those who don't.</p>
+        </div>
+      </div>
+
+      <!-- Iteration Loop -->
+      <div class="card loop-bar delay-2">
+        <span class="loop-node">Prompt</span>
+        <span class="loop-arrow">&rarr;</span>
+        <span class="loop-node">Response</span>
+        <span class="loop-arrow">&rarr;</span>
+        <span class="loop-node loop-node--active">Evaluate</span>
+        <span class="loop-arrow">&rarr;</span>
+        <span class="loop-node loop-node--active">Refine</span>
+        <span class="loop-arrow">&rarr;</span>
+        <span class="loop-return">&#x21bb; Iterate</span>
+      </div>
+
+      <!-- Multiplier Cards -->
+      <div class="two-up">
+        <div class="card card--raised mult-card delay-3">
+          <div class="mult-val">5.6×</div>
+          <p class="mult-label">more likely to <strong>question AI reasoning</strong></p>
+          <p class="mult-sub">Iterative vs. non-iterative</p>
+        </div>
+        <div class="card mult-card delay-4">
+          <div class="mult-val">4.0×</div>
+          <p class="mult-label">more likely to <strong>identify missing context</strong></p>
+          <p class="mult-sub">Iterative vs. non-iterative</p>
+        </div>
+      </div>
+
+      <!-- Inline Bar Chart -->
+      <div class="card chart-row delay-5">
+        <div class="section-label section-label--accent">Fluency behaviors per conversation</div>
+        <div class="chart-pair">
+          <div class="chart-item">
+            <div class="chart-item-header">
+              <span class="chart-num">2.67</span>
+              <span class="chart-item-label">Iterative</span>
+            </div>
+            <div class="chart-track"><div class="chart-fill chart-fill--primary" style="width: 100%"></div></div>
+          </div>
+          <div class="chart-item">
+            <div class="chart-item-header">
+              <span class="chart-num chart-num--dim">1.33</span>
+              <span class="chart-item-label">Non-iterative</span>
+            </div>
+            <div class="chart-track"><div class="chart-fill chart-fill--secondary" style="width: 50%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-up: Artifacts + Improvement -->
+      <div class="two-up" style="flex: 1; min-height: 0;">
+
+        <!-- Artifact Behaviors -->
+        <div class="card behav-card delay-6">
+          <div class="section-label">When AI creates artifacts</div>
+
+          <div class="behav-group">
+            <div class="behav-row">
+              <span class="behav-name">Clarifying goals</span>
+              <span class="behav-val behav-val--pos">+14.7pp</span>
+            </div>
+            <div class="behav-track"><div class="behav-fill behav-fill--pos" style="width: 82%"></div></div>
+
+            <div class="behav-row">
+              <span class="behav-name">Specifying format</span>
+              <span class="behav-val behav-val--pos">+14.5pp</span>
+            </div>
+            <div class="behav-track"><div class="behav-fill behav-fill--pos" style="width: 80%"></div></div>
+
+            <div class="behav-row">
+              <span class="behav-name">Providing examples</span>
+              <span class="behav-val behav-val--pos">+13.4pp</span>
+            </div>
+            <div class="behav-track"><div class="behav-fill behav-fill--pos" style="width: 74%"></div></div>
+
+            <div class="behav-row">
+              <span class="behav-name">Iteration</span>
+              <span class="behav-val behav-val--pos">+9.7pp</span>
+            </div>
+            <div class="behav-track"><div class="behav-fill behav-fill--pos" style="width: 54%"></div></div>
+
+            <div class="behav-row">
+              <span class="behav-name">Checking facts</span>
+              <span class="behav-val behav-val--neg">−3.7pp</span>
+            </div>
+            <div class="behav-track"><div class="behav-fill behav-fill--neg" style="width: 20%"></div></div>
+
+            <div class="behav-row">
+              <span class="behav-name">Questioning reasoning</span>
+              <span class="behav-val behav-val--neg">−3.1pp</span>
+            </div>
+            <div class="behav-track"><div class="behav-fill behav-fill--neg" style="width: 17%"></div></div>
+          </div>
+        </div>
+
+        <!-- 3 Ways to Improve -->
+        <div class="card improve-card delay-7">
+          <div class="section-label section-label--accent">Improve your AI fluency</div>
+          <div class="pr-grid">
+            <div class="pr-item">
+              <div class="pr-num">1</div>
+              <div>
+                <div class="pr-title">Stay in the conversation</div>
+                <p class="card-body">Follow up, refine, iterate. Don't accept the first response as final.</p>
+              </div>
+            </div>
+            <div class="pr-item">
+              <div class="pr-num">2</div>
+              <div>
+                <div class="pr-title">Question polished outputs</div>
+                <p class="card-body">AI looks authoritative. Push back, verify claims, challenge reasoning.</p>
+              </div>
+            </div>
+            <div class="pr-item">
+              <div class="pr-num">3</div>
+              <div>
+                <div class="pr-title">Set collaboration terms</div>
+                <p class="card-body">Only 30% of users tell AI how they want to interact. Define your role.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Callout -->
+      <div class="bottom-callout delay-8">
+        <div class="bottom-callout-icon">&orarr;</div>
+        <div>
+          <div class="bottom-callout-title">Iteration is the strongest correlate of every other fluency behavior</div>
+          <p class="bottom-callout-text"><strong>9,830 conversations</strong> &middot; <strong>11 behavioral indicators</strong> &middot; January 2026</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

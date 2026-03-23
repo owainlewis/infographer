@@ -6,7 +6,6 @@
   <!-- REPLACE: Infographic title -->
   <title>Stack Template</title>
   <link rel="stylesheet" href="/src/tw/out.css">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
   <style>
     /* ── STACK — 5 full-width horizontal bands ────────────── */
     .grid {
@@ -18,6 +17,11 @@
     .card {
       padding: 20px 24px;
       justify-content: center;
+    }
+
+    /* Accent left edge on raised bands for visual rhythm */
+    .card--raised {
+      border-left: 2px solid var(--accent);
     }
 
     /* Band components (.band-inner, .band-number, .band-content)

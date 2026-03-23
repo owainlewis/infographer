@@ -25,9 +25,10 @@ const MIME_TYPES: Record<string, string> = {
 // Track connected WebSocket clients for live reload
 const clients = new Set<any>();
 
-// Inject live-reload script and Ember theme CSS into HTML
+// Inject live-reload script and alternate theme CSS into HTML
 function injectLiveReload(html: string): string {
   const emberLink = `<link rel="stylesheet" href="/src/tw/themes-ember.css">`;
+  const unifiedLink = `<link rel="stylesheet" href="/src/tw/themes-unified.css">`;
   const script = `
 <script>
 (function() {
@@ -41,18 +42,23 @@ function injectLiveReload(html: string): string {
 })();
 </script>`;
   // Inject Ember themes after the main stylesheet
-  html = html.replace("</head>", `${emberLink}\n</head>`);
+  html = html.replace("</head>", `${emberLink}\n${unifiedLink}\n</head>`);
   return html.replace("</body>", `${script}\n</body>`);
 }
 
 // ── Data helpers ─────────────────────────────────────────────
 
 const LAYOUT_INFO: Record<string, { name: string; desc: string; grid: string }> = {
-  bento:     { name: "Bento",      desc: "9 cards, asymmetric 3×4 grid",        grid: "3×4" },
-  catalog:   { name: "Catalog",    desc: "6 equal cards, 3×2 grid",             grid: "3×2" },
-  stack:     { name: "Stack",      desc: "5 full-width horizontal bands",        grid: "1×5" },
-  pipeline:  { name: "Pipeline",   desc: "Hero, SVG flow diagram, stage cards", grid: "1×4" },
-  lessons:   { name: "Lessons",    desc: "Central image with surrounding cards", grid: "3×5" },
+  bento:          { name: "Bento",         desc: "9 cards, asymmetric 3×4 grid",            grid: "3×4" },
+  catalog:        { name: "Catalog",       desc: "6 equal cards, 3×2 grid",                 grid: "3×2" },
+  stack:          { name: "Stack",         desc: "5 full-width horizontal bands",            grid: "1×5" },
+  datavis:        { name: "Datavis",       desc: "Diagram with three detail columns",        grid: "1+3" },
+  "diagram-grid": { name: "Diagram Grid",  desc: "Full-width diagram plus card grid",        grid: "1+6" },
+  glossary:       { name: "Glossary",      desc: "Term and definition pairs",                grid: "2×N" },
+  reference:      { name: "Reference",     desc: "9 structured reference cards",             grid: "3×3" },
+  versus:         { name: "Versus",        desc: "Side-by-side two-column comparison",       grid: "2-col" },
+  pipeline:       { name: "Pipeline",      desc: "Hero, SVG flow diagram, stage cards",      grid: "1×4" },
+  lessons:        { name: "Lessons",       desc: "Central image with surrounding cards",     grid: "3×5" },
 };
 
 async function getInfographicFiles(): Promise<string[]> {
@@ -612,67 +618,33 @@ function shell(activePage: string, title: string, content: string, counts: { inf
       border-color: rgba(239, 68, 68, 0.25);
     }
 
-    /* ── Home page ───────────────────────────────── */
-    .home-hero {
-      margin-bottom: 40px;
+    /* ── Home splash ──────────────────────────────── */
+    .splash {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 200px);
+      text-align: center;
     }
-
-    .home-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition);
-    }
-    .stat-card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--border-hover);
-    }
-    .stat-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 14px;
-    }
-    .stat-value {
+    .splash-title {
       font-family: var(--font-display);
-      font-size: 48px;
+      font-size: 64px;
       font-weight: 400;
-      letter-spacing: 0.01em;
+      font-style: italic;
       color: var(--text-primary);
       line-height: 1;
+      letter-spacing: 0.01em;
+      margin-bottom: 12px;
     }
-    .stat-value span { color: var(--accent); }
-
-    .home-section-title {
-      font-size: 11px;
-      font-weight: 600;
+    .splash-sub {
+      font-size: 16px;
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
-    }
-
-    .recent-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 24px;
       margin-bottom: 40px;
     }
-
-    .quick-actions {
+    .splash-actions {
       display: flex;
       gap: 12px;
-      margin-bottom: 40px;
     }
     .quick-btn {
       display: inline-flex;
@@ -817,10 +789,10 @@ function shell(activePage: string, title: string, content: string, counts: { inf
     </div>
   </aside>
   <main class="main">
-    <div class="page-header">
+    ${activePage !== "home" ? `<div class="page-header">
       <h2 class="page-title">${title}</h2>
       ${subtitle ? `<p class="page-subtitle">${subtitle}</p>` : ""}
-    </div>
+    </div>` : ""}
     <div class="page-content">
       ${content}
     </div>
@@ -845,42 +817,17 @@ async function buildHomePage(): Promise<string> {
   const templates = await getTemplateFiles();
   const counts = { infographics: files.length, templates: templates.length };
 
-  const recentFiles = files.slice(-6).reverse();
-  const recentCards = recentFiles.map((f) => {
-    const name = f.replace(".html", "").replace(/-/g, " ");
-    return `<a class="card" href="/preview/${f}">
-        <div class="thumb-wrap"><iframe src="/infographics/${f}" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="card-label">${name}</div>
-      </a>`;
-  }).join("\n");
-
   const content = `
-    <div class="home-hero">
-      <div class="quick-actions">
+    <div class="splash">
+      <h1 class="splash-title">Infographer</h1>
+      <p class="splash-sub">Design studio for LinkedIn infographics</p>
+      <div class="splash-actions">
         <a class="quick-btn quick-btn--accent" href="/infographics">Browse Infographics</a>
-        <a class="quick-btn" href="/templates">Choose a Template</a>
+        <a class="quick-btn" href="/templates">Templates</a>
       </div>
-    </div>
-    <div class="home-grid">
-      <div class="stat-card">
-        <div class="stat-label">Infographics</div>
-        <div class="stat-value">${files.length}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Layouts</div>
-        <div class="stat-value">${Object.keys(LAYOUT_INFO).length}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Themes</div>
-        <div class="stat-value">2</div>
-      </div>
-    </div>
-    ${recentFiles.length > 0 ? `
-    <div class="home-section-title">Recent</div>
-    <div class="recent-grid">${recentCards}</div>
-    ` : ""}`;
+    </div>`;
 
-  return shell("home", "Welcome back", content, counts, "Your infographic workspace");
+  return shell("home", "Home", content, counts);
 }
 
 async function buildInfographicsPage(): Promise<string> {
@@ -953,6 +900,8 @@ async function buildInfographicsPage(): Promise<string> {
             var visible = section.style.display !== 'none';
             section.style.display = visible ? 'none' : '';
             pill.classList.toggle('active', !visible);
+            // Re-scale iframes that were hidden (clientWidth was 0)
+            if (!visible) setTimeout(function() { scaleIframes(); syncIframeThemes(); }, 50);
           }
         });
       });
@@ -984,7 +933,6 @@ async function buildTemplatesPage(): Promise<string> {
             </button>
           </div>
         </div>
-        <p class="tpl-desc">${info.desc}</p>
         <a class="tpl-thumb" href="/preview-template/${file}">
           <div class="thumb-wrap"><iframe src="/templates/${file}" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
         </a>
@@ -1258,13 +1206,17 @@ function generatePreview(filename: string, dir: string = "infographics"): string
     <div class="toolbar-center">
       <div class="theme-select-wrap">
         <select class="theme-select" id="themeSelect">
-          <optgroup label="Indigo &amp; Cyan">
+          <optgroup label="Gradientwork">
             <option value="dark">Dark</option>
             <option value="light">Light</option>
           </optgroup>
           <optgroup label="Navy &amp; Orange">
             <option value="dark-minimal">Navy Dark</option>
             <option value="light-minimal">Navy Light</option>
+          </optgroup>
+          <optgroup label="Unified">
+            <option value="dark-unified">Unified Dark</option>
+            <option value="light-unified">Unified Light</option>
           </optgroup>
         </select>
       </div>

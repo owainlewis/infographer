@@ -6,45 +6,6 @@
   <title>Essential Git Commands</title>
   <link rel="stylesheet" href="/src/tw/out.css">
   <style>
-    .grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-    }
-
-    .card {
-      padding: 14px 18px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-title {
-      margin-bottom: 0;
-    }
-
-    .card-body {
-      font-size: 15px;
-      line-height: 21px;
-    }
-
-    .cmd {
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent-2);
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
-      padding: 5px 10px;
-      margin: 6px 0 4px;
-      display: block;
-      letter-spacing: -0.02em;
-    }
-
-    [data-theme="light"] .cmd {
-      background: rgba(0, 0, 0, 0.05);
-      border-color: rgba(0, 0, 0, 0.1);
-    }
-
     .card-index {
       font-size: var(--text-meta);
       line-height: var(--leading-meta);
@@ -59,21 +20,13 @@
       padding-top: 6px;
     }
 
-    .diagram-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px 32px;
-      margin: 0;
-      border-radius: var(--card-radius);
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      box-shadow: var(--card-shadow);
-    }
+    .card--dense { padding: 14px 18px; }
 
-    [data-theme="light"] .card {
-      background: #ffffff;
-      border-color: #cdd0d8;
+    .card-index--danger { color: var(--status-danger); }
+    .pill--danger {
+      background: var(--status-danger-glow);
+      border-color: var(--status-danger-border);
+      color: var(--status-danger);
     }
   </style>
 </head>
@@ -95,12 +48,12 @@
   <div class="infographic" id="infographic" data-theme="dark">
 
     <!-- Header -->
-    <div class="hd" style="margin-bottom: 12px;">
-      <h1>How to Master Git in 15 Minutes</h1>
+    <div class="hd" style="margin-bottom: 12px; margin-top: -16px;">
+      <h1>9 Essential Git Commands</h1>
     </div>
 
     <!-- Git graph diagram -->
-    <div class="diagram-bar" style="margin-bottom: 12px;">
+    <div class="diagram-bar" style="margin-bottom: 12px; padding: 24px 32px;">
       <svg viewBox="0 0 860 80" fill="none" style="width: 100%; max-width: 960px; height: auto;">
         <!-- Main branch line -->
         <line x1="30" y1="40" x2="830" y2="40" style="stroke: var(--accent)" stroke-width="2.5" opacity="0.3"/>
@@ -127,7 +80,7 @@
         <text x="160" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">commit</text>
         <text x="310" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">stash</text>
         <text x="460" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">merge</text>
-        <text x="610" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">rebase</text>
+        <text x="610" y="68" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">rebase</text>
         <text x="760" y="68" text-anchor="middle" style="fill: var(--text-muted)" font-family="Libre Franklin,sans-serif" font-size="10" font-weight="600">push</text>
 
         <!-- Branch label -->
@@ -139,10 +92,10 @@
     </div>
 
     <!-- Grid — 9 cards in 3x3 -->
-    <div class="grid">
+    <div class="grid grid--9">
 
       <!-- 01 git add -->
-      <div class="card card--raised delay-1">
+      <div class="card card--dense card--raised delay-1">
         <div class="card-index">01</div>
         <div class="card-title">git add</div>
         <p class="card-body"><strong>Stage changes for your next commit.</strong> Use <code style="color:var(--accent-2)">-p</code> to stage individual hunks — commit only what matters.</p>
@@ -154,7 +107,7 @@
       </div>
 
       <!-- 02 git commit -->
-      <div class="card delay-2">
+      <div class="card card--dense delay-2">
         <div class="card-index">02</div>
         <div class="card-title">git commit</div>
         <p class="card-body"><strong>Save a snapshot of staged changes.</strong> Each commit is permanent history. Write meaningful messages — your future self will thank you.</p>
@@ -166,7 +119,7 @@
       </div>
 
       <!-- 03 git branch -->
-      <div class="card card--raised delay-3">
+      <div class="card card--dense card--raised delay-3">
         <div class="card-index">03</div>
         <div class="card-title">git branch</div>
         <p class="card-body"><strong>Create isolated lines of development.</strong> Branches are cheap pointers to commits. Use them for features, fixes, and experiments.</p>
@@ -178,7 +131,7 @@
       </div>
 
       <!-- 04 git merge -->
-      <div class="card delay-4">
+      <div class="card card--dense delay-4">
         <div class="card-index">04</div>
         <div class="card-title">git merge</div>
         <p class="card-body"><strong>Combine two branches together.</strong> Creates a merge commit that preserves both histories. The standard way to integrate changes.</p>
@@ -190,19 +143,19 @@
       </div>
 
       <!-- 05 git rebase -->
-      <div class="card card--raised delay-5">
-        <div class="card-index">05</div>
+      <div class="card card--dense card--raised delay-5">
+        <div class="card-index card-index--danger">05</div>
         <div class="card-title">git rebase</div>
         <p class="card-body"><strong>Replay commits onto a new base.</strong> Creates linear history by moving your branch to the tip of main. Squash, reorder, and edit.</p>
         <code class="cmd">git rebase -i main</code>
         <div class="pills">
-          <span class="pill pill--accent">Clean history</span>
+          <span class="pill pill--danger">Rewrites history</span>
           <span class="pill">-i for interactive</span>
         </div>
       </div>
 
       <!-- 06 git stash -->
-      <div class="card delay-6">
+      <div class="card card--dense delay-6">
         <div class="card-index">06</div>
         <div class="card-title">git stash</div>
         <p class="card-body"><strong>Shelve uncommitted work.</strong> Save changes to switch branches cleanly, then reapply later. A clipboard for your working directory.</p>
@@ -214,31 +167,31 @@
       </div>
 
       <!-- 07 git cherry-pick -->
-      <div class="card card--raised delay-7">
-        <div class="card-index">07</div>
+      <div class="card card--dense card--raised delay-7">
+        <div class="card-index card-index--danger">07</div>
         <div class="card-title">git cherry-pick</div>
         <p class="card-body"><strong>Apply a specific commit to your branch.</strong> Grab exactly the changes you need without merging everything. Essential for hotfixes.</p>
         <code class="cmd">git cherry-pick a1b2c3d</code>
         <div class="pills">
-          <span class="pill pill--accent">Surgical</span>
+          <span class="pill pill--danger">Surgical</span>
           <span class="pill">Hotfixes</span>
         </div>
       </div>
 
       <!-- 08 git reset -->
-      <div class="card delay-8">
-        <div class="card-index">08</div>
+      <div class="card card--dense delay-8">
+        <div class="card-index card-index--danger">08</div>
         <div class="card-title">git reset</div>
-        <p class="card-body"><strong>Undo commits or unstage files.</strong> <code style="color:var(--accent-2)">--soft</code> keeps staged. <code style="color:var(--accent-2)">--mixed</code> unstages. <code style="color:var(--accent-2)">--hard</code> discards everything.</p>
+        <p class="card-body"><strong>Undo commits or unstage files.</strong> <code style="color:var(--status-danger)">--soft</code> keeps staged. <code style="color:var(--status-danger)">--mixed</code> unstages. <code style="color:var(--status-danger)">--hard</code> discards everything.</p>
         <code class="cmd">git reset --soft HEAD~1</code>
         <div class="pills">
-          <span class="pill pill--accent">Undo</span>
-          <span class="pill">--hard is destructive</span>
+          <span class="pill pill--danger">Destructive</span>
+          <span class="pill">--hard loses work</span>
         </div>
       </div>
 
       <!-- 09 git reflog -->
-      <div class="card card--raised delay-9">
+      <div class="card card--dense card--raised delay-9">
         <div class="card-index">09</div>
         <div class="card-title">git reflog</div>
         <p class="card-body"><strong>Your safety net.</strong> Records every HEAD movement — even after reset, rebase, or deleted branches. Lost a commit? Reflog knows where it went.</p>

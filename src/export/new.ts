@@ -3,7 +3,7 @@ import { readFile, writeFile, access, mkdir } from "fs/promises";
 
 const PROJECT_ROOT = resolve(import.meta.dir, "../..");
 
-const LAYOUTS = ["bento", "catalog", "stack"] as const;
+const LAYOUTS = ["bento", "catalog", "stack", "datavis"] as const;
 const THEMES = ["light", "dark"] as const;
 
 type Layout = (typeof LAYOUTS)[number];

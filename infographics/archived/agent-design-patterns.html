@@ -45,6 +45,10 @@
     .pat-card:nth-child(even) { background: var(--bg-raised); border-color: var(--border-medium); }
     .pat-card--accent { border-color: var(--border-accent); background: var(--accent-glow); }
     .pat-card--cyan { border-color: var(--border-accent-2); background: var(--accent-2-glow); }
+    .pat-card--danger { border-color: var(--status-danger-border); background: var(--status-danger-glow); }
+
+    .pat-card--danger .pat-num { color: var(--status-danger); }
+    .pat-card--danger .pat-use { color: var(--status-danger); }
 
     .pat-card:nth-child(1) { grid-area: a; }
     .pat-card:nth-child(2) { grid-area: b; }
@@ -140,7 +144,21 @@
     .t-sub { fill: var(--text-muted); font-family: 'Libre Franklin',sans-serif; font-weight: 600; }
     .l-flow { stroke: var(--accent); stroke-width: 2; }
     .l-flow-2 { stroke: var(--accent-2); stroke-width: 2; }
+    .l-flow-danger { stroke: var(--status-danger); stroke-width: 2; }
     .l-dim { stroke: var(--svg-border); stroke-width: 1.5; }
+    .n-danger { fill: var(--status-danger-glow); stroke: var(--status-danger-border); }
+
+    .pat-caution {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--status-danger);
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: var(--status-danger-glow);
+      border: 1px solid var(--status-danger-border);
+      margin-top: auto;
+    }
   </style>
 </head>
 <body>
@@ -154,6 +172,9 @@
       </marker>
       <marker id="arr-dim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
         <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--text-muted)"/>
+      </marker>
+      <marker id="arr-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--status-danger)"/>
       </marker>
     </defs>
   </svg>
@@ -324,10 +345,11 @@
       </div>
 
       <!-- 06 Evaluator-Optimizer -->
-      <div class="pat-card">
+      <div class="pat-card pat-card--danger">
         <span class="pat-num">06</span>
         <span class="pat-title">Evaluator-Optimizer</span>
         <p class="pat-body">One LLM generates, another <strong>evaluates and gives feedback</strong>. Loop until quality criteria met.</p>
+        <p class="pat-use">Reject → retry → converge on quality</p>
         <div class="pat-diagram">
           <svg viewBox="0 0 192 96" fill="none">
             <text x="4" y="38" class="t-sub" font-size="10">In</text>
@@ -339,15 +361,15 @@
             <!-- Arrow to evaluator -->
             <line x1="84" y1="34" x2="96" y2="34" class="l-flow" marker-end="url(#arr)"/>
             <!-- Evaluator -->
-            <rect x="100" y="18" width="54" height="32" rx="8" class="n-out" stroke-width="1.5"/>
+            <rect x="100" y="18" width="54" height="32" rx="8" class="n-danger" stroke-width="1.5"/>
             <text x="127" y="32" text-anchor="middle" class="t-label" font-size="8">Evaluate</text>
             <text x="127" y="44" text-anchor="middle" class="t-sub" font-size="7">LLM</text>
             <!-- Out -->
             <line x1="154" y1="34" x2="170" y2="34" class="l-flow-2" marker-end="url(#arr2)"/>
             <text x="178" y="38" class="t-sub" font-size="10">Out</text>
             <!-- Feedback loop -->
-            <path d="M 127 50 C 127 82, 59 82, 59 50" class="l-flow" fill="none" stroke-dasharray="4,2" marker-end="url(#arr)"/>
-            <text x="93" y="86" text-anchor="middle" style="fill: var(--accent)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">feedback loop</text>
+            <path d="M 127 50 C 127 82, 59 82, 59 50" class="l-flow-danger" fill="none" stroke-dasharray="4,2" marker-end="url(#arr-danger)"/>
+            <text x="93" y="86" text-anchor="middle" style="fill: var(--status-danger)" font-family="Libre Franklin,sans-serif" font-size="8" font-weight="600">feedback loop</text>
           </svg>
         </div>
       </div>
@@ -360,6 +382,7 @@
             <span class="pat-title">Autonomous Agent</span>
             <p class="pat-body">The LLM <strong>dynamically directs its own process</strong> — choosing tools, planning steps, and reacting to feedback in a loop. Most flexible, hardest to control.</p>
             <p class="pat-use">Only use when you can't predict the steps needed</p>
+            <p class="pat-caution">Needs guardrails — hardest pattern to control and debug.</p>
           </div>
           <div class="pat-diagram">
             <svg viewBox="0 0 210 122" fill="none">

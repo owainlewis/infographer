@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>The Leadership Paradox</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      gap: 0;
+      justify-content: center;
+    }
+
+    .hd { margin-bottom: 20px; }
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+    .hd-sub {
+      font-size: var(--text-sub);
+      line-height: var(--leading-sub);
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* ── Venn container ────────────────────────────────── */
+    .venn-wrap {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .venn-wrap svg {
+      width: 100%;
+      max-width: 940px;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Bottom label ──────────────────────────────────── */
+    .venn-bottom {
+      text-align: center;
+      padding: 16px 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .venn-arrow {
+      width: 2px;
+      height: 28px;
+      background: var(--accent);
+    }
+
+    .venn-label {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>The Leadership Paradox</h1>
+      <p class="hd-sub">Why both extremes fail your team</p>
+    </div>
+
+    <!-- Venn Diagram -->
+    <div class="venn-wrap">
+      <svg viewBox="0 0 940 720" fill="none" font-family="'Libre Franklin', sans-serif">
+
+        <!-- Circle labels above -->
+        <text x="300" y="38" text-anchor="middle" font-size="26" font-weight="800" letter-spacing="0.06em" style="fill: var(--accent); text-transform: uppercase;">Overtrusting</text>
+        <text x="640" y="38" text-anchor="middle" font-size="26" font-weight="800" letter-spacing="0.06em" style="fill: var(--accent-2); text-transform: uppercase;">Micromanaging</text>
+
+        <!-- Left circle (accent) -->
+        <circle cx="320" cy="380" r="280" style="fill: var(--accent); fill-opacity: 0.08; stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.3;"/>
+
+        <!-- Right circle (accent-2) -->
+        <circle cx="620" cy="380" r="280" style="fill: var(--accent-2); fill-opacity: 0.08; stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.3;"/>
+
+        <!-- Intersection highlight -->
+        <clipPath id="clip-left"><circle cx="320" cy="380" r="278"/></clipPath>
+        <clipPath id="clip-right"><circle cx="620" cy="380" r="278"/></clipPath>
+        <circle cx="620" cy="380" r="278" clip-path="url(#clip-left)" style="fill: var(--accent); fill-opacity: 0.06;"/>
+        <circle cx="320" cy="380" r="278" clip-path="url(#clip-right)" style="fill: var(--accent-2); fill-opacity: 0.06;"/>
+
+        <!-- ═══ LEFT ITEMS (Overtrusting) ═══ -->
+        <text x="185" y="190" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Leader disappears</text>
+        <text x="185" y="230" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">No guidance</text>
+        <text x="185" y="270" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Unclear goals</text>
+        <text x="185" y="310" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Vague expectations</text>
+        <text x="185" y="360" text-anchor="middle" font-size="17" font-weight="600" style="fill: var(--text-muted); font-style: italic;">"Just run with it"</text>
+        <text x="185" y="410" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">No check-ins</text>
+        <text x="185" y="450" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">No feedback</text>
+        <text x="185" y="490" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">No follow-up</text>
+        <text x="185" y="530" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Team left guessing</text>
+        <text x="185" y="570" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Accountability fades</text>
+
+        <!-- ═══ CENTER ITEMS (Overlap — Effective) ═══ -->
+        <text x="470" y="210" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Clear goals</text>
+        <text x="470" y="250" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Defined roles</text>
+        <text x="470" y="290" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Trust with structure</text>
+        <text x="470" y="330" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Room to decide</text>
+        <text x="470" y="370" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Regular check-ins</text>
+        <text x="470" y="410" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Support when needed</text>
+        <text x="470" y="450" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Two-way feedback</text>
+        <text x="470" y="490" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Accountability stays high</text>
+        <text x="470" y="530" text-anchor="middle" font-size="17" font-weight="700" style="fill: var(--text-primary);">Outcome-focused</text>
+
+        <!-- ═══ RIGHT ITEMS (Micromanaging) ═══ -->
+        <text x="755" y="190" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Over-control</text>
+        <text x="755" y="230" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Hovering</text>
+        <text x="755" y="270" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Constant check-ins</text>
+        <text x="755" y="310" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Second-guessing team</text>
+        <text x="755" y="360" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Rewriting work</text>
+        <text x="755" y="410" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Rigid processes</text>
+        <text x="755" y="450" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">No autonomy</text>
+        <text x="755" y="490" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Bottlenecking decisions</text>
+        <text x="755" y="530" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Kills creativity</text>
+        <text x="755" y="570" text-anchor="middle" font-size="17" font-weight="500" style="fill: var(--text-secondary);">Burnout follows</text>
+
+      </svg>
+    </div>
+
+    <!-- Bottom label -->
+    <div class="venn-bottom">
+      <div class="venn-arrow"></div>
+      <div class="venn-label">Effective Delegation</div>
+    </div>
+
+  </div>
+</body>
+</html>

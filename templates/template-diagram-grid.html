@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <!-- REPLACE: Infographic title -->
+  <title>Diagram Grid Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic { gap: 12px; }
+  </style>
+</head>
+<body>
+  <!-- Shared SVG markers (copy from partials/svg-markers.html) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent)"/>
+      </marker>
+      <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" style="fill: var(--accent-2)"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd hd--tight">
+      <!-- REPLACE: Title -->
+      <h1>Your Title Here</h1>
+    </div>
+
+    <!-- Full-width diagram -->
+    <div class="diagram-bar">
+      <!-- REPLACE: SVG diagram — adjust nodes, labels, and arrows for your topic -->
+      <svg viewBox="0 0 880 80" fill="none" style="width: 100%; height: auto;" font-family="'Libre Franklin', sans-serif">
+        <!-- Node 1 -->
+        <rect x="0" y="16" width="140" height="48" rx="8" style="fill: var(--accent-glow); stroke: var(--border-accent); stroke-width: 1.5;"/>
+        <text x="70" y="45" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--text-primary);">Input</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="148" y1="40" x2="192" y2="40" style="stroke: var(--accent); stroke-width: 2;" marker-end="url(#arr)"/>
+
+        <!-- Node 2 -->
+        <rect x="200" y="16" width="140" height="48" rx="8" style="fill: var(--bg-raised); stroke: var(--border-medium); stroke-width: 1.5;"/>
+        <text x="270" y="45" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--text-primary);">Process</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="348" y1="40" x2="392" y2="40" style="stroke: var(--accent); stroke-width: 2;" marker-end="url(#arr)"/>
+
+        <!-- Node 3 -->
+        <rect x="400" y="16" width="140" height="48" rx="8" style="fill: var(--bg-raised); stroke: var(--border-medium); stroke-width: 1.5;"/>
+        <text x="470" y="45" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--text-primary);">Transform</text>
+
+        <!-- Arrow 3→4 -->
+        <line x1="548" y1="40" x2="592" y2="40" style="stroke: var(--accent); stroke-width: 2;" marker-end="url(#arr)"/>
+
+        <!-- Node 4 -->
+        <rect x="600" y="16" width="140" height="48" rx="8" style="fill: var(--bg-raised); stroke: var(--border-medium); stroke-width: 1.5;"/>
+        <text x="670" y="45" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--text-primary);">Validate</text>
+
+        <!-- Arrow 4→5 -->
+        <line x1="748" y1="40" x2="792" y2="40" style="stroke: var(--accent-2); stroke-width: 2;" marker-end="url(#arr-cyan)"/>
+
+        <!-- Node 5 (output) -->
+        <rect x="800" y="16" width="80" height="48" rx="8" style="fill: var(--accent); fill-opacity: 0.15; stroke: var(--border-accent); stroke-width: 1.5;"/>
+        <text x="840" y="45" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--accent);">Output</text>
+      </svg>
+    </div>
+
+    <!-- 3x3 Grid -->
+    <div class="grid grid--9">
+
+      <!-- REPLACE: 9 cards -->
+      <div class="card card--dense card--raised">
+        <div class="card-index">01</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Tag</span>
+          <span class="pill">Tag</span>
+        </div>
+      </div>
+
+      <div class="card card--dense">
+        <div class="card-index">02</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+        <div class="pills">
+          <span class="pill pill--accent">Tag</span>
+        </div>
+      </div>
+
+      <div class="card card--dense card--raised">
+        <div class="card-index">03</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+      <div class="card card--dense">
+        <div class="card-index">04</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+      <div class="card card--dense card--raised">
+        <div class="card-index">05</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+      <div class="card card--dense">
+        <div class="card-index">06</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+      <div class="card card--dense card--raised">
+        <div class="card-index">07</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+      <div class="card card--dense">
+        <div class="card-index">08</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+      <div class="card card--dense card--raised">
+        <div class="card-index">09</div>
+        <div class="card-title">Card Title</div>
+        <p class="card-body"><strong>Bold lead sentence.</strong> Supporting explanation text.</p>
+      </div>
+
+    </div>
+
+    <!-- Optional bottom callout -->
+    <div class="bottom-callout">
+      <div class="bottom-callout-icon">!</div>
+      <div>
+        <!-- REPLACE: Callout content -->
+        <div class="bottom-callout-title">Key takeaway headline</div>
+        <p class="bottom-callout-text">Supporting text with <strong>bold emphasis</strong> on key points.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

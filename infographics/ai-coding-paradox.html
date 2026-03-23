@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>The AI Coding Paradox</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      gap: 0;
+      justify-content: flex-start;
+    }
+
+    .hd { margin-bottom: 0; padding-bottom: 0; }
+    .hd h1 {
+      font-size: 80px; /* decorative display */
+      line-height: 80px;
+      letter-spacing: 0.01em;
+      font-family: var(--font-display);
+      font-weight: 400;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-align: center;
+      margin: 24px auto 0;
+    }
+
+    .subtitle span {
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .hd::after {
+      content: '';
+      display: block;
+      width: 120px;
+      height: 1px;
+      background: var(--border);
+      margin: 20px auto 0;
+    }
+
+    /* ── Venn container ────────────────────────────────── */
+    .venn-wrap {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 0 16px;
+    }
+
+    .venn-wrap svg {
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Spectrum bar ─────────────────────────────────── */
+    .spectrum {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 20px 64px 28px;
+      width: 100%;
+    }
+
+    .spectrum-label {
+      font-family: var(--font-sans);
+      font-size: var(--text-meta);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .spectrum-bar {
+      flex: 1;
+      height: 3px;
+      margin: 0 20px;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .spectrum-bar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--accent), var(--text-muted), var(--accent-2));
+      opacity: 0.4;
+      border-radius: 2px;
+    }
+
+    .spectrum-bar::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: var(--text-primary);
+      border-radius: 50%;
+      border: 2px solid var(--bg-canvas);
+      box-shadow: 0 0 0 1px var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <!-- Header -->
+    <div class="hd">
+      <h1>The Modern<br>Software Engineer</h1>
+      <p class="subtitle">Vibe Coding <span>vs</span> Agentic Engineering <span>vs</span> Manual Coding</p>
+    </div>
+
+    <!-- Venn Diagram -->
+    <div class="venn-wrap">
+      <svg viewBox="0 0 1000 870" fill="none" font-family="'Libre Franklin', sans-serif">
+
+        <defs>
+          <!-- Radial glows behind circles -->
+          <radialGradient id="glow-left" cx="320" cy="430" r="340" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" style="stop-color: var(--accent); stop-opacity: 0.15;"/>
+            <stop offset="60%" style="stop-color: var(--accent); stop-opacity: 0.04;"/>
+            <stop offset="100%" style="stop-color: var(--accent); stop-opacity: 0;"/>
+          </radialGradient>
+          <radialGradient id="glow-right" cx="680" cy="430" r="340" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" style="stop-color: var(--accent-2); stop-opacity: 0.12;"/>
+            <stop offset="60%" style="stop-color: var(--accent-2); stop-opacity: 0.04;"/>
+            <stop offset="100%" style="stop-color: var(--accent-2); stop-opacity: 0;"/>
+          </radialGradient>
+
+          <!-- Clip paths for intersection -->
+          <clipPath id="clip-left"><circle cx="320" cy="430" r="308"/></clipPath>
+          <clipPath id="clip-right"><circle cx="680" cy="430" r="308"/></clipPath>
+        </defs>
+
+        <!-- ═══ SUBTLE DOT GRID ═══ -->
+        <defs>
+          <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+            <circle cx="14" cy="14" r="0.8" style="fill: var(--text-dim); opacity: 0.35;"/>
+          </pattern>
+          <!-- Grain texture filter -->
+          <filter id="grain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+            <feColorMatrix type="saturate" values="0" in="noise" result="mono"/>
+            <feBlend in="SourceGraphic" in2="mono" mode="multiply" result="blend"/>
+            <feComponentTransfer in="blend">
+              <feFuncA type="linear" slope="0.03"/>
+            </feComponentTransfer>
+          </filter>
+          <!-- Intersection center glow -->
+          <radialGradient id="glow-center" cx="500" cy="430" r="180" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" style="stop-color: var(--text-primary); stop-opacity: 0.06;"/>
+            <stop offset="100%" style="stop-color: var(--text-primary); stop-opacity: 0;"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="1000" height="870" fill="url(#dots)" opacity="0.5"/>
+        <!-- Grain overlay -->
+        <rect x="0" y="0" width="1000" height="870" fill="white" filter="url(#grain)" opacity="0.4"/>
+
+        <!-- Radial glows -->
+        <circle cx="320" cy="430" r="340" fill="url(#glow-left)"/>
+        <circle cx="680" cy="430" r="340" fill="url(#glow-right)"/>
+
+        <!-- ═══ CONCENTRIC RING TEXTURES ═══ -->
+        <!-- Left circle rings -->
+        <circle cx="320" cy="430" r="250" style="fill: none; stroke: var(--accent); stroke-width: 0.5; stroke-opacity: 0.08;"/>
+        <circle cx="320" cy="430" r="180" style="fill: none; stroke: var(--accent); stroke-width: 0.5; stroke-opacity: 0.06;"/>
+        <circle cx="320" cy="430" r="110" style="fill: none; stroke: var(--accent); stroke-width: 0.5; stroke-opacity: 0.04;"/>
+
+        <!-- Right circle rings -->
+        <circle cx="680" cy="430" r="250" style="fill: none; stroke: var(--accent-2); stroke-width: 0.5; stroke-opacity: 0.08;"/>
+        <circle cx="680" cy="430" r="180" style="fill: none; stroke: var(--accent-2); stroke-width: 0.5; stroke-opacity: 0.06;"/>
+        <circle cx="680" cy="430" r="110" style="fill: none; stroke: var(--accent-2); stroke-width: 0.5; stroke-opacity: 0.04;"/>
+
+        <!-- Left circle — main -->
+        <circle cx="320" cy="430" r="310" style="fill: var(--accent); fill-opacity: 0.07; stroke: var(--accent); stroke-width: 1.5; stroke-opacity: 0.25;"/>
+
+        <!-- Right circle — main -->
+        <circle cx="680" cy="430" r="310" style="fill: var(--accent-2); fill-opacity: 0.05; stroke: var(--accent-2); stroke-width: 1.5; stroke-opacity: 0.20;"/>
+
+        <!-- Intersection highlight -->
+        <circle cx="680" cy="430" r="308" clip-path="url(#clip-left)" style="fill: var(--accent); fill-opacity: 0.08;"/>
+        <circle cx="320" cy="430" r="308" clip-path="url(#clip-right)" style="fill: var(--accent-2); fill-opacity: 0.06;"/>
+
+        <!-- Center intersection glow — draws eye to sweet spot -->
+        <circle cx="500" cy="430" r="180" fill="url(#glow-center)"/>
+
+        <!-- Intersection border accent — dashed vertical lines -->
+        <line x1="500" y1="145" x2="500" y2="715" style="stroke: var(--text-dim); stroke-width: 0.5; stroke-dasharray: 3 6; stroke-opacity: 0.3;"/>
+
+        <!-- ═══ CORNER REGISTRATION MARKS ═══ -->
+        <!-- Top-left -->
+        <line x1="16" y1="8" x2="16" y2="24" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <line x1="8" y1="16" x2="24" y2="16" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <!-- Top-right -->
+        <line x1="984" y1="8" x2="984" y2="24" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <line x1="976" y1="16" x2="992" y2="16" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <!-- Bottom-left -->
+        <line x1="16" y1="846" x2="16" y2="862" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <line x1="8" y1="854" x2="24" y2="854" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <!-- Bottom-right -->
+        <line x1="984" y1="846" x2="984" y2="862" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+        <line x1="976" y1="854" x2="992" y2="854" style="stroke: var(--text-dim); stroke-width: 0.75; stroke-opacity: 0.25;"/>
+
+
+        <!-- ═══ LABELS ═══ -->
+
+        <!-- Left label -->
+        <text x="170" y="52" text-anchor="middle" font-size="22" font-weight="800" letter-spacing="0.08em" style="fill: var(--accent); text-transform: uppercase;">Vibe Coding</text>
+        <line x1="170" y1="62" x2="210" y2="140" style="stroke: var(--accent); stroke-width: 1.5; stroke-opacity: 0.4;"/>
+        <circle cx="210" cy="140" r="3" style="fill: var(--accent); fill-opacity: 0.6;"/>
+
+        <!-- Right label -->
+        <text x="830" y="52" text-anchor="middle" font-size="22" font-weight="800" letter-spacing="0.08em" style="fill: var(--accent-2); text-transform: uppercase;">Manual Coding</text>
+        <line x1="830" y1="62" x2="790" y2="140" style="stroke: var(--accent-2); stroke-width: 1.5; stroke-opacity: 0.4;"/>
+        <circle cx="790" cy="140" r="3" style="fill: var(--accent-2); fill-opacity: 0.6;"/>
+
+        <!-- Center/Bottom label -->
+        <text x="500" y="832" text-anchor="middle" font-size="22" font-weight="800" letter-spacing="0.08em" style="fill: var(--text-primary); text-transform: uppercase;">Agentic Engineering</text>
+        <line x1="500" y1="720" x2="500" y2="815" style="stroke: var(--text-muted); stroke-width: 1.5; stroke-opacity: 0.35;"/>
+        <circle cx="500" cy="720" r="3" style="fill: var(--text-primary); fill-opacity: 0.5;"/>
+
+
+        <!-- ═══ LEFT ITEMS (Vibe Coding) ═══ -->
+        <!-- Small dash markers + text -->
+
+        <line x1="100" y1="216" x2="114" y2="216" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="122" y="220" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Prompt &amp; see what sticks</text>
+
+        <line x1="80" y1="260" x2="94" y2="260" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="102" y="264" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Ship now, fix later</text>
+
+        <line x1="60" y1="304" x2="74" y2="304" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="82" y="308" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Build without reading the code</text>
+
+        <line x1="48" y1="348" x2="62" y2="348" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="70" y="352" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Speed over understanding</text>
+
+        <text x="170" y="414" text-anchor="middle" font-size="18" font-weight="600" font-style="italic" style="fill: var(--text-muted);">"Ideas over implementation"</text>
+
+        <line x1="48" y1="468" x2="62" y2="468" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="70" y="472" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Low barrier to entry</text>
+
+        <line x1="56" y1="512" x2="70" y2="512" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="78" y="516" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Great for rapid prototyping</text>
+
+        <line x1="68" y1="556" x2="82" y2="556" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="90" y="560" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Non-engineers can participate</text>
+
+        <line x1="86" y1="600" x2="100" y2="600" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.4;"/>
+        <text x="108" y="604" font-size="18" font-weight="500" style="fill: var(--text-muted);">Tech debt accumulates fast</text>
+
+        <line x1="108" y1="636" x2="122" y2="636" style="stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.4;"/>
+        <text x="130" y="640" font-size="18" font-weight="500" style="fill: var(--text-muted);">Hard to debug or maintain</text>
+
+
+        <!-- ═══ CENTER ITEMS (Overlap) ═══ -->
+        <!-- Elevated pill treatment with accent side-bar -->
+
+        <rect x="400" y="222" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+
+        <text x="500" y="244" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">AI writes, you review</text>
+
+        <rect x="400" y="268" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="290" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Faster, not reckless</text>
+
+        <rect x="400" y="314" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="336" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Judgment stays human</text>
+
+        <rect x="400" y="360" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="382" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Expertise amplified</text>
+
+        <rect x="400" y="406" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="428" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Boilerplate handled</text>
+
+        <rect x="400" y="452" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="474" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Code still reviewed</text>
+
+        <rect x="400" y="498" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="520" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Best of both worlds</text>
+
+        <rect x="400" y="544" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="566" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Craft preserved</text>
+
+        <rect x="400" y="590" width="200" height="32" rx="4" style="fill: var(--text-primary); fill-opacity: 0.04; stroke: var(--text-dim); stroke-width: 0.5; stroke-opacity: 0.2;"/>
+        <text x="500" y="612" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Deep knowledge needed</text>
+
+
+        <!-- ═══ RIGHT ITEMS (Manual Coding) ═══ -->
+        <!-- Mirror of left: dashes on right edge, text right-aligned to dash -->
+
+        <line x1="900" y1="216" x2="886" y2="216" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="878" y="220" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Every line is understood</text>
+
+        <line x1="920" y1="260" x2="906" y2="260" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="898" y="264" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Full ownership of codebase</text>
+
+        <line x1="934" y1="304" x2="920" y2="304" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="912" y="308" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Nothing is a black box</text>
+
+        <line x1="944" y1="348" x2="930" y2="348" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="922" y="352" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Fully auditable &amp; traceable</text>
+
+        <text x="830" y="414" text-anchor="middle" font-size="18" font-weight="600" font-style="italic" style="fill: var(--text-muted);">"Where real mastery is built"</text>
+
+        <line x1="944" y1="468" x2="930" y2="468" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="922" y="472" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Essential for critical systems</text>
+
+        <line x1="936" y1="512" x2="922" y2="512" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="914" y="516" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Uncompromised quality ceiling</text>
+
+        <line x1="928" y1="556" x2="914" y2="556" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.5;"/>
+        <text x="906" y="560" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-secondary);">Hard-won, irreplaceable craft</text>
+
+        <line x1="914" y1="600" x2="900" y2="600" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.4;"/>
+        <text x="892" y="604" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-muted);">Deep expertise required</text>
+
+        <line x1="906" y1="636" x2="892" y2="636" style="stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.4;"/>
+        <text x="884" y="640" text-anchor="end" font-size="18" font-weight="500" style="fill: var(--text-muted);">Slowest path to output</text>
+
+      </svg>
+    </div>
+
+    <!-- Spectrum Bar -->
+    <div class="spectrum">
+      <span class="spectrum-label" style="color: var(--accent);">Speed</span>
+      <div class="spectrum-bar"></div>
+      <span class="spectrum-label" style="color: var(--accent-2);">Craft</span>
+    </div>
+
+  </div>
+</body>
+</html>

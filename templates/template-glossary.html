@@ -11,7 +11,7 @@
       background: var(--bg-canvas-gradient, var(--bg-canvas));
     }
 
-    /* ── Header ────────────────────────────────────────────────── */
+    /* ── Header ── */
     .hd--glossary {
       text-align: center;
       margin-bottom: 16px;
@@ -19,164 +19,15 @@
 
     .hd--glossary h1 {
       font-family: var(--font-display);
-      font-size: 56px;
-      line-height: 64px;
+      font-size: var(--text-display-sm);
+      line-height: var(--leading-display-sm);
       font-weight: 400;
       letter-spacing: 0.01em;
       color: var(--text-primary);
     }
 
-    /* ── Callout banner ─────────────────────────────────────────── */
-    .gl-callout {
-      padding: 22px 28px;
-      border-radius: var(--card-radius);
-      border: 1px solid var(--border-accent);
-      background: var(--accent-glow);
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      margin-bottom: 16px;
-    }
-
-    .gl-callout-icon {
-      flex-shrink: 0;
-      width: 52px;
-      height: 52px;
-    }
-
-    .gl-callout-body {
-      flex: 1;
-    }
-
-    .gl-callout-title {
-      font-size: 20px;
-      line-height: 26px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-
-    .gl-callout-text {
-      font-size: 15px;
-      line-height: 22px;
-      color: var(--text-secondary);
-    }
-
-    .gl-callout-text strong {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .gl-callout-stat {
-      flex-shrink: 0;
-      text-align: center;
-    }
-
-    .gl-callout-stat-num {
-      font-family: var(--font-display);
-      font-size: 48px;
-      line-height: 1;
-      color: var(--accent);
-    }
-
-    .gl-callout-stat-label {
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-top: 2px;
-    }
-
-    /* ── Grid wrapper ───────────────────────────────────────────── */
-    .gl-grid-wrap {
-      border: 1px solid var(--border);
-      border-radius: var(--card-radius);
-      overflow: hidden;
-      display: flex;
-      flex: 1;
-    }
-
-    /* ── Grid — 12 cards, 3×4 ───────────────────────────────────── */
-    .gl-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      flex: 1;
-    }
-
-    .gl-card {
-      padding: 20px 22px;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      background: var(--bg-card);
-      position: relative;
-    }
-
-    /* Remove right border on last column */
-    .gl-card:nth-child(3n) { border-right: none; }
-
-    /* Remove bottom border on last row */
-    .gl-card:nth-child(n+10) { border-bottom: none; }
-
-    /* Checkerboard subtle highlight */
-    .gl-card:nth-child(even) { background: var(--bg-raised); }
-
-    /* Accent stripe on top of each card */
-    .gl-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 22px;
-      right: 22px;
-      height: 2px;
-      background: var(--border-medium);
-      opacity: 0.5;
-    }
-    .gl-card:nth-child(-n+3)::before { display: none; }
-
-    .gl-num {
-      font-size: 14px;
-      line-height: 18px;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      font-family: var(--font-sans);
-    }
-
-    .gl-term {
-      font-size: 22px;
-      line-height: 26px;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .gl-def {
-      font-size: 15px;
-      line-height: 22px;
-      font-weight: 400;
-      color: var(--text-secondary);
-      margin-top: 2px;
-      flex: 1;
-    }
-
-    .gl-tag {
-      display: inline-block;
-      margin-top: 6px;
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 600;
-      padding: 5px 10px;
-      border-radius: 100px;
-      border: 1px solid var(--border-medium);
-      color: var(--text-muted);
-      align-self: flex-start;
-    }
+    /* ── Page-specific callout spacing ── */
+    .gl-callout { margin-bottom: 16px; }
   </style>
 </head>
 <body>

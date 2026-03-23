@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Versus Template</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic { gap: 0; }
+
+    .hd { margin-bottom: 20px; }
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── Two-column layout ─────────────────────────── */
+    .vs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+
+    /* ── Column card ───────────────────────────────── */
+    .vs-col {
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Column header ─────────────────────────────── */
+    .vs-col-header {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .vs-col-header--alt {
+      border-bottom-color: var(--accent-2);
+    }
+
+    .vs-col-title {
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .vs-col-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .vs-col-icon--alt {
+      background: var(--accent-2-glow);
+      border-color: var(--border-accent-2);
+    }
+
+    /* ── Column body ───────────────────────────────── */
+    .vs-col-body {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    /* ── Section label (text only, no bg fill) ─────── */
+    .vs-label {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .vs-col:last-child .vs-label {
+      color: var(--accent-2);
+    }
+
+    /* ── Section block ─────────────────────────────── */
+    .vs-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vs-text {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .vs-text strong {
+      color: var(--text-primary);
+      font-weight: var(--weight-semibold);
+    }
+
+    /* ── List items ────────────────────────────────── */
+    .vs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .vs-list-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .vs-list-item::before {
+      content: "▸";
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .vs-col:last-child .vs-list-item::before {
+      color: var(--accent-2);
+    }
+
+    /* ── Bottom verdict bar ────────────────────────── */
+    .verdict-bar {
+      padding: 18px 24px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-accent);
+      background: linear-gradient(to right, var(--accent-glow), transparent);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .verdict-badge {
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-size: var(--text-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .verdict-text {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .verdict-text strong {
+      color: var(--text-primary);
+      font-weight: var(--weight-semibold);
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>REST vs GraphQL</h1>
+    </div>
+
+    <div class="vs-grid">
+
+      <!-- ═══ LEFT COLUMN ═══ -->
+      <div class="vs-col">
+        <div class="vs-col-header">
+          <div class="vs-col-title">REST</div>
+          <div class="vs-col-icon">⇄</div>
+        </div>
+        <div class="vs-col-body">
+
+          <div class="vs-section">
+            <div class="vs-label">What it is</div>
+            <p class="vs-text">A resource-based architecture using <strong>standard HTTP methods</strong>. Each endpoint represents a resource with predictable CRUD operations. The most widely adopted style for web APIs.</p>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Best for</div>
+            <div class="vs-list">
+              <div class="vs-list-item">Public APIs with many consumers</div>
+              <div class="vs-list-item">Simple CRUD applications</div>
+              <div class="vs-list-item">Caching-heavy workloads</div>
+              <div class="vs-list-item">Teams wanting convention over config</div>
+              <div class="vs-list-item">Mobile backends needing broad compatibility</div>
+            </div>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Trade-offs</div>
+            <div class="vs-list">
+              <div class="vs-list-item">Over-fetching or under-fetching data</div>
+              <div class="vs-list-item">Endpoint sprawl as API grows</div>
+              <div class="vs-list-item">Multiple requests for related data</div>
+              <div class="vs-list-item">Versioning gets messy at scale</div>
+            </div>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Difficulty</div>
+            <p class="vs-text"><strong>Low barrier to entry.</strong> Any developer who knows HTTP can build a REST API in an afternoon. Swagger, Postman, and OpenAPI make docs automatic.</p>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Tooling</div>
+            <p class="vs-text"><strong>Express, FastAPI, Rails, Spring Boot.</strong> Every language has mature REST frameworks. Monitoring with standard HTTP observability tools.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ RIGHT COLUMN ═══ -->
+      <div class="vs-col">
+        <div class="vs-col-header vs-col-header--alt">
+          <div class="vs-col-title">GraphQL</div>
+          <div class="vs-col-icon vs-col-icon--alt">◈</div>
+        </div>
+        <div class="vs-col-body">
+
+          <div class="vs-section">
+            <div class="vs-label">What it is</div>
+            <p class="vs-text">A query language where the <strong>client defines the shape</strong> of the response. One endpoint, infinite query flexibility. Built-in type system acts as a living contract.</p>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Best for</div>
+            <div class="vs-list">
+              <div class="vs-list-item">Complex frontends with nested data</div>
+              <div class="vs-list-item">Mobile apps needing minimal payloads</div>
+              <div class="vs-list-item">Aggregating multiple data sources</div>
+              <div class="vs-list-item">Rapid frontend iteration</div>
+              <div class="vs-list-item">Teams with separate front/back ownership</div>
+            </div>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Trade-offs</div>
+            <div class="vs-list">
+              <div class="vs-list-item">Caching is harder (no URL-based cache)</div>
+              <div class="vs-list-item">N+1 query problems on the backend</div>
+              <div class="vs-list-item">Complexity in authorization logic</div>
+              <div class="vs-list-item">File uploads need workarounds</div>
+            </div>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Difficulty</div>
+            <p class="vs-text"><strong>Higher learning curve.</strong> Schema design, resolvers, and query optimization require upfront investment. DataLoader patterns are essential. Pays off at scale.</p>
+          </div>
+
+          <div class="vs-section">
+            <div class="vs-label">Tooling</div>
+            <p class="vs-text"><strong>Apollo, Relay, Hasura, Pothos.</strong> Strong TypeScript integration. Schema-first or code-first approaches. Built-in playground for exploration.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom verdict -->
+    <div class="verdict-bar">
+      <div class="verdict-badge">Verdict</div>
+      <p class="verdict-text"><strong>Start with REST</strong> unless you have a complex frontend consuming multiple data sources. GraphQL shines when your client needs drive API design — but adds backend complexity you need to be ready for.</p>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Vibe Coding vs Agentic Engineering</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      gap: 0;
+      justify-content: flex-start;
+    }
+
+    .hd { margin-bottom: 12px; }
+    .hd h1 {
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+    }
+
+    /* ── Diagram box ─────────────────────────────── */
+    .diagram-box {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .diagram-box-inner {
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      background: var(--bg-card);
+      padding: 20px 24px 16px;
+    }
+
+    .diagram-box-inner svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Three-column layout ───────────────────────── */
+    .col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* ── Column card ───────────────────────────────── */
+    .col {
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Column header ─────────────────────────────── */
+    .col-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .col:nth-child(1) .col-header {
+      border-bottom-color: var(--accent);
+      border-bottom-color: rgba(88, 110, 175, 0.3);
+    }
+
+    .col:nth-child(2) .col-header {
+      border-bottom-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .col:nth-child(3) .col-header {
+      border-bottom-color: rgba(154, 149, 144, 0.3);
+    }
+
+    .col-title {
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .col-tag {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-top: 10px;
+    }
+
+    .col:nth-child(2) .col-tag { color: var(--text-primary); }
+    .col:nth-child(3) .col-tag { color: var(--accent-2); }
+
+    /* ── Column body ───────────────────────────────── */
+    .col-body {
+      padding: 16px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* ── List items ────────────────────────────────── */
+    .col-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+
+    .col-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .col-item:last-child {
+      border-bottom: none;
+    }
+
+    .col-item::before {
+      content: "—";
+      color: var(--accent);
+      font-weight: 600;
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    .col:nth-child(2) .col-item::before { color: var(--text-primary); }
+    .col:nth-child(3) .col-item::before { color: var(--accent-2); }
+
+    /* ── Italic callout item ───────────────────────── */
+    .col-item--callout {
+      font-style: italic;
+      color: var(--text-muted);
+      font-weight: 500;
+      border-bottom: none;
+      padding: 10px 0;
+    }
+
+    .col-item--callout::before {
+      content: none;
+    }
+
+    /* ── Stat row ────────────────────────────────── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-number {
+      font-size: 40px; /* decorative stat callout */
+      line-height: 40px;
+      font-family: var(--font-display);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .stat-card:nth-child(1) .stat-number { color: var(--accent); }
+    .stat-card:nth-child(2) .stat-number { color: var(--text-primary); }
+    .stat-card:nth-child(3) .stat-number { color: var(--accent-2); }
+
+    .stat-label {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    .stat-source {
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark">
+
+    <div class="hd">
+      <h1>Vibe Coding vs Agentic Engineering</h1>
+    </div>
+
+    <!-- ═══ FULL-WIDTH DIAGRAM (boxed) ═══ -->
+    <div class="diagram-box">
+      <div class="diagram-box-inner">
+        <svg viewBox="0 0 936 180" fill="none" font-family="'Libre Franklin', sans-serif">
+          <defs>
+            <linearGradient id="spec-grad" x1="0" y1="0" x2="936" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" style="stop-color: var(--accent); stop-opacity: 1;"/>
+              <stop offset="50%" style="stop-color: var(--text-muted); stop-opacity: 1;"/>
+              <stop offset="100%" style="stop-color: var(--accent-2); stop-opacity: 1;"/>
+            </linearGradient>
+
+            <radialGradient id="node-glow-1" cx="156" cy="66" r="60" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" style="stop-color: var(--accent); stop-opacity: 0.20;"/>
+              <stop offset="100%" style="stop-color: var(--accent); stop-opacity: 0;"/>
+            </radialGradient>
+            <radialGradient id="node-glow-2" cx="468" cy="66" r="60" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" style="stop-color: var(--text-primary); stop-opacity: 0.12;"/>
+              <stop offset="100%" style="stop-color: var(--text-primary); stop-opacity: 0;"/>
+            </radialGradient>
+            <radialGradient id="node-glow-3" cx="780" cy="66" r="60" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" style="stop-color: var(--accent-2); stop-opacity: 0.18;"/>
+              <stop offset="100%" style="stop-color: var(--accent-2); stop-opacity: 0;"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Baseline -->
+          <line x1="20" y1="66" x2="916" y2="66" stroke="url(#spec-grad)" stroke-width="2" stroke-opacity="0.3"/>
+
+          <!-- Zone bands -->
+          <rect x="20" y="48" width="272" height="36" rx="4" style="fill: var(--accent); fill-opacity: 0.04;"/>
+          <rect x="332" y="48" width="272" height="36" rx="4" style="fill: var(--text-primary); fill-opacity: 0.03;"/>
+          <rect x="644" y="48" width="272" height="36" rx="4" style="fill: var(--accent-2); fill-opacity: 0.04;"/>
+
+          <!-- Tick marks -->
+          <line x1="20" y1="58" x2="20" y2="74" style="stroke: var(--text-dim); stroke-width: 1; stroke-opacity: 0.3;"/>
+          <line x1="292" y1="58" x2="292" y2="74" style="stroke: var(--text-dim); stroke-width: 1; stroke-opacity: 0.3;"/>
+          <line x1="332" y1="58" x2="332" y2="74" style="stroke: var(--text-dim); stroke-width: 1; stroke-opacity: 0.3;"/>
+          <line x1="604" y1="58" x2="604" y2="74" style="stroke: var(--text-dim); stroke-width: 1; stroke-opacity: 0.3;"/>
+          <line x1="644" y1="58" x2="644" y2="74" style="stroke: var(--text-dim); stroke-width: 1; stroke-opacity: 0.3;"/>
+          <line x1="916" y1="58" x2="916" y2="74" style="stroke: var(--text-dim); stroke-width: 1; stroke-opacity: 0.3;"/>
+
+          <!-- Node glows -->
+          <circle cx="156" cy="66" r="60" fill="url(#node-glow-1)"/>
+          <circle cx="468" cy="66" r="60" fill="url(#node-glow-2)"/>
+          <circle cx="780" cy="66" r="60" fill="url(#node-glow-3)"/>
+
+          <!-- Node dots -->
+          <circle cx="156" cy="66" r="8" style="fill: var(--accent); fill-opacity: 0.2; stroke: var(--accent); stroke-width: 2; stroke-opacity: 0.6;"/>
+          <circle cx="156" cy="66" r="3" style="fill: var(--accent);"/>
+          <circle cx="468" cy="66" r="8" style="fill: var(--text-primary); fill-opacity: 0.15; stroke: var(--text-primary); stroke-width: 2; stroke-opacity: 0.5;"/>
+          <circle cx="468" cy="66" r="3" style="fill: var(--text-primary);"/>
+          <circle cx="780" cy="66" r="8" style="fill: var(--accent-2); fill-opacity: 0.2; stroke: var(--accent-2); stroke-width: 2; stroke-opacity: 0.6;"/>
+          <circle cx="780" cy="66" r="3" style="fill: var(--accent-2);"/>
+
+          <!-- Axis labels -->
+          <text x="20" y="30" font-size="14" font-weight="700" letter-spacing="0.08em" style="fill: var(--accent); text-transform: uppercase; opacity: 0.7;">Speed</text>
+          <text x="916" y="30" text-anchor="end" font-size="14" font-weight="700" letter-spacing="0.08em" style="fill: var(--accent-2); text-transform: uppercase; opacity: 0.7;">Craft</text>
+
+          <!-- Node labels -->
+          <text x="156" y="120" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--accent);">Vibe Coding</text>
+          <text x="156" y="144" text-anchor="middle" font-size="14" font-weight="600" letter-spacing="0.06em" style="fill: var(--text-muted);">MOVE FAST</text>
+
+          <text x="468" y="120" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--text-primary);">Agentic Engineering</text>
+          <text x="468" y="144" text-anchor="middle" font-size="14" font-weight="600" letter-spacing="0.06em" style="fill: var(--text-muted);">SWEET SPOT</text>
+
+          <text x="780" y="120" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--accent-2);">Manual Coding</text>
+          <text x="780" y="144" text-anchor="middle" font-size="14" font-weight="600" letter-spacing="0.06em" style="fill: var(--text-muted);">FULL CONTROL</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="col-grid">
+
+      <!-- ═══ VIBE CODING ═══ -->
+      <div class="col">
+        <div class="col-header">
+          <div class="col-title">Vibe Coding</div>
+          <div class="col-tag">Speed first</div>
+        </div>
+        <div class="col-body">
+          <div class="col-list">
+            <div class="col-item">Prompt and see what sticks</div>
+            <div class="col-item">Ship now, fix later</div>
+            <div class="col-item">Build without reading the code</div>
+            <div class="col-item">Speed over understanding</div>
+            <div class="col-item--callout">"Ideas over implementation"</div>
+            <div class="col-item">Low barrier to entry</div>
+            <div class="col-item">Great for rapid prototyping</div>
+            <div class="col-item">Non-engineers can participate</div>
+            <div class="col-item">Tech debt accumulates fast</div>
+            <div class="col-item">Hard to debug or maintain</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ AGENTIC ENGINEERING ═══ -->
+      <div class="col">
+        <div class="col-header">
+          <div class="col-title">Agentic Engineering</div>
+          <div class="col-tag">New standard</div>
+        </div>
+        <div class="col-body">
+          <div class="col-list">
+            <div class="col-item">AI writes, engineer reviews</div>
+            <div class="col-item">Faster without losing control</div>
+            <div class="col-item">Judgment stays with the human</div>
+            <div class="col-item">Expertise amplified by AI</div>
+            <div class="col-item--callout">"Best of both worlds"</div>
+            <div class="col-item">Boilerplate handled instantly</div>
+            <div class="col-item">Code still gets properly reviewed</div>
+            <div class="col-item">Craft is preserved, not replaced</div>
+            <div class="col-item">Output still needs deep knowledge</div>
+            <div class="col-item">The dominant pro mode today</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ MANUAL CODING ═══ -->
+      <div class="col">
+        <div class="col-header">
+          <div class="col-title">Manual Coding</div>
+          <div class="col-tag">Craft first</div>
+        </div>
+        <div class="col-body">
+          <div class="col-list">
+            <div class="col-item">Every line is understood</div>
+            <div class="col-item">Full ownership of the codebase</div>
+            <div class="col-item">Nothing is a black box</div>
+            <div class="col-item">Deep expertise required</div>
+            <div class="col-item--callout">"Where real mastery is built"</div>
+            <div class="col-item">Fully auditable and traceable</div>
+            <div class="col-item">Uncompromised quality ceiling</div>
+            <div class="col-item">Essential for critical systems</div>
+            <div class="col-item">Hard-won, irreplaceable craft</div>
+            <div class="col-item">Slowest path to output</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ STAT ROW ═══ -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-number">2.74×</div>
+        <div class="stat-label">More security flaws in AI-generated vs human-written code</div>
+        <div class="stat-source">CodeRabbit, Dec 2025</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">41%</div>
+        <div class="stat-label">Of all code written globally is now AI-generated</div>
+        <div class="stat-source">Forbes, 2025</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1 in 3</div>
+        <div class="stat-label">Vibe-coded apps shipped with a serious security flaw</div>
+        <div class="stat-source">Escape.tech, 2026</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

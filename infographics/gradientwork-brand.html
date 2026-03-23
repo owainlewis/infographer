@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Gradientwork Brand Palette</title>
+  <link rel="stylesheet" href="/src/tw/out.css">
+  <style>
+    .infographic {
+      gap: 0;
+      justify-content: flex-start;
+      background: var(--bg-canvas);
+    }
+
+    /* ── Header ────────────────────────────────────── */
+    .brand-header {
+      width: 100%;
+      padding: 52px 48px 0;
+      text-align: center;
+    }
+
+    .brand-header h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+      letter-spacing: var(--tracking-display-serif);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .brand-header .tagline {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-top: 8px;
+    }
+
+    .brand-header .tagline em {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .divider-line {
+      width: 100%;
+      padding: 0 48px;
+      margin-top: 28px;
+    }
+
+    .divider-line::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Color Swatches ───────────────────────────── */
+    .palette-section {
+      width: 100%;
+      padding: 28px 48px 0;
+    }
+
+    .section-label {
+      font-family: var(--font-sans);
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .swatch {
+      flex: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .swatch-color {
+      height: 72px;
+      position: relative;
+    }
+
+    .swatch-color.navy       { background: #05070C; }
+    .swatch-color.card       { background: #0C0F18; }
+    .swatch-color.cobalt     { background: #3B6CE8; }
+    .swatch-color.orange     { background: #F27A3A; }
+    .swatch-color.frost      { background: #F1F5F9; }
+    .swatch-color.light-canvas { background: #EAEBEF; }
+    .swatch-color.deep-cobalt { background: #2850B8; }
+    .swatch-color.deep-orange { background: #DC5A1E; }
+    .swatch-color.ink         { background: #111827; }
+
+    .swatch-info {
+      padding: 10px 12px;
+      background: var(--bg-card);
+    }
+
+    .swatch-name {
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      line-height: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── Typography Preview ───────────────────────── */
+    .type-section {
+      width: 100%;
+      padding: 4px 48px 0;
+    }
+
+    .type-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .type-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-meta);
+      line-height: var(--leading-meta);
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 100px;
+      text-align: right;
+    }
+
+    .type-sample-display {
+      font-family: var(--font-display);
+      font-size: 52px; /* decorative — smaller to fit */
+      line-height: 56px;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+    }
+
+    .type-sample-h2 {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .type-sample-body {
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+    }
+
+    /* ── Component Preview ────────────────────────── */
+    .components-section {
+      width: 100%;
+      padding: 8px 48px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .preview-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--card-shadow);
+    }
+
+    .preview-card .card-num {
+      font-family: var(--font-sans);
+      font-size: var(--text-meta);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .preview-card h3 {
+      font-family: var(--font-sans);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      font-weight: 600;
+      letter-spacing: var(--tracking-card-title);
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .preview-card p {
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .preview-card .card-tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      font-family: var(--font-sans);
+      font-size: var(--text-meta);
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Footer gradient bar ─────────────────────── */
+    .gradient-bar {
+      width: 100%;
+      height: 6px;
+      margin-top: auto;
+      background: linear-gradient(90deg,
+        #05070C 0%,
+        #3B6CE8 30%,
+        #F27A3A 50%,
+        #3B6CE8 70%,
+        #05070C 100%
+      );
+    }
+  </style>
+</head>
+<body>
+  <div class="infographic" id="infographic" data-theme="dark-unified">
+
+    <!-- Header -->
+    <div class="brand-header">
+      <h1>Gradientwork</h1>
+      <p class="tagline">Deep Navy, <em>Cobalt</em> & Signal — Brand Palette</p>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <!-- Dark Palette -->
+    <div class="palette-section">
+      <div class="section-label">Dark Mode</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color navy"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Deep Navy</div>
+            <div class="swatch-hex">#05070C</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color card"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Card</div>
+            <div class="swatch-hex">#0C0F18</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color cobalt"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Cobalt</div>
+            <div class="swatch-hex">#3B6CE8</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color orange"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Signal</div>
+            <div class="swatch-hex">#F27A3A</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color frost"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Frost</div>
+            <div class="swatch-hex">#F1F5F9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light Palette -->
+    <div class="palette-section" style="padding-top: 0;">
+      <div class="section-label">Light Mode</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color light-canvas"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Pale Slate</div>
+            <div class="swatch-hex">#EAEBEF</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color deep-cobalt"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Deep Cobalt</div>
+            <div class="swatch-hex">#2850B8</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color deep-orange"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Deep Signal</div>
+            <div class="swatch-hex">#DC5A1E</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color ink"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Ink</div>
+            <div class="swatch-hex">#111827</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="type-section">
+      <div class="section-label" style="padding-left: 120px;">Typography</div>
+      <div class="type-stack">
+        <div class="type-row">
+          <span class="type-label">Instrument Serif</span>
+          <span class="type-sample-display">Build What Matters</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Libre Franklin</span>
+          <span class="type-sample-h2">Engineering, not agency work</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">18px / 28px</span>
+          <span class="type-sample-body">Deep technical expertise delivered in weeks. Software that scales because someone who cares built it.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Component Preview -->
+    <div class="components-section">
+      <div class="section-label">Component Preview</div>
+      <div class="card-grid">
+        <div class="preview-card">
+          <span class="card-num">01</span>
+          <h3>Cobalt Structure</h3>
+          <p>Blue does 90% of accent work. Labels, borders, pills, section markers — all cobalt.</p>
+          <span class="card-tag">Cobalt #3B6CE8</span>
+        </div>
+        <div class="preview-card">
+          <span class="card-num" style="color: var(--accent-2);">02</span>
+          <h3>Signal Spark</h3>
+          <p>Orange appears once or twice per piece. A stat, a badge, the one thing your eye hits first.</p>
+          <span class="card-tag" style="color: var(--accent-2); border-color: var(--border-accent-2); background: var(--accent-2-glow);">Signal #F27A3A</span>
+        </div>
+        <div class="preview-card">
+          <span class="card-num">03</span>
+          <h3>Opaque Cards</h3>
+          <p>Solid card backgrounds, not glass. Clearer hierarchy, stronger at thumbnail scale on LinkedIn.</p>
+          <span class="card-tag">Navy #05070C</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gradient bar at bottom -->
+    <div class="gradient-bar"></div>
+
+  </div>
+</body>
+</html>
